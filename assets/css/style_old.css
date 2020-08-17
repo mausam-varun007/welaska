@@ -1,0 +1,487 @@
+* {box-sizing: border-box;}
+
+body { 
+  margin: 0;
+  font-family: nunito;
+}
+
+.header {
+  padding-top: 20px!important;
+  padding-bottom: 10px!important;
+  overflow: hidden;
+  background-color: #F0F0F0;
+  padding: 0px;
+}
+
+.header a {
+  
+    border-radius: 3px;
+    color: #000;
+    font-size: 14px;
+    padding: 2px 5px;
+    text-transform: capitalize;
+    width: 90px;
+    margin-top: 10px;
+}
+
+.header a.logo {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.header a:hover {
+  background-color: ;
+  color: black;
+}
+
+.header a.active {
+  background-color: #6fda44;
+  color: white;
+    border: 1px solid #6fda44;
+    border-radius: 3px;
+    font-size: 14px;
+    padding: 2px 5px;
+    text-transform: capitalize;
+    width: 90px;
+    margin-top: 10px;
+}
+
+.header-right {
+  float: right;
+  margin-top: 5px;
+  margin-right: 50px;
+}
+.slideshow-container {
+  max-width: 1000px;
+  position: relative;
+  margin: auto;
+}
+.slide-1 {
+  background-color: tomato;
+  height: 263px;
+}
+.slide-2 {
+  background-color: green;
+  height: 263px;
+}
+.slide-3 {
+  background-color: blue;
+  height: 263px;
+}
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 43%;
+  width: auto;
+  margin-top: -22px;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+}
+
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+.prev:hover, .next:hover {
+  background-color: #6fda44;
+}
+
+.text {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 40%;
+  left: 47%;
+}
+
+.dot {
+  cursor: pointer;
+  height: 13px;
+  width: 13px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color: 0.6s ease;
+}
+.active, dot:hover {
+  background-color: #6fda44;
+}
+.fade {
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+.owl-carousel{
+  margin: 0px!important;
+}
+.owl-nav{
+  position: absolute;
+    right: 30px;
+    /* top: 10px; */
+    bottom: 5px;
+
+
+}
+.owl-stage-outer {
+    height: 300px;
+}
+button.owl-prev {
+  height: 26px;
+  width: 26px;
+  font-size: 40px;
+  color: white!important;
+}
+button.owl-next {
+   height: 26px;
+  width: 26px;
+  font-size: 40px;
+  color: white!important;
+
+}
+.owl-dots {
+    display: none;
+}
+.span {
+  font-size: 40px!important;
+}
+.search{
+    width: 50%;
+    float: left;
+    position: absolute;
+    right: 250px;
+    left: 250px;
+    z-index: 1;
+    top: 50px;
+}
+.search-area
+{
+  margin: 8px 0 0;
+    background: #fff;
+    border-radius: 2px;
+    height: 35px;
+    border-top-left-radius: 5%;
+    border-bottom-left-radius: 5%;
+}
+.footer {
+   
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   background-color: #dedede;
+   color: white;
+   text-align: center;
+}
+.box
+{
+      background-color: lightgrey;
+    width: 230px;
+    height: 110px;
+    border: 5px solid green;
+    margin-left: 10px;
+}
+.box-image
+{
+      position: absolute;
+    padding: 15px;
+    padding-top: 30px;
+    right: 20px;
+    top: 0px;
+}
+.top-main
+{
+  margin-left: 200px;margin-right: 200px;
+}
+.search-input
+{
+  width: 351px;position: absolute;top: 8px;left: 100px;height: 35px;
+}
+.search-button
+{
+  position: absolute;right: -16px;top: 8px;height: 35px;background-color: #f00;border-top-right-radius: 5%;border-bottom-right-radius: 5%;
+}
+.search-icon
+{
+  color: #fff;position: absolute;top: 10px;left: 25px;
+}
+.col-md-12.abc {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+  /*the container must be positioned relative:*/
+.custom-select {
+  position: relative;
+  font-family: Arial;
+}
+
+.custom-select select {
+  display: none; /*hide original SELECT element:*/
+}
+
+.select-selected {
+  background-color: DodgerBlue;
+}
+
+/*style the arrow inside the select element:*/
+.select-selected:after {
+  position: absolute;
+  content: "";
+  top: 14px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+
+/*point the arrow upwards when the select box is open (active):*/
+.select-selected.select-arrow-active:after {
+  border-color: transparent transparent #fff transparent;
+  top: 7px;
+}
+
+/*style the items (options), including the selected item:*/
+.select-items div,.select-selected {
+  color: #ffffff;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+  cursor: pointer;
+  user-select: none;
+}
+
+/*style items (options):*/
+.select-items {
+  position: absolute;
+  background-color: DodgerBlue;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+
+/*hide the items when the select box is closed:*/
+
+/*my style*/
+
+
+/*.customer-feedback-sec {
+    border: 1px solid #c7d1da;
+    border-radius: 10px;
+}*/
+/*my style*/
+.select-items div:hover, .same-as-selected {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.custom-select:focus {
+  border-color: #ff0000;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25);
+}
+
+
+}
+@keyframes fade {
+  from{opacity:.4}
+  to{opacity:1}
+}
+
+@media screen and (min-width: 320px) 
+{
+    .column 
+    {
+      width: 100%;
+    }
+    .top-main
+    {
+      margin-left: 0px;margin-right: 0px;
+    }
+    
+    .owl-item.active 
+    {
+      width: 320px;
+      margin-right: 10px;
+      height: 200px;
+    }
+    .owl-item.cloned 
+    {
+      width: 320px;
+      margin-right: 10px;
+      height: 200px;
+    }
+    .search 
+    {
+          width: 50%;
+          float: left;
+          position: absolute;
+           right:0px!important; 
+           left: 0px!important; 
+          z-index: 1;
+          top: 50px;
+    }
+    .search-area 
+    {
+      /* margin: 8px 0 0; */
+      background: #fff;
+      border-radius: 2px;
+      height: 35px;
+      border-top-left-radius: 5%;
+      border-bottom-left-radius: 5%;
+    }
+    .search-input
+    {
+      width: 150px;
+      position: absolute;
+      top: 8px;
+      left: 100px;
+      height: 35px;
+    }
+    .search-button
+    {
+      position: absolute;
+      /* right: -16px; */
+      top: 8px;
+      height: 37px;
+      background-color: #f00;
+      border-top-right-radius: 5%;
+      border-bottom-right-radius: 5%;
+      /* height: 1px; */
+      left: 240px;
+      /* width: 102%; */
+      /* width: 31px; */
+    }
+    .search-icon{
+      color: #fff;position: absolute;top: 10px;left: 25px;
+    }
+    .owl-stage-outer 
+    {
+      height: 200px;
+    }
+    .fa-search:before 
+    {
+      content: "\f002";
+      /* margin-top: 12px; */
+      position: absolute;
+      top: 10px;
+      right: 20px;
+    }
+    .box-image 
+    {
+      position: absolute;
+      padding: 15px;
+      padding-top: 25px;
+      right: 20px;
+      top: 0px;
+    }
+    .box 
+    {
+        background-color: lightgrey;
+        width: 320px;
+        height: 110px;
+        border: 5px solid green;
+        margin-left: 10px;
+    }
+
+}
+@media screen and (min-width: 375px) 
+{
+    .search 
+    {
+      margin-left: 30px;
+    }
+    .box
+    {
+      margin-left: 35px;
+    }
+    .box-image
+    {
+          right: 50px;
+    }
+    
+
+}
+@media screen and (min-width: 425px) 
+{
+    .search-button
+    {
+          left: 248px;
+    }
+    .search 
+    {
+      margin-left: 60px;
+    }
+    .box
+    {
+          margin-left: 60px;
+    }
+    .box-image 
+    {
+      right: 75px;
+    }
+
+}
+@media screen and (min-width: 768px) 
+{
+    .owl-item.active 
+    {
+      width: 800px!important;
+    
+    }
+    .owl-item.cloned 
+    {
+        width: 768px!important;
+    }
+    .search 
+    {
+        margin-left: 150px;
+    }
+    .box-image 
+    {
+      right: 15px;
+    }
+    .box 
+    {
+        margin-left: 10px;
+        width: 170px;
+    }
+    .search-button 
+    {
+    left: 420px;
+    }
+}
+@media screen and (min-width: 1024px) 
+{
+    .owl-item.active 
+    {
+      width: 1000px!important;
+    }
+    .owl-item.cloned 
+    {
+      width: 1000px!important;
+    }
+    .search-button 
+    {
+        left: 435px!important;
+    }
+    .search-input 
+    {
+        width: 80%!important;
+    }
+    .search 
+    {
+        margin-left: 250px;
+    }
+    .box 
+    {
+        width: 230px;
+    }
+
+
+}
+
+

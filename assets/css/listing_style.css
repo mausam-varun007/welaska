@@ -1,0 +1,396 @@
+form.example input[type=text] {
+		  padding: 18px;
+  font-size: 17px;
+  border: 1px solid grey;
+  float: left;
+ 	width: 400px;
+  background: #f1f1f1;
+}
+form.example{
+	float: left;
+}
+form.example button {
+  float: left;		  
+  padding: 9px;
+  background: #f00;
+  color: white;
+  font-size: 17px;
+  /*border: 1px solid #f00;*/
+  border-left: none;
+  cursor: pointer;
+  position: absolute;
+  width: 14%;
+}
+
+form.example button:hover {
+  background: #ff0e0e;
+}
+
+form.example::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+p.content-title {
+    font-size: 20px;
+    font-weight: 600;
+}
+.content-rating i.fa.fa-star {
+    font-size: 20px;
+    color: #c7c5c5;
+}
+i.fa.fa-star.filled-start {
+    color: #f3e216;
+}
+i.fa.fa-star-half-o {
+    font-size: 20px;
+    color: #c7c5c5;
+}
+.select-hide {
+  display: none;
+}
+img.card-image {
+    height: 250px;
+}
+span.rating-text {
+    background-color: #6ba919;
+    color: #fff;
+    padding: 4px;
+    border-radius: 2px;
+    font-size: 12px;
+}
+.content-price span {
+    font-size: 18px;
+    color: #0e8c06;
+}
+.content-detrail-section p {
+    margin-bottom: 15px;
+}
+.search-button-section {
+    padding: 30px 0px;
+}
+.search-logo-section {
+    padding: 30px 0px;
+}
+.main-content {
+    box-shadow: -1px 1px 9px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+}
+.sidebar-content{
+    /*box-shadow: -1px 1px 9px rgba(0, 0, 0, 0.2);*/
+    padding: 10px; 
+}
+.main-content {
+    margin: 15px auto;
+}
+.main-content {
+    border-radius: 5px;
+}
+.review-whatsapp-section span.single-content-whatsapp {
+    font-size: 25px;
+    color: green;
+}
+.review-whatsapp-section span.single-content-whatsapp{
+    font-size: 25px; 
+    color: green;
+}
+.review-whatsapp-section p.content-rating {
+    margin-bottom: 5px;
+}
+.review-whatsapp-section span.rate-here {
+    font-size: 15px;
+    font-weight: 600;
+    display: block;
+}
+.content-rating a {
+    font-size: 20px;
+}
+
+input.product_comment_input {
+    width: 100%;
+    border: 1px solid #c7d1da;
+    font-size: 15px;
+    padding: 6px 10px;
+    border-radius: 50px;
+}
+.add-comment {
+    padding: 10px;
+}
+button.product_comment_button {
+    position: absolute;
+    right: 100px;
+    /* border: none; */
+    /* background: none; */
+    font-size: 15px;
+    top: 55px;
+    padding: 10px 20px;
+}
+.row.content-card.review-whatsapp-section{
+    border-top: 1px solid #d8d5d5;
+    padding: 10px;
+}
+.row.content-card.review-comment-section {
+    border-top: 1px solid #d8d5d5;
+    border-bottom:1px solid #d8d5d5;
+}
+.review-colum1 {    
+    padding: 10px
+}
+.review-colum2 {    
+    padding: 10px
+}
+.customer-feedback-sec {
+    margin-top: 20px;
+}
+.social-media-section a {
+    font-size: 25px;
+}
+i.fa.fa-facebook-square {
+    color: #2483a2;
+}
+i.fa.fa-twitter-square {
+    color: #2ab0dc;
+}
+i.fa.fa-twitter-square {
+    color: #2ab0dc;
+}
+.single-content {
+    border: 1px solid #d8d5d5;
+    border-radius: 5px;
+}
+.row.content-card.review-whatsapp-section.padding-card {
+    padding: 25px 90px !important;
+}
+.row.content-card.social-media-section.padding-card {
+    padding: 25px 90px !important;
+}
+
+.review-colum1 {
+    border-right: 1px solid #d8d5d5;
+    padding-left: 100px !important;
+    padding-top: 25px;
+}
+.review-colum2{    
+    padding-right:  100px !important;
+    padding-left: 100px !important;
+    padding-top: 25px;
+}
+.content-single-detail {
+    padding: 30px 90px !important;
+}
+.content-single-image {
+    padding: 30px 0px;
+}
+p.content-world {
+    margin-bottom: 0;
+}
+.thumbs-up-icon {
+    padding: 10px 0px;
+}
+.whats-app-icon{
+    padding: 10px 0px; 
+}
+.review-whatsapp-section p {
+    font-size: 14px;
+}
+i.custom-icon {
+    font-size: 16px;
+}
+.review-colum1 p {
+    font-size: 14px;
+}
+.content-single-detail p {
+    font-size: 14px;
+}
+.row.content-card.review-content-section {
+    padding: 30px 90px;
+    border-bottom: 1px solid #d8d5d5;
+}
+.row.search-header {
+    background-color: #dedede;
+    border-radius: 5px;
+    /* margin-top: 10px; */
+    margin-bottom: 45px;
+}
+.search-item {
+    background-color: #fff;
+    position: absolute;
+    width: 400px;
+    top: 70px;
+    height: auto;
+    /* border: 1px solid red; */
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: -1px 1px 9px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+}
+.search-item a {
+    color: #444;
+}
+.search-item a:hover {
+    color: #444;
+    text-decoration: none;
+}
+p.content-title {
+    font-size: 25px;
+}
+p.content-title a {
+    color: #444;
+}
+p.content-title a:hover {
+    text-decoration: none;
+}
+.content-type a {
+    color: #444;
+}
+.content-type a:hover {
+    text-decoration: none;
+    color: #444;
+}
+#rating_bar {
+    width:100px;
+    height:100px;    
+    display:inline-block;
+    display:inline;
+}
+#rating_bar > span:before {
+    content:'\f005';
+    font-family: 'FontAwesome';
+    color: #c7c5c5;
+    cursor:pointer;
+    font-size:20px;
+}
+#rating_bar:hover > span:before {
+    color: #f3e216;
+}
+
+#rating_bar > span:hover ~ span:before {
+    color: #c7c5c5;
+}
+span.active-star::before {
+    color: #f3e216 !important;   
+}
+.single-content-whatsapp i.fa.fa-thumbs-o-up, .single-content-whatsapp i.fa.fa-whatsapp { 
+    transition: 0.2s ease-in;
+}
+.single-content-whatsapp i.fa.fa-thumbs-o-up:hover, .single-content-whatsapp i.fa.fa-whatsapp:hover {
+    font-size: 30px;
+    transition: 0.2s ease-in-out;
+}
+.content-hide{
+    display: none;
+}
+.row.content-card.no-records-found {
+    padding: 70px 50px;
+}
+.no-records-found p {
+    margin-bottom: 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+.box-footer {
+    padding: 25px;
+}
+/*Search CSS*/
+.search {
+    width: 70%;
+    float: left;
+    position: absolute;        
+    z-index: 1;    
+}
+.search-area {
+    margin: 8px 0 0;
+    background: #fff;
+    border-radius: 2px;
+    height: 45px;
+    border-top-left-radius: 5%;
+    border-bottom-left-radius: 5%;
+}
+.custom-select {
+    width: 130px;
+    height: 45px;
+    /*border: 0px solid #ced4da;*/
+    border-radius: 0rem;
+}
+.form-control.search-input {
+    width: 66%;
+    position: absolute;
+    top: 8px;
+    left: 130px;
+    height: 45px;
+}
+.search-button {
+    position: absolute;
+    right: 0px;
+    width: 70px;
+    top: 8px;
+    height: 45px;
+    background-color: #f00;
+    border-top-right-radius: 5%;
+    border-bottom-right-radius: 5%;
+    border: none;
+    color: #fff;
+}
+.home-search-result {
+    background-color: #fff;
+    padding: 15px 20px;
+    position: absolute;
+    width: 50%;
+    left: 100px;
+    top: 45px;
+}
+.home-search-hide {
+    display: none;
+}
+select.form-control.custom-select:focus{
+    box-shadow:none;
+}
+input.form-control.search-input{
+    box-shadow:none;   
+}
+button.form-control.search-button:hover{
+    background-color: #f00;
+
+}
+.search-button i.fa.fa-search {
+    font-size: 20px;
+    transition: 0.1s ease-out;
+}
+.search-button i.fa.fa-search:hover {
+    
+    font-size: 25px;
+    transition: 0.1s ease-in;
+}
+
+@media screen and (max-width: 480px){
+    .main-content {
+        width: 90% !important;
+        margin: 20px auto;
+    }
+    .search-logo-section {
+        text-align: center;
+        font-size: 25px;
+    }
+    form.example {
+        width: auto;
+        float: none;
+    }
+    form.example input[type=text]{
+        width: auto;
+    }
+    .search-item {
+        background-color: #fff;
+        position: absolute;
+        width: 375px;
+        top: 70px;
+        left: 20px;
+    }
+    p.content-title {        
+        margin-top: 30px;
+    }
+    img.card-image {
+        height: auto;
+        width: 100%;
+        max-height: 300px;
+    }
+}
