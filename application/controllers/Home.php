@@ -16,7 +16,16 @@ class Home extends MY_Controller {
       			  $this->load->view('frontend/home');
               $this->load->view('frontend/layout/footer');
               break;              
+        case 'listing':
+              $this->load->view('frontend/layout/header');  
+      			  $this->load->view('frontend/listing');
+              $this->load->view('frontend/layout/footer');
+              break;              
               
       }  
+	}
+	public function categoryListing(){
+		
+
 	}
 }

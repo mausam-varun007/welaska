@@ -2,9 +2,8 @@
 <div class="container">
 	<div class="row">
 		<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 main-category-row">
-			<div class="box">
-				<input type="hidden" name="category" value="Restaurants">
-				<h6 class="box-h6"><a>My Category Name</a></h6>
+			<div class="box">								
+				<h6 class="box-h6" ui-sref="listing({location:listingObj.searchLocation,categoryId:1})"><a>My Category Names</a></h6>
 				
 				<p class="box-p"><a>more...</a></p>
 				<a>	    				
@@ -16,7 +15,7 @@
 				<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 main-category-row">
 			<div class="box">
 				<input type="hidden" name="category" value="Restaurants">
-				<h6 class="box-h6" ng-click="expression"><a>My Category Name</a></h6>
+				<h6 class="box-h6" ng-click="expression"><a>My Category Names</a></h6>
 				
 				<p class="box-p"><a>more...</a></p>
 				<a>	    				

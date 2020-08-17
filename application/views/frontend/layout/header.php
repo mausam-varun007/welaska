@@ -13,6 +13,7 @@
 	<!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/style2.css'); ?>"> -->
 	<script src="<?php echo base_url('assets/vendors/jquery.min.js'); ?>"></script>
 	<script src="<?php echo base_url('assets/owlcarousel/owl.carousel.js'); ?>"></script>
+
 </head>
 <body>
 	<div class="row search-header" >	
@@ -45,13 +46,15 @@
 			
 		</div>	
 		<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 search-logo-section">
-			<a href="<?= base_url(); ?>" class="logo" style="color: #f00;">WE LASKA</a>
+			<a href="" class="logo" style="color: #f00;">WE LASKA</a>
 		</div>
 		<div class="col-lg-10 col-md-10 col-sm-10 col-xs-12 search-button-section" >
-			<div class="search">
-	        	<form method="post" action="<?php echo base_url('home/index'); ?>">
+			<div class="search">	        		        			
 	        		<div class="search-area ">
-	        			<select name="city" class="form-control custom-select" id="selected_city">
+	        			<!-- ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" -->
+	        			<select class="form-control custom-select"  name="searchLocation" ng-model="listingObj.searchLocation" ng-options="o.value as o.value for o in cityList">
+                          </select>
+	        			<!-- <select ng-model="listingObj.searchLocation" class="form-control custom-select" id="selected_city">
 	        				<option class="custom-select" value="Indore">Indore</option>
 	        				<option value="Bangalore">Bangalore</option>
 	        				<option value="Jabalpure">Jabalpure</option>
@@ -59,15 +62,14 @@
 	        				<option value="Delhi">Delhi</option>
 	        				<option value="Ahmedabed">Ahmedabed</option>
 	        				<option value="Chennai">Chennai</option>
-	        			</select>
-	        			<input type="search" id="search_input" name="search_input" onkeyup="getSearchProduct()" placeholder="Search.." class="form-control search-input" name="key_words" >
+	        			</select> -->
+	        			<input type="search" id="search_input" name="search_input" placeholder="Search.." class="form-control search-input" name="key_words" >
 	        			<button type="submit" class="form-control search-button" ><i class="fa fa-search" aria-hidden="true" class="search-icon"></i>
 						</button>
 						<div class="home-search-result home-search-hide" id="dataList">						
 						</div>
 	        			
-	        		</div>
-	        	</form>
+	        		</div>	        	
 		    </div>
 			<!-- <form class="example" action="/action_page.php" style="margin:auto;max-width:300px">
 			  <input type="text" id="search_input" name="search_input" onkeyup="getSearchProduct()" placeholder="Search.." >

@@ -1,36 +1,5 @@
 var app = angular.module('App', [ "ui.router" ]); 
-app.directive("owlCarousel", function() {
-    return {
-        restrict: 'E',
-        transclude: false,
-        link: function (scope) {
-            scope.initCarousel = function(element) {
-              // provide any default options you want
-                var defaultOptions = {
-                };
-                var customOptions = scope.$eval($(element).attr('data-options'));
-                // combine the two options objects
-                for(var key in customOptions) {
-                    defaultOptions[key] = customOptions[key];
-                }
-                // init carousel
-                $(element).owlCarousel(defaultOptions);
-            };
-        }
-    };
-});
-app.directive('owlCarouselItem', [function() {
-    return {
-        restrict: 'A',
-        transclude: false,
-        link: function(scope, element) {
-          // wait for the last item in the ng-repeat then call init
-            if(scope.$last) {
-                scope.initCarousel(element.parent());
-            }
-        }
-    };
-}]);
+
 app.config(function($stateProvider, $locationProvider,  
                                 $urlRouterProvider) { 
   
@@ -50,6 +19,11 @@ app.config(function($stateProvider, $locationProvider,
             url : '/signup', 
             template : "<h1>Signup Page</h1>", 
             controller : "SignupCtrl"
+        })
+        .state('listing', { 
+            url : '/listing/:location/:categoryId', 
+            templateUrl : Base_url+'view/listing', 
+            controller : "ListingCtrl"
         });
   
     // Redirect to home page if url does not  
@@ -59,25 +33,32 @@ app.config(function($stateProvider, $locationProvider,
 
 app.controller('MainCtrl', function() {}); 
 app.controller('HomeCtrl', function($scope) {
-
-    $scope.items1 = [1,2,3,4,5];
-    $scope.items2 = [1,2,3,4,5,6,7,8,9,10];
-    $scope.slides = [
-    {
-      image: 'http://lorempixel.com/400/200/'
-    },
-    {
-      image: 'http://lorempixel.com/400/200/food'
-    },
-    {
-      image: 'http://lorempixel.com/400/200/sports'
-    },
-    {
-      image: 'http://lorempixel.com/400/200/people'
-    }
-  ];
-  $scope.myInterval = 3000;
-    $scope.newTest = 'hi';
+    
+    $scope.listingObj = {};
+    $scope.test = 'jo';
+    $scope.cityList = 0;
+    $scope.cityList = [{id:1,value:'Indore'} ,{id:2,value:'Bangalore'} ,{id:3,value:'Jabalpur'} ,{id:4,value:'Pune'} ,{id:5,value:'Delhi'} ,{id:6,value:'Ahmedabed'} ,{id:7,value:'Chennai'}];     
+    
+    $scope.listingObj.searchLocation = $scope.cityList[0].value;
+    
 }); 
 app.controller('LoginCtrl', function() {}); 
+app.controller('ListingCtrl', function($scope,$http,$stateParams) {
+
+    console.log($stateParams.location);
+    console.log($stateParams.categoryId);
+    $scope.listingObj = {};    
+    
+    $scope.getListingByCategoryID - function(){        
+        $http.post(Base_url+'SearchJobController/acceptScheduleInterview',{category_id:$stateParams.categoryId,location:$stateParams.location})
+            .then(function(response){                
+                if(response.data.status) {  
+                    console.log();
+                    // toastr.success(response.data.message);
+                 
+                }
+        });
+    }
+
+}); 
 app.controller('SignupCtrl', function() {});
