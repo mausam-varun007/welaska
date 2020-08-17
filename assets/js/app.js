@@ -50,12 +50,7 @@ app.config(function($stateProvider, $locationProvider,
             url : '/signup', 
             template : "<h1>Signup Page</h1>", 
             controller : "SignupCtrl"
-        }); 
-        .state('listing', { 
-            url : '/listing', 
-            template : "<h1>Signup Page</h1>", 
-            controller : "SignupCtrl"
-        }); 
+        });
   
     // Redirect to home page if url does not  
     // matches any of the three mentioned above 
