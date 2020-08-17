@@ -31,9 +31,34 @@ app.directive('owlCarouselItem', [function() {
         }
     };
 }]);
+
+app.service('homeService', function ($http,$q,$rootScope) {
+    var getCategoryList    = undefined;
+     
+    this.getCategoryList = function() {
+  
+       if (!getCategoryList) { 
+        
+        var deferred = $q.defer(); 
+        // get skills list form backend
+        $http.post(Base_url+'get/category')
+          .then(function(result) {            
+            getCategoryList = result.data.data;            
+            deferred.resolve(getCategoryList);
+          }, function(error) {
+            getCategoryList = error;
+            deferred.reject(error);
+          }); 
+        
+        getCategoryList = deferred.promise;
+      }
+      return $q.when(getCategoryList);
+    }
+});
+
 app.config(function($stateProvider, $locationProvider,  
                                 $urlRouterProvider) { 
-  
+    
     // creating routes or states 
     $stateProvider 
         .state('Home', { 
@@ -58,7 +83,7 @@ app.config(function($stateProvider, $locationProvider,
 }); 
 
 app.controller('MainCtrl', function() {}); 
-app.controller('HomeCtrl', function($scope) {
+app.controller('HomeCtrl', function($scope,homeService) {
 
     $scope.items1 = [1,2,3,4,5];
     $scope.items2 = [1,2,3,4,5,6,7,8,9,10];
@@ -78,6 +103,11 @@ app.controller('HomeCtrl', function($scope) {
   ];
   $scope.myInterval = 3000;
     $scope.newTest = 'hi';
+    homeService.getCategoryList().then(function(response){
+         $scope.category = angular.copy(response); 
+    })
+
+
 }); 
 app.controller('LoginCtrl', function() {}); 
 app.controller('SignupCtrl', function() {});

@@ -161,10 +161,10 @@ body {font-family: nunito, sans-serif; margin:0}
 {
   background-color: #f00;
 }
-
 .box
 {
-    background-color: lightgrey;    
+    background-color: lightgrey;
+    width: 340px;
     height: 160px;
     border: 1px solid #b3b3b3;
     background-color: #fff;
@@ -244,9 +244,6 @@ body {font-family: nunito, sans-serif; margin:0}
     text-decoration: none;
     color: #f00;
 }  
-.main-category-row{
-  padding: 0px;
-}
 
 
 
