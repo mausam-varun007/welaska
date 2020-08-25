@@ -73,7 +73,14 @@ span.rating-text {
     padding: 30px 0px;
 }
 .main-content {
+    /*box-shadow: -1px 1px 9px rgba(0, 0, 0, 0.2);*/
+    padding: 10px;
+    border: 1px solid #ddd;
+    transition: 0.4s ease-in-out;
+}
+.main-content:hover {
     box-shadow: -1px 1px 9px rgba(0, 0, 0, 0.2);
+    transition: 0.4s ease-in-out;
     padding: 10px;
 }
 .sidebar-content{
@@ -293,10 +300,11 @@ span.active-star::before {
 }
 /*Search CSS*/
 .search {
-    width: 70%;
-    float: left;
-    position: absolute;        
-    z-index: 1;    
+    width: 56%;
+    position: absolute;
+    z-index: 1;
+    left: 22%;
+    top: 30px;
 }
 .search-area {
     margin: 8px 0 0;
@@ -361,7 +369,119 @@ button.form-control.search-button:hover{
     font-size: 25px;
     transition: 0.1s ease-in;
 }
+img.slider-image.ng-scope {
+    width: 100%;
+    height: 300px;
+}
+ol.carousel-indicators {
+    display: none;
+}
+a.free-inner-listing{
+    font-size: 15px;
+    background: red;
+    padding: 5px 10px;
+    color: #fff;
+    float: right;
+    font-weight: 500;
+    margin-right: 25px;
+}   
+a.free-inner-listing:hover, a.free-inner-listing:active, a.free-inner-listing:focus {
+    text-decoration: none;
+}
+a.free-listing {
+    font-size: 15px;
+    background: red;
+    padding: 5px 10px;
+    color: #fff;
+    font-weight: 500;
+}
+a.free-listing:hover, a.free-listing:active, a.free-listing:focus {
+    text-decoration: none;
+}
+p.logo-text {
+    font-size: 25px;
+    padding: 18px 0px;
+    margin-bottom: 0;
+}
+.header-listing-section {
+    padding: 25px 0;
+    z-index: 9;
+}
+.content-card {
+    height: 145px;
+    background-color: #fff;
+}
+a img.card-image-img {
+    height: 120px;
+    float: right;
+}
+a img.card-image-img {
+    height: 120px;
+    position: absolute;
+    right: 25px;    
+}
 
+.con-card {
+    background-color: #fff;
+    margin: 6px;
+    width: 32%;
+    padding: 10px 2px;
+    height: 145px;
+    border: 1px solid #ddd;
+    transition: 0.4s ease-in-out;
+}
+.con-card:hover {
+    background-color: #fff;
+    border: 1px solid #fff;
+    box-shadow: 0px 0px 20px rgb(0 0 0 / 8%);
+    transition: 0.4s ease-in-out;
+}
+.row.category-column {
+    background-color: #f9f9f9;
+    padding: 10px;
+
+}
+p.category-title a {
+    color: #444;
+    font-weight: 600; 
+}
+p.category-title a:hover, p.category-title a:focus {
+    text-decoration: none;
+}
+p.category-title {
+    margin-bottom: 0;
+}
+.category-more a:hover, .category-more a:focus {
+    text-decoration: none;
+}
+.user-login {
+    float: right;
+    margin-right: 26px;
+}
+a.login-user { 
+    color: #444;
+}
+a.signup-user { 
+    color: #444;
+}
+#loginModal .modal-dialog {
+    width: 30%;
+}
+button.btn.btn-default.otp-button {
+    width: 100%;
+    background-color: #2a5dab;
+    color: #fff;
+    height: 40px;
+}
+.form-control.custom-input {
+    height: 40px;
+    background-color: #f1f1f1;
+    border: none;
+}
+.form-control.custom-input:focus {
+    border: 1px solid #dad8d8;
+    box-shadow: none;
+}
 @media screen and (max-width: 480px){
     .main-content {
         width: 90% !important;

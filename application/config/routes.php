@@ -54,3 +54,9 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 $route['view/(:any)'] = 'home/view/$1';
+$route['get/(:any)'] = 'home/get/$1';
+
+$route['Home/categoryListing'] = 'Home/categoryListing';
+$route['Home/getItemByID'] = 'Home/getItemByID';
+
+
