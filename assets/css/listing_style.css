@@ -482,6 +482,20 @@ button.btn.btn-default.otp-button {
     border: 1px solid #dad8d8;
     box-shadow: none;
 }
+.custom-row1 {
+    height: 310px;
+    border-bottom: 1px solid #c3c3c3;
+}
+.single-content{
+    padding: 0;
+}
+.adress-section {
+    padding: 30px 90px;
+}
+.custom-row2 {
+    border-bottom: 1px solid #d8d5d5;
+    height: 125px;
+}
 @media screen and (max-width: 480px){
     .main-content {
         width: 90% !important;
