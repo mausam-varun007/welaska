@@ -117,19 +117,17 @@ input.product_comment_input {
     width: 100%;
     border: 1px solid #c7d1da;
     font-size: 15px;
-    padding: 6px 10px;
-    border-radius: 50px;
+    padding: 5px 10px;   
+    height: 36px;
 }
-.add-comment {
-    padding: 10px;
-}
+
 button.product_comment_button {
     position: absolute;
     right: 100px;
     /* border: none; */
     /* background: none; */
     font-size: 15px;
-    top: 55px;
+    top: 35px;
     padding: 10px 20px;
 }
 .row.content-card.review-whatsapp-section{
@@ -146,9 +144,7 @@ button.product_comment_button {
 .review-colum2 {    
     padding: 10px
 }
-.customer-feedback-sec {
-    margin-top: 20px;
-}
+
 .social-media-section a {
     font-size: 25px;
 }
@@ -174,13 +170,16 @@ i.fa.fa-twitter-square {
 
 .review-colum1 {
     border-right: 1px solid #d8d5d5;
-    padding-left: 100px !important;
-    padding-top: 25px;
+    padding: 50px;
+    padding-left: 100px;
+    border-bottom: 1px solid #c3c3c3;
 }
-.review-colum2{    
-    padding-right:  100px !important;
+
+.review-colum2 {
+    padding-right: 100px !important;
     padding-left: 100px !important;
-    padding-top: 25px;
+    padding:36px;
+    border-bottom: 1px solid #c3c3c3;
 }
 .content-single-detail {
     padding: 30px 90px !important;
@@ -495,6 +494,82 @@ button.btn.btn-default.otp-button {
 .custom-row2 {
     border-bottom: 1px solid #d8d5d5;
     height: 125px;
+}
+.rating-section span.ng-isolate-scope {
+    font-size: 20px;
+    cursor: pointer;
+}
+.rating-section span.ng-isolate-scope:focus {
+    outline: none;
+}
+.custom-row3 {
+    padding: 30px 90px;
+    border-bottom: 1px solid #c3c3c3;
+    height: 100px;
+}
+.rating-section {
+    padding: 10px;
+}
+a.single-content-whatsapp {
+    font-size: 25px;
+    color: #1f9a09;
+    transition: 0.2s ease-in;
+}
+a.single-content-whatsapp:hover {
+    font-size: 30px;    
+    transition: 0.2s ease-in-out;
+}
+.custom-row5 {
+    padding: 30px 90px;
+}
+.custom-row6 {
+    padding: 30px 90px;
+}
+.social-section {
+    padding-left: 0;
+}
+img.review-image {
+    width: 50px;
+    border-radius: 50%;
+}
+p.review-user-name {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 0 ;
+}
+p.review-description {
+    font-size: 14px;
+    margin-bottom: 2px ;
+}    
+.row.review-card {
+    border: 1px solid #f1ecec;
+    padding: 13px;
+}
+.custom-col-2 {
+    width: 10%;
+}
+.custom-col-10{
+    width: 90%;   
+}
+p.review-date {
+    font-size: 11px;
+    margin-bottom: 0px;
+}
+p.footer-text {
+    font-size: 14px;
+}
+.content-loader-section img {
+    width: 70%;
+}
+span.no-records {
+    font-size: 18px;
+    margin-top: 3px;
+    position: absolute;
+    left: 43%;
+    color: #50cbaf;
+}
+.content-loader-section {
+    margin-bottom: 50px;
 }
 @media screen and (max-width: 480px){
     .main-content {

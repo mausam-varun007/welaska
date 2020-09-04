@@ -11,11 +11,14 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
   <!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/style2.css'); ?>"> -->
   <script type="text/javascript">
      var Base_url = "<?=base_url()?>index.php/";   
   </script>    
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.6/angular.min.js"></script>      
+    <script src="<?php echo base_url('assets/js/lazy-scroll.js'); ?>"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.22/angular-ui-router.min.js"></script>
     <script data-require="ui-bootstrap@*" data-semver="0.13.0" src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.0.min.js"></script>
 
@@ -39,7 +42,7 @@
         </div>
       </div> -->
       <ui-view></ui-view>
-      <div class="footer">
+      <!-- <div class="footer">
         <div class="col-md-12 footer"  > 
           <div class="box-footer">
           <p class="footer-p">Welcome to Welaska, the step where you are getting information about nearby services. From here its our proudable responsibility to fulfil your requirement by giving informations, quotes and useful calls to you. Our service extends from providing address and contact details of business establishments around the country, to making orders and reservations for leisure, medical, financial, travel and domestic purposes. We enlist business information across varied sectors like Hotels, Restaurants, Auto Care, Home Decor, Personal and Pet Care, Fitness, Insurance, Real Estate, Sports, Schools, etc. from all over the country. Holding information right from major cities like Indore, Delhi, Bangalore, Jabalpur, Pune, Ahmedabad, and Chennai our reach stretches out to other smaller cities across the country too. We create a space for you to share your experiences through our 'Rate & Review' feature.<br><br>
@@ -51,7 +54,7 @@
         Some more services like online appointment in hospitals, restaurants,  showrooms, saloons, shops and hospitals near me, petrol pump near me, gas station near me, grocery store near me, saloon near me, ATM near me, etc. is going to be started on welaska.
         With the vision ‘Well ask me anything’.</p>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>

@@ -29,7 +29,7 @@ class Home_model extends MY_model
 			return $query->result();		
 		}	
 	}
-	public function getListingItemByCategoryID()
+	public function getListingItemByCategoryID($queryType)
 	{			
 		if(!empty($this->input->post('category_id'))){
 
@@ -43,14 +43,32 @@ class Home_model extends MY_model
 			}
 			$this->db->where('category_id',$id);
 			$this->db->group_by('listing_items.id');
-			//$this->db->limit(10);		
-			$query = $this->db->get();						
-			// $this->db->get();		
-			// echo $this->db->last_query();
-			// die();
+			//$this->db->limit(10);					
+			$pageSize = $this->input->post('pageSize');
+	        $pageIndex = $this->input->post('pageIndex');
+	        $offsetRange = $pageSize*($pageIndex-1);       
+			
+			if($queryType!='all'){
+	        	$this->db->limit($this->input->post('pageSize'),$offsetRange);
+			}	      
+			$query = $this->db->get();
+	        // $this->db->get();
+	        // echo $this->db->last_query(); 
+	        //print_r($this->db->error());
+	        //exit();
+
+	        $num_rows = $query->num_rows();
+
+	        $start = ($offsetRange)?$offsetRange:1;
+	        $end = $offsetRange + $num_rows;
+
+	        // $return['allCount'] = $this->db->query('SELECT FOUND_ROWS() count;')->row()->count;
+	        $return['allCount'] = $this->db->query('SELECT FOUND_ROWS() count;')->row()->count;	        
+	        $return['data'] = $query->result();
+	        $return['offsetResult'] = $start.' - '.$end.' of '.$return['allCount'].' Items';
 
 			if ($query->num_rows() > 0) {
-				return json_encode(array('status'=>1,'data'=>$query->result()));
+				return $return;
 				//return $query->result();		
 			}	
 		}

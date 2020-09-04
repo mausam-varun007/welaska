@@ -1,5 +1,8 @@
 <style type="text/css">
-	.jk-rating-stars-container .button{cursor:pointer}.jk-rating-stars-container .button .material-icons{font-size:30px}.jk-rating-stars-container .star-button{text-shadow:.06em .04em #000}.jk-rating-stars-container .star-button.star-on .material-icons{color:#ee9a00}.jk-rating-stars-container .star-button.star-off .material-icons{color:#ddd}
+	.infinit-scroll-container {
+	  height: 150px;
+	  overflow-y:scroll
+	}
 </style>
 <div class="row" >			
 	<div class="col-lg-12 col-md-12 col-sm-8 col-xs-12 single-content"> 
@@ -23,45 +26,51 @@
 			
 		</div>		
 		<div class="content-card review-whatsapp-section padding-card custom-row3">			
-			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 thumbs-up-icon">
-				<a onclick="productLike()" ><span class="single-content-whatsapp" id="likesSet"></span></a>
+			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+				<a class="single-content-whatsapp"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
 				
 			</div>
-			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-center">
-				<div id="ratingData">
-					
-				</div>
+			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-center rating-section">
+				<rating ng-model="rate" max="max" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null"></rating>				
+			    <!-- <span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" ng-show="overStar && !isReadonly">{{percent}}%</span> -->
 			</div>
-			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-right whats-app-icon">
+			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-right">
 				<a href=""><span class="single-content-whatsapp"><i class="fa fa-whatsapp" aria-hidden="true"></i></span> </a>
 			</div>
 		</div>		
 		<div class="content-card review-comment-section padding-card custom-row4">			
 			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 review-colum1">
-				<h3>Basic</h3>
-      			<jk-rating-stars rating="firstRate" ></jk-rating-stars>
-				<!-- <div id="ratingAverage">					
-				</div> -->
+				<i class="fa fa-star" aria-hidden="true"></i>
+				<i class="fa fa-star" aria-hidden="true"></i>
+				<i class="fa fa-star" aria-hidden="true"></i>
+				<i class="fa fa-star" aria-hidden="true"></i>
+				<i class="fa fa-star" aria-hidden="true"></i>
 			</div>			
 			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 review-colum2">
 				<div class="customer-feedback-sec">										
-						<div class="add-comment">
-							<div>
-								<form method="post" id="product_comment_byuser">
-									<input id="comment_input" type="search" required="required" name="product_comment" class="product_comment_input" placeholder="Write a review">
-									<input type="hidden" name="item_id" id="item_id" value="">								
-									<button type="button" onclick="productComment()" class="product_comment_button" value="Submit"><i class="fa fa-paper-plane"></i></button>
-								</form>
-							</div>
-						</div>
-					</div>	
+					<div class="add-comment">
+						<input id="comment_input" type="search" required="required" name="product_comment" class="product_comment_input" placeholder="Write a review">
+						<input type="hidden" name="item_id" id="item_id" value="">								
+						<button type="button" onclick="productComment()" class="product_comment_button" value="Submit"><i class="fa fa-paper-plane"></i></button>
+					</div>
+				</div>	
 			</div>
 		</div>	
 		<div class=" content-card review-content-section padding-card custom-row5">			
-			<p>Hand Sanitizer Manufacturers Onion Wholesalers Body Massage Centres Pet Shops Homeopathic Medicine Retailers Gun Dealers Second Hand Mobile Phone Dealers Beauty Parlours Tarpaulin Dealers Commission Agents For Vegetable</p>
+			<div class="row review-card">
+				<div class="col-md-2 custom-col-2">
+					<img src="<?= base_url()."assets/img/dummy-image.png" ?> " class="review-image">
+				</div>
+				<div class="col-md-10 custom-col-10">
+					<p class="review-user-name">Mausam varun </p>
+					<p class="review-description">This restaurants serves variety of Cuisines across the world. We tried their signatures dishes which was fantastic. Cocktails are also great.</p>
+					<p class="review-date"><i class="fa fa-clock-o" aria-hidden="true"></i> 09 Sep 2020 11:12 PM </p>
+					
+				</div>
+			</div>			
 		</div>		
 		<div class="content-card social-media-section padding-card custom-row6">			
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">				
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 social-section">				
 				<a href=""><i class="fa fa-facebook-square" aria-hidden="true"></i></a>
 				<a href=""><i class="fa fa-twitter-square" aria-hidden="true"></i></a>
 				<a href=""><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>

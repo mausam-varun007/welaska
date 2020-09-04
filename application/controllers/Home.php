@@ -41,7 +41,26 @@ class Home extends MY_Controller {
 	}	
   public function categoryListing()
   { 
-    echo $this->Home->getListingItemByCategoryID();    
+
+      $itemsData['data']          = '';
+      $itemsData['allCount']      = 0;
+      $itemsData['offsetResult']  = '';
+      $itemsData = $this->Home->getListingItemByCategoryID($countAllItem='all');    
+
+      $selectedItemsData['data']          = '';
+      $selectedItemsData['allCount']      = 0;
+      $selectedItemsData['offsetResult']  = '';
+      $selectedItemsData = $this->Home->getListingItemByCategoryID($countAllItem='category');    
+
+
+      echo json_encode(array('status'=>1,
+                            'allData'=>$itemsData['data'],
+                            'allCount'=>$itemsData['allCount'],
+                            'allItemsOffsetResult'=>$itemsData['offsetResult'],
+                            'selectedAllData'=>$selectedItemsData['data'],
+                            'selectedAllCount'=>$selectedItemsData['allCount'],
+                            'selectedAllItemsOffsetResult'=>$selectedItemsData['offsetResult'],
+                          ));
   } 
   public function getItemByID()
   { 

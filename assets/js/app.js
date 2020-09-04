@@ -1,4 +1,4 @@
-var app = angular.module('App', ['ui.bootstrap','ui.router']); 
+var app = angular.module('App', ['ui.bootstrap','ui.router','lazy-scroll']); 
 
 app.service('homeService', function ($http,$q,$rootScope) {
     var getCategoryList    = undefined;
@@ -103,18 +103,35 @@ app.controller('HomeCtrl', function($scope,homeService) {
 app.controller('LoginCtrl', function() {}); 
 app.controller('ListingCtrl', function($scope,$state,$http,$stateParams) {
 
-    console.log($stateParams.location);
-    console.log($stateParams.categoryId);
+    window.scrollTo(0, 0);      
     $scope.listingObj = {};    
     
     $scope.listingDataVO = [];
+
+    $scope.maxSize = 5;     // Limit number for pagination display number.  
+    $scope.pageIndex = 1;   // Current page number. First page is 1.-->    
+    $scope.premiumPageIndex = 1;  
+    // $scope.pageSizeSelected = ($stateParams.paginationLength && angular.isNumber(parseInt($stateParams.paginationLength)))?$stateParams.paginationLength:5; // Maximum number of items per page.      
+    $scope.pageSizeSelected = 5; // Maximum number of items per page.      
+
+    $scope.isLoaderActive = false ;
+    $scope.pageChanged = function (Type) {
+        $scope.listingDataVO = [] ;
+        $scope.getListingByCategoryID();
+    };
+
     $scope.getListingByCategoryID = function(){        
-        $http.post(Base_url+'Home/categoryListing',{category_id:$stateParams.categoryId,location:$stateParams.location})
+        $scope.isLoaderActive = true ;
+        $http.post(Base_url+'Home/categoryListing',{category_id:$stateParams.categoryId,location:$stateParams.location,
+                        pageIndex : $scope.pageIndex,
+                        pageSize  : $scope.pageSizeSelected
+                    })
             .then(function(response){                
-                if(response.data.status) {  
-                    console.log(response.data.data);
+                if(response.data.status) {                      
+                    $scope.isLoaderActive = false ;
                     // toastr.success(response.data.message);
-                    $scope.listingDataVO = response.data.data ;
+                    $scope.listingDataVO = response.data.selectedAllData ;
+                    $scope.allListCount = response.data.allCount;
                  
                 }
         });
@@ -130,7 +147,8 @@ app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams) {
         
     $scope.itemDetailsByID = [];
     $scope.getItemByID = function(){        
-        $http.post(Base_url+'Home/getItemByID',{item_id:$stateParams.itemId})
+
+        $http.post(Base_url+'Home/getItemByID',{ item_id:$stateParams.itemId})
             .then(function(response){                
                 if(response.data.status) {  
                     console.log(response.data.data);
@@ -141,6 +159,29 @@ app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams) {
         });
     }
     $scope.getItemByID();
+
+    $scope.rate = 7;
+      $scope.max = 5;
+      $scope.isReadonly = false;
+
+      $scope.hoveringOver = function(value) {
+        $scope.overStar = value;
+        $scope.percent = 100 * (value / $scope.max);
+      };
+    $scope.ratingStates = [
+        {stateOn: 'glyphicon-ok-sign', stateOff: 'glyphicon-ok-circle'},
+        {stateOn: 'glyphicon-star', stateOff: 'glyphicon-star-empty'},
+        {stateOn: 'glyphicon-heart', stateOff: 'glyphicon-ban-circle'},
+        {stateOn: 'glyphicon-heart'},
+        {stateOff: 'glyphicon-off'}
+      ];
+
+   
+    
+
+
+    
+
 
         
 

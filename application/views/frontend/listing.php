@@ -1,4 +1,4 @@
-<div class="row" >		
+<div class="row" ng-show="!isLoaderActive">		
 	<div class="col-md-12 main-content" ng-repeat="item in listingDataVO"> 
 		<div class="content-card">
 			<div class="col-md-4">				
@@ -32,8 +32,17 @@
 		</div>		
 	</div>
 </div>
+<div class="content-loader-section" ng-show="isLoaderActive">
+	<img class="img-responsive" src="<?= base_url() ?>assets/img/content_loader.gif">
+</div>
+<div class="content-loader-section text-center" ng-show="listingDataVO.length==0 && !isLoaderActive">
+	<span class="no-records">No Records Found</span>
+	<img class="no record-image" src="<?= base_url() ?>assets/img/no_records.jpg">
+</div>
 
 
-
-
-{{test}}
+<!-- pagination -->
+<div class="pagination-section" ng-show="listingDataVO.length < allListCount">
+	<pagination  total-items="allListCount" ng-change="pageChanged()" items-per-page="pageSizeSelected" direction-links="true" ng-model="pageIndex" max-size="maxSize" class="pagination" boundary-links="true" rotate="false" num-pages="numPages"></pagination> 
+</div>
+  <!-- end pagination -->
