@@ -408,7 +408,7 @@ p.logo-text {
 }
 .content-card {
     height: 145px;
-    background-color: #fff;
+/*    background-color: #fff;*/
 }
 a img.card-image-img {
     height: 120px;
@@ -544,6 +544,7 @@ p.review-description {
 .row.review-card {
     border: 1px solid #f1ecec;
     padding: 13px;
+    margin-bottom: 15px;
 }
 .custom-col-2 {
     width: 10%;
@@ -570,6 +571,34 @@ span.no-records {
 }
 .content-loader-section {
     margin-bottom: 50px;
+}
+.review-content-section {
+    border-bottom: 1px solid #d8d5d5;
+}
+.social-media-section {
+    padding: 30px 80px;
+}
+.searched-data {
+    width: 399px;
+    
+    max-height: 300px;
+    overflow: scroll;
+    overflow-y: auto;
+    overflow-x: auto;
+    background-color: #fdf6ff;
+    position: absolute;
+    z-index: 99;
+    left: 31%;
+    top: 20%;
+    padding: 13px;
+
+}
+.searched-data p a {
+    color: #444;
+}
+.searched-data p {
+    margin-bottom: 12px;
+    border-bottom: 1px solid #e2e2e2;
 }
 @media screen and (max-width: 480px){
     .main-content {

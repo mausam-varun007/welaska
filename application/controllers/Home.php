@@ -52,18 +52,30 @@ class Home extends MY_Controller {
       $selectedItemsData['offsetResult']  = '';
       $selectedItemsData = $this->Home->getListingItemByCategoryID($countAllItem='category');    
 
-
-      echo json_encode(array('status'=>1,
-                            'allData'=>$itemsData['data'],
-                            'allCount'=>$itemsData['allCount'],
-                            'allItemsOffsetResult'=>$itemsData['offsetResult'],
-                            'selectedAllData'=>$selectedItemsData['data'],
-                            'selectedAllCount'=>$selectedItemsData['allCount'],
-                            'selectedAllItemsOffsetResult'=>$selectedItemsData['offsetResult'],
-                          ));
+      if(!empty($itemsData['data'])){        
+                  echo json_encode(array('status'=>1,
+                              'allData'=>$itemsData['data'],
+                              'allCount'=>$itemsData['allCount'],
+                              'allItemsOffsetResult'=>$itemsData['offsetResult'],
+                              'selectedAllData'=>$selectedItemsData['data'],
+                              'selectedAllCount'=>$selectedItemsData['allCount'],
+                              'selectedAllItemsOffsetResult'=>$selectedItemsData['offsetResult'],
+                            ));
+      }else{
+        echo json_encode(array('status'=>0));
+      }
   } 
   public function getItemByID()
   { 
     echo $this->Home->getItemByID();    
+  } 
+  public function getSearchItems()
+  { 
+    $recieved = $this->Home->getSearchItems();    
+    if($recieved){
+      echo json_encode(array('status'=>1,'data'=>$recieved));
+    }else{
+      echo json_encode(array('status'=>0));
+    }
   } 
 }

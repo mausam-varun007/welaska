@@ -87,18 +87,26 @@ class Home_model extends MY_model
 	}
 
 	public function getSearchItems()
-	{		
+	{	
+		
 		$this->db->distinct();
-		$this->db->select('*');
-		$this->db->from('category');				
-		$this->db->like('category_name', $this->input->post('keyword'));
+		// $this->db->select('category.*,');
+		// $this->db->from('category');				
+		$this->db->select('listing_items.business_name,category.id as category_id,category.category_name');
+		$this->db->from('listing_items');		
+		$this->db->join('category','category.id=listing_items.category_id','left');
+		$this->db->where('listing_items.city',$this->input->post('location'));
+		// $this->db->or_where('category.category_name',$this->input->post('keyword'));
+		$this->db->like('category.category_name', $this->input->post('keyword'));
+		$this->db->or_like('listing_items.business_name', $this->input->post('keyword'));
+		// $this->db->order_by('FIELD(category.category_name,listing_items.business_name)');
 		//$this->db->limit(10);		
 		$query = $this->db->get();		
 		// $this->db->get();		
 		// echo $this->db->last_query();
 		// die();
 		if ($query->num_rows() > 0) {
-			return json_encode($query->result());		
+			return $query->result();		
 		}		
 	}
 	public function getItemRating()
