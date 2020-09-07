@@ -58,5 +58,6 @@ $route['get/(:any)'] = 'home/get/$1';
 
 $route['Home/categoryListing'] = 'Home/categoryListing';
 $route['Home/getItemByID'] = 'Home/getItemByID';
+$route['Home/getSearchItems'] = 'Home/getSearchItems';
 
 

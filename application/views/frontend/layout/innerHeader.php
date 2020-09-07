@@ -11,6 +11,7 @@
 	<!-- <link rel="stylesheet" href="<?php echo base_url('assets/owlcarousel/assets/owl.theme.default.min.css'); ?>"> -->
 	<!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/style2.css'); ?>"> -->
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/listing_style.css'); ?>">
+	<!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.6/angular.min.js"></script>       -->
 	<script src="<?php echo base_url('assets/vendors/jquery.min.js'); ?>"></script>
 	<!-- <script src="<?php echo base_url('assets/owlcarousel/owl.carousel.js'); ?>"></script> -->
 
@@ -19,13 +20,13 @@
 <body>
 	<div class="row search-header" >	
 		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 header-logo-section">
-			<p class="logo-text"><a href="" style="color: #f00;">WE LASKA</a></p>
+			<p class="logo-text"><a  href="<?= base_url(); ?>">WELASKA</a></p>
 		</div>
 		<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 header-listing-section">			
 			<form class="example" action="/action_page.php" style="margin:auto;max-width:300px">
-			  <input type="text" id="search_input" name="search_input" onkeyup="getSearchProduct()" placeholder="Search.." >
+			  <input type="text" search-listing-data id="search_input" name="search_input" ng-model="searchData" placeholder="Search.." autocomplete="off" >
 			  <button type="submit"><i class="fa fa-search"></i></button>
-			</form>
+			</form>			
 			<!-- <div class="search">	        		        			
         		<div class="search-area ">	        			        			
         			<input type="search" id="search_input" name="search_input" placeholder="Search.." class="form-control search-input" name="key_words" >
@@ -38,6 +39,9 @@
 		    </div> -->
 			<a href="" class="free-inner-listing">Free Listing</a>
 		</div>
+		<div class="searched-data" ng-show="searchDataListVO.length >0 && isSearchEndable"> 			
+			  	<p ng-repeat="item in searchDataListVO"><a ng-click="changeValue(item.business_name)">{{item.business_name}}{{item.category_name}} </a></p> 			  	
+			</div>			  
 		</div>
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			

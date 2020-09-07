@@ -1,4 +1,4 @@
-var app = angular.module('App', ['ui.bootstrap','ui.router','lazy-scroll']); 
+var app = angular.module('App', ['ui.bootstrap','ui.router','ngMaterial', 'ngMessages']); 
 
 app.service('homeService', function ($http,$q,$rootScope) {
     var getCategoryList    = undefined;
@@ -22,6 +22,57 @@ app.service('homeService', function ($http,$q,$rootScope) {
       }
       return $q.when(getCategoryList);
     }
+});
+app.factory('storageService', ['$rootScope', function ($rootScope) {
+    return {
+        get: function (key) {
+            return localStorage.getItem(key);
+        },
+        set: function (key, data) {
+            localStorage.setItem(key, data);
+        }
+    };
+}]);
+
+
+//////////////////////////////////////////// Searching Directive
+
+app.directive('searchListingData',function ($http, $window, $timeout,$http,storageService,$state,$rootScope) {
+        return {
+            restrict: 'AE',
+            scope: true,
+            require: 'ngModel',
+            link: function ($scope,elm,attr,ctrl,$event) {
+                $scope.searchData = '';
+                $rootScope.searchDataListVO = [];
+                $scope.newdata = '';
+                $rootScope.isSearchEndable = true;
+
+                // angular.element($window).on('input', function() {                                                                                       
+                $scope.$watch(attr.ngModel, function (newkeyword,keyword) {                    
+                    
+                    if(keyword!=''){                        
+                        $http.post(Base_url+'Home/getSearchItems',{keyword:keyword,location:$state.params.location,category_id:$state.params.categoryId})
+                            .then(function(response){                
+                                if(response.data.status) {  
+                                    $rootScope.searchDataListVO = angular.copy(response.data.data) ;
+                                    $rootScope.isSearchEndable = true;
+                                }else{
+                                    $rootScope.isSearchEndable = false;
+                                }
+                        });
+                    }
+                    
+                });
+
+                $rootScope.changeValue = function(value) {
+                    $scope.searchData = value;
+                    $rootScope.isSearchEndable = false;
+                    
+                }
+            },
+        };
+
 });
 
 app.config(function($stateProvider, $locationProvider,  
@@ -106,7 +157,7 @@ app.controller('HomeCtrl', function($scope,homeService) {
     
 }); 
 app.controller('LoginCtrl', function() {}); 
-app.controller('ListingCtrl', function($scope,$state,$http,$stateParams) {
+app.controller('ListingCtrl', function($scope,$state,$http,$stateParams,$timeout,$q) {
 
     window.scrollTo(0, 0);      
     $scope.listingObj = {};    
@@ -131,13 +182,15 @@ app.controller('ListingCtrl', function($scope,$state,$http,$stateParams) {
                         pageIndex : $scope.pageIndex,
                         pageSize  : $scope.pageSizeSelected
                     })
-            .then(function(response){                
+            .then(function(response){                                    
                 if(response.data.status) {                      
                     $scope.isLoaderActive = false ;
                     // toastr.success(response.data.message);
                     $scope.listingDataVO = response.data.selectedAllData ;
                     $scope.allListCount = response.data.allCount;
                  
+                }else{
+                    $scope.isLoaderActive = false ;
                 }
         });
     }
