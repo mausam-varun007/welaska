@@ -14,6 +14,7 @@
 
 
   <!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/style2.css'); ?>"> -->
+  <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/customeStyle.css'); ?>">
   <script type="text/javascript">
      var Base_url = "<?=base_url()?>index.php/";   
   </script>    
