@@ -109,6 +109,11 @@ app.config(function($stateProvider, $locationProvider,
             url : '/free-listing', 
             templateUrl : Base_url+'view/freeListing'
             // controller : "freeListingCtrl"
+        })
+        .state('detailForm', { 
+            url : '/detail-form', 
+            templateUrl : Base_url+'view/detailForm'
+            // controller : "freeListingCtrl"
         });
   
     // Redirect to home page if url does not  
