@@ -17,7 +17,7 @@
 }
 .fl-btn-sec button {
     color: #ffffff !important;
-    padding: 8px 40px;
+    padding: 6px 30px;
     font-size: 18px;
     text-transform: uppercase;
 }
@@ -38,4 +38,169 @@ span.error-msg {
 input.form-control.custom-input {
     margin-bottom: 25px;
 }
+.df-top {
+    margin-bottom: 50px;
+    text-align: center;
+    background: #fbfbfb;
+    padding: 18px 0px;
+    box-shadow: 1px 2px 9px rgb(0 0 0 / 0.2);
+}
+.df-top h3{
+    margin: 0px;
+}
+.df-content.main-content {
+    margin: 0px;
+    padding: 15px 20px;
+}
+.df-content.main-content:hover{
+    margin: 0px;
+    padding: 15px 20px;
+}
+.df-list ul {
+    margin: 0px;
+}
+.df-list ul li{
+    list-style: none;
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+.df-list ul li a{
+    text-decoration: none;
+}
+.df-list ul li.active {
+    background: #ff0000;
+    border: 1px solid #ff0000;
+}
+.df-list ul li:hover {
+    background: #ff0000;
+    border: 1px solid #ff0000;
+}
+.df-list ul li:hover a{
+    color: #fff;
+}
+.df-list ul li.active a{
+    color: #fff;
+}
+.df-form-sec div div div select.custom-select {
+    width: 100%;
+}
+.df-form-sec div div div select.custom-select option{
+    height: 40px;
+}
+.fl-btn-sec a {
+    font-size: 14px;
+    color: #008cba;
+}
 /*free listing-sec*/
+button.btn.sc-btn {
+  margin-left: 10px;
+}
+.week span {
+  display: inline-block;
+  width: 100px;
+  font-weight: 600;
+}
+.week select {
+  margin: 0 30px 0 10px;
+  border: 1px solid #B0B0B0;
+  width: 20%;
+  padding: 5px;
+  font-size: 12px;
+  height: 25px;
+}
+.week p{
+  font-size: 14px;
+}
+h5.hurs-oprtn {
+  margin: 20px 0px;
+}
+.payment_mode ul li {
+    float: left;
+    width: 220px;
+    padding: 3px 0;
+    font-size: 14px;
+    list-style: none;
+}
+.company_info label {
+    width: 190px;
+    display: inline-block;
+}
+.company_info .small {
+    width: 55px;
+    margin: 0px;
+    height: 35px;
+    display: inline-block;
+}
+.company_info .medium {
+    width: 160px;
+    display: inline-block;
+    margin: 0 0 0 10px;
+    height: 35px;
+}
+.company_info .large {
+    width: 208px;
+    display: inline-block;
+    margin: 0 0 0 10px;
+    border: 1px solid #b0b0b0;
+    padding: 3px;
+    height: 35px;
+}
+.company_info input.input-right {
+    height: 35px;
+    width: 65%;
+    margin: 0px;
+    display: inline-block;
+}
+p.bk-p {
+    font-size: 14px;
+}
+.bk-add {
+    font-size: 14px;
+    margin: 50px 0px;
+}
+li.heading-li {
+    background: #008cba;
+    margin-bottom: 20px;
+    border:1px solid #008cba;
+}
+.df-list ul li.heading-li:hover {
+    background: #fff;
+    border:1px solid #008cba;
+}
+.df-list ul li.heading-li:hover a{
+    color: #008cba;
+}
+li.heading-li a{
+    color: #fff;
+}
+.modal-dialog.custom-modal {
+    width: 400px;
+}
+.modal-dialog.custom-modal .modal-content .modal-body p{
+  font-size: 14px;
+  margin-bottom: 0px;
+}
+.modal-dialog.custom-modal .modal-content .modal-body span{
+  font-size: 13px;
+}
+.modal-dialog.custom-modal .modal-content.modal-header {
+    padding: 10px 15px;
+    border-bottom: 1px solid #e5e5e5;
+}
+.modal-dialog.custom-modal .modal-content {
+  border-radius: 2px;
+}
+.modal-footer.fl-btn-sec {
+    margin: 0px;
+}
+.modal-footer.fl-btn-sec button {
+    background-color: #008CBA;
+    text-transform: capitalize;
+    font-size: 16px;
+    height: 40px;
+    padding: 5px 20px;
+}
+.modal-footer.fl-btn-sec button:hover {
+    background-color: #007095;
+    box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+}

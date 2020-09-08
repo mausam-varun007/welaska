@@ -36,7 +36,12 @@ class Home extends MY_Controller {
               $this->load->view('frontend/layout/innerHeader');  
               $this->load->view('frontend/freeListing');
               $this->load->view('frontend/layout/footer');
-              break;              
+              break; 
+        case 'detailForm':
+              $this->load->view('frontend/layout/innerHeader');  
+              $this->load->view('frontend/detailForm');
+              $this->load->view('frontend/layout/footer');
+              break;                   
               
       }  
 	}
