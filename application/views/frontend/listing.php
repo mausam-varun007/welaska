@@ -45,4 +45,3 @@
 <div class="pagination-section" ng-show="listingDataVO.length < allListCount">
 	<pagination  total-items="allListCount" ng-change="pageChanged()" items-per-page="pageSizeSelected" direction-links="true" ng-model="pageIndex" max-size="maxSize" class="pagination" boundary-links="true" rotate="false" num-pages="numPages"></pagination> 
 </div>
-  
