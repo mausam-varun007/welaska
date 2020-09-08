@@ -139,11 +139,6 @@ app.controller('HomeCtrl', function($scope,homeService) {
         angular.element('.glyphicon-chevron-left').trigger('click'); 
     }
 
-
-      
-    
-
-
     $scope.listingObj = {};
     $scope.test = 'jo';
     $scope.cityList = 0;
@@ -154,6 +149,8 @@ app.controller('HomeCtrl', function($scope,homeService) {
     homeService.getCategoryList().then(function(response){
          $scope.category = angular.copy(response); 
     })
+
+    
     
 }); 
 app.controller('LoginCtrl', function() {}); 

@@ -30,17 +30,46 @@
 			</div>
 		</div>
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-			<div class="search">	        		        			
-        		<div class="search-area ">	        			
+			<div class="search">	        		        			        		
         			<select class="form-control custom-select"  name="searchLocation" ng-model="listingObj.searchLocation" ng-options="o.value as o.value for o in cityList">
-                      </select>	        	
-        			<input type="search" id="search_input" name="search_input" placeholder="Search.." class="form-control search-input" name="key_words" >
-        			<button type="submit" class="form-control search-button" ><i class="fa fa-search" aria-hidden="true" class="search-icon"></i>
-					</button>
-					<div class="home-search-result home-search-hide" id="dataList">						
-					</div>
-        			
-        		</div>	        	
+                      </select>	 
+                      <div class="main-search-md-autocomple">
+					    <md-autocomplete 
+			              ng-mouseover="enableScrollOnAutoCompleteList($event)"
+			              ng-click="enableScrollOnAutoCompleteList($event)"
+			              ng-focus="isSearchFocus=true"
+			              ng-blur="isSearchFocus=false"
+			              md-dropdown-position="{{customPosition}}"                            
+			              md-no-cache="noCache"
+			              ng-model="searchData"
+			              md-selected-item="classmateSelectedItem"
+			              md-search-text-change="innerHeaderTextChange(searchObj.innerHeaderSearchText)"
+			              md-search-text="searchObj.innerHeaderSearchText"
+			              md-selected-item-change="innerHeaderChange(item)"
+			              md-items="item in innerHeaderQuerySearch(searchObj.innerHeaderSearchText)"
+			              md-item-text="item.name"              
+			              placeholder="{{isSearchFocus ? searchLocation : 'Search'}}"
+			              md-clear-button="true" 
+			              input-aria-labelledby="favoriteStateLabel"
+			              class="custom-md-autocomplete"
+			              input-aria-describedby="autocompleteDetailedDescription" md-dropdown-position="auto">
+			              <mat-option >
+			               <!--  <img style="vertical-align:middle;" aria-hidden data-ng-src="{{(item.image) ? item.image : '<?= base_url() ?>assets/img/defualt-logo.png'}}" height="20" /> -->               
+			                <a ng-click="reditectToPage(item)"><span class="search-all-list" md-highlight-text="searchObj.innerHeaderSearchText" md-highlight-flags="^i" class="capitalize">{{item.name}}</span></a>                
+			               <!-- <a href="" ng-if="item.type='item_type'">               	
+			                <span class="category-item" md-highlight-text="searchObj.innerHeaderSearchText" md-highlight-flags="^i" class="capitalize">{{item.name}}</span>                
+			               </a> -->
+			              </mat-option>
+			              <!-- <md-item-template>
+			                <span md-highlight-text="searchObj.innerHeaderSearchText" md-highlight-flags="^i" class="capitalize">{{item.name + ' ' +item.last_name}} </span>&nbsp; <span class="help-email">{{item.email}}</span>
+			              </md-item-template> -->
+			              <md-not-found>
+			                <i class="fa fa-exclamation-circle" style="color: red;"></i> No results found
+			              </md-not-found>
+			            </md-autocomplete>   
+			            <button type="submit" class="form-control search-button main-search-button" ><i class="fa fa-search" aria-hidden="true" class="search-icon"></i>
+						</button>
+			      </div>       	
 		    </div>
 		</div>
 		<div class="main-slider-div">

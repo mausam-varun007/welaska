@@ -307,6 +307,7 @@ span.active-star::before {
     z-index: 1;
     left: 22%;
     top: 30px;
+    display: inline-flex;
 }
 .search-area {
     margin: 8px 0 0;
@@ -605,6 +606,10 @@ span.no-records {
     margin-bottom: 12px;
     border-bottom: 1px solid #e2e2e2;
 }
+.main-search-md-autocomple md-autocomplete {
+    width: 70%;
+    height: 45px;
+}
 .search-md-autocomple md-autocomplete {
     width: 60%;
     height: 45px;
@@ -622,6 +627,17 @@ span.no-records {
 }
 .search-md-autocomple md-autocomplete{
     font-family: FontAwesome;
+}
+.main-search-md-autocomple {
+    width: 100%;
+}
+.search-button.main-search-button {
+    position: absolute;
+    margin-left: 91px;
+    top: 0px;
+}
+.main-search-md-autocomple md-autocomplete-wrap {
+    height: 45px;
 }
 
 @media screen and (max-width: 480px){
