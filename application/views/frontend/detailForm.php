@@ -16,10 +16,10 @@
           <li data-toggle="modal" data-target="#myModal"><a>Upload Video/Logo/Pictures</a></li>
         </ul>
       </div>
-    </div>
+    </div>    
     <div class="col-md-9">
       <div class="df-content main-content">
-        <div class="df-form-sec" id="1">
+        <div class="df-form-sec" id="1" ng-show="step=='business'">
             <div class="row">
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
@@ -100,7 +100,7 @@
               <a href="" class="pull-right">Next <i class="fa fa-arrow-right"></i></a>
             </div>
         </div>
-        <div class="df-form-sec" id="2">
+        <div class="df-form-sec" id="2" ng-show="step=='location'">
             <div class="row">
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
@@ -229,7 +229,7 @@
               <a href="" class="pull-right">Next <i class="fa fa-arrow-right"></i></a>
             </div>
         </div>
-        <div class="df-form-sec" id="3">
+        <div class="df-form-sec" id="3" ng-show="step=='contact'">
             <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <h5 class="hurs-oprtn">Hours of Operation</h5>
@@ -497,7 +497,7 @@
               <a href="" class="pull-right">Next <i class="fa fa-arrow-right"></i></a>
             </div>
         </div>
-        <div class="df-form-sec" id="4">
+        <div class="df-form-sec" id="4" ng-show="step=='others'">
           <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
               <h5 class="hurs-oprtn">Business Keywords</h5>

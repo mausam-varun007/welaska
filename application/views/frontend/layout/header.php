@@ -22,7 +22,7 @@
 			<p class="logo-text"><a href="" style="color: #f00;">WE LASKA</a></p>
 		</div>
 		<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 header-listing-section">			
-			<a href="" class="free-listing">Free Listing</a>
+			<a ui-sref="freeListing" class="free-listing">Free Listing</a>
 			<div class="user-login">
 				<a class="login-user" data-toggle="modal" data-target="#loginModal">Login</a>
 				<a class="signup-user" data-toggle="modal" data-target="#loginModal">Signup</a>

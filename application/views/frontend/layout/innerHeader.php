@@ -77,7 +77,7 @@
 			</button>
       </div>
 
-			<a href="" class="free-inner-listing">Free Listing</a>
+			<a ui-sref="freeListing" class="free-inner-listing">Free Listing</a>
 		</div>				  
 		</div>
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

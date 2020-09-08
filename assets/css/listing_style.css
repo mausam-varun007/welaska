@@ -639,6 +639,12 @@ span.no-records {
 .main-search-md-autocomple md-autocomplete-wrap {
     height: 45px;
 }
+a span.search-all-list {    
+    color: #444;
+}
+a span.search-all-list:hover {
+    text-decoration: none;    
+}
 
 @media screen and (max-width: 480px){
     .main-content {

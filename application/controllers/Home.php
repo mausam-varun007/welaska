@@ -75,5 +75,14 @@ class Home extends MY_Controller {
   public function getItemByID()
   { 
     echo $this->Home->getItemByID();    
+  }
+   public function getSearchItems()
+  { 
+    $recieved = $this->Home->getSearchItems();    
+    if($recieved){
+      echo json_encode(array('status'=>1,'data'=>$recieved));
+    }else{
+      echo json_encode(array('status'=>0));
+    }
   } 
 }

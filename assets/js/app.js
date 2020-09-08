@@ -107,13 +107,13 @@ app.config(function($stateProvider, $locationProvider,
         })
         .state('freeListing', { 
             url : '/free-listing', 
-            templateUrl : Base_url+'view/freeListing'
-            // controller : "freeListingCtrl"
+            templateUrl : Base_url+'view/freeListing',
+            controller : "freeListingCtrl"
         })
         .state('detailForm', { 
             url : '/detail-form', 
-            templateUrl : Base_url+'view/detailForm'
-            // controller : "freeListingCtrl"
+            templateUrl : Base_url+'view/detailForm',
+            controller : "freeListingCtrl"
         });
   
     // Redirect to home page if url does not  
@@ -122,7 +122,7 @@ app.config(function($stateProvider, $locationProvider,
 }); 
 
 app.controller('MainCtrl', function() {}); 
-app.controller('HomeCtrl', function($scope,homeService) {
+app.controller('HomeCtrl', function($scope,homeService,$state,$log,$http) {
     
     // UI SLIDER
     $scope.myInterval = 5000;
@@ -153,7 +153,62 @@ app.controller('HomeCtrl', function($scope,homeService) {
 
     homeService.getCategoryList().then(function(response){
          $scope.category = angular.copy(response); 
-    })
+    });
+
+    
+    $scope.searchObj = {};   
+    $scope.searchLocation =  $state.params.location ;    
+    function loadAllClassmate(data) {
+
+        var classMateAllStates = data;
+        $scope.generateArray = [];
+        angular.forEach(classMateAllStates, function (value, key) {                               
+            if(value.search_item){                    
+                $scope.generateArray.push({                        
+                    'name': value.search_item.toLowerCase(),
+                    'item_id':value.item_id,
+                    'category_id':value.category_id,
+                    'type':value.type
+                });                    
+            }
+        });
+        return $scope.generateArray;
+    }     
+    $scope.innerHeaderQuerySearch = function (keyword) {            
+        return $http
+        .post(Base_url+'Home/getSearchItems',{keyword:keyword,location:$scope.listingObj.searchLocation,category_id:$state.params.categoryId})
+            .then(function(response){                                    
+                $scope.classmateStats = loadAllClassmate(response.data.data);                                       
+                return $scope.classmateStats;
+        });
+    };
+
+    function createFilterForClassmate(query) {
+        var lowercaseQuery = query.toLowerCase();
+        return function filterFn(state) {                
+            return (state.name.indexOf(lowercaseQuery) === 0 );
+        };
+
+    }
+
+    function innerHeaderTextChange(text) {
+        $log.info('Text changed to ' + text);            
+    }
+    $scope.classmateData = '';
+
+    function innerHeaderChange(item) {
+      
+    }
+    $scope.reditectToPage = function(item){
+            console.log(item);
+            if(item.type=='category_type'){
+                $state.go('listing',{'location':$scope.listingObj.searchLocation,'categoryId':item.category_id})
+            }else if(item.type=='item_type'){                    
+                storageService.set('current_location',$state.params.location);                
+                $state.go('singleItem',{'itemId':item.item_id});
+            }
+    }
+    
 
     
     
@@ -371,4 +426,16 @@ app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$time
         
 
 }); 
+app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService) {
+
+    $scope.listingObject = {};
+    $scope.step = 'location';
+    console.log($scope.step);
+
+    $scope.submitBasicDetails = function(){
+            console.log($scope.listingObject);
+            $state.go('detailForm');
+    }
+
+});
 app.controller('SignupCtrl', function() {});
