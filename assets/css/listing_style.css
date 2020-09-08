@@ -1,3 +1,6 @@
+body{
+    overflow: scroll;
+}
 form.example input[type=text] {
 		  padding: 18px;
   font-size: 17px;
@@ -328,9 +331,10 @@ span.active-star::before {
 }
 .search-button {
     position: absolute;
-    right: 0px;
+    
+    left: 60%;
     width: 70px;
-    top: 8px;
+    top: 25px;
     height: 45px;
     background-color: #f00;
     border-top-right-radius: 5%;
@@ -601,6 +605,25 @@ span.no-records {
     margin-bottom: 12px;
     border-bottom: 1px solid #e2e2e2;
 }
+.search-md-autocomple md-autocomplete {
+    width: 60%;
+    height: 45px;
+}
+.search-md-autocomple md-autocomplete:focus {
+    height: 45px;
+}
+.search-md-autocomple md-autocomplete-wrap {
+    height: 45px;
+    box-shadow: none;
+}
+.search-md-autocomple md-autocomplete-wrap:focus {
+    height: 45px;
+    box-shadow: none;
+}
+.search-md-autocomple md-autocomplete{
+    font-family: FontAwesome;
+}
+
 @media screen and (max-width: 480px){
     .main-content {
         width: 90% !important;

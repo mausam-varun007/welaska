@@ -162,7 +162,7 @@ app.controller('HomeCtrl', function($scope,homeService) {
     
 }); 
 app.controller('LoginCtrl', function() {}); 
-app.controller('ListingCtrl', function($scope,$state,$http,$stateParams,$timeout,$q) {
+app.controller('ListingCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService) {
 
     window.scrollTo(0, 0);      
     $scope.listingObj = {};    
@@ -201,13 +201,87 @@ app.controller('ListingCtrl', function($scope,$state,$http,$stateParams,$timeout
     }
     $scope.getListingByCategoryID();
 
+    $scope.searchInputFocud = function(){
+        angular.element(document.querySelector("body")).css('position', 'relative');
+        angular.element(document.querySelector("body")).css('scroll-behavior', 'auto');
+    }
+
+    $scope.isSearchFocus = false ;
+
+    
+    $scope.innerHeaderChange = innerHeaderChange;
+    $scope.innerHeaderTextChange = innerHeaderTextChange;
+    $scope.searchObj = {};   
+    $scope.searchLocation =  $state.params.location ;    
+    storageService.set('current_location',$scope.searchLocation);                  
+
+    function loadAllClassmate(data) {
+
+        var classMateAllStates = data;
+        $scope.generateArray = [];
+        angular.forEach(classMateAllStates, function (value, key) {                               
+            if(value.search_item){                    
+                $scope.generateArray.push({                        
+                    'name': value.search_item.toLowerCase(),
+                    'item_id':value.item_id,
+                    'category_id':value.category_id,
+                    'type':value.type
+                });                    
+            }
+        });
+        return $scope.generateArray;
+    }     
+    $scope.innerHeaderQuerySearch = function (keyword) {            
+        return $http
+        .post(Base_url+'Home/getSearchItems',{keyword:keyword,location:$state.params.location,category_id:$state.params.categoryId})
+            .then(function(response){                                    
+                $scope.classmateStats = loadAllClassmate(response.data.data);                    
+                // var results = keyword ? $scope.classmateStats.filter(createFilterForClassmate(keyword)) : $scope.classmateStats,
+                //     deferred;
+                return $scope.classmateStats;
+        });
+    };
+
+    function createFilterForClassmate(query) {
+        var lowercaseQuery = query.toLowerCase();
+        return function filterFn(state) {                
+            return (state.name.indexOf(lowercaseQuery) === 0 );
+        };
+
+    }
+
+    function innerHeaderTextChange(text) {
+        $log.info('Text changed to ' + text);            
+    }
+    $scope.classmateData = '';
+
+    function innerHeaderChange(item) {
+      
+    }
+    $scope.reditectToPage = function(item){
+            
+            if(item.type=='category_type'){
+                $state.go('listing',{'location':$state.params.location,'categoryId':item.category_id})
+            }else if(item.type=='item_type'){                    
+                storageService.set('current_location',$state.params.location);                
+                $state.go('singleItem',{'itemId':item.item_id});
+            }
+    }
+
+
+
+
+
+    
+
     
 
 }); 
-app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams) {
+app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService) {
 
-    console.log($stateParams.itemId);
-        
+    
+    $scope.searchLocation = storageService.get('current_location') ;
+    console.log($scope.searchLocation);
     $scope.itemDetailsByID = [];
     $scope.getItemByID = function(){        
 
@@ -239,11 +313,62 @@ app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams) {
         {stateOff: 'glyphicon-off'}
       ];
 
+
    
+    $scope.innerHeaderChange = innerHeaderChange;
+    $scope.innerHeaderTextChange = innerHeaderTextChange;
+    $scope.searchObj = {};   
     
+    function loadAllClassmate(data) {
 
+        var classMateAllStates = data;
+        $scope.generateArray = [];
+        angular.forEach(classMateAllStates, function (value, key) {                               
+            if(value.search_item){                    
+                $scope.generateArray.push({                        
+                    'name': value.search_item.toLowerCase(),
+                    'item_id':value.item_id,
+                    'category_id':value.category_id,
+                    'type':value.type
+                });                    
+            }
+        });
+        return $scope.generateArray;
+    }     
+    $scope.innerHeaderQuerySearch = function (keyword) {            
+        return $http
+        .post(Base_url+'Home/getSearchItems',{keyword:keyword,location:$state.params.location,category_id:$state.params.categoryId})
+            .then(function(response){                                    
+                $scope.classmateStats = loadAllClassmate(response.data.data);                    
+                // var results = keyword ? $scope.classmateStats.filter(createFilterForClassmate(keyword)) : $scope.classmateStats,
+                //     deferred;
+                return $scope.classmateStats;
+        });
+    };
 
-    
+    function createFilterForClassmate(query) {
+        var lowercaseQuery = query.toLowerCase();
+        return function filterFn(state) {                
+            return (state.name.indexOf(lowercaseQuery) === 0 );
+        };
+
+    }
+
+    function innerHeaderTextChange(text) {
+        $log.info('Text changed to ' + text);            
+    }
+    $scope.classmateData = '';
+
+    function innerHeaderChange(item) {
+      
+    }
+    $scope.reditectToPage = function(item){            
+            if(item.type=='category_type'){                
+                $state.go('listing',{'location':storageService.get('current_location'),'categoryId':item.category_id})
+            }else if(item.type=='item_type'){                    
+                $state.go('singleItem',{'itemId':item.item_id});
+            }
+    }
 
 
         

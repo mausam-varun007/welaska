@@ -92,22 +92,42 @@ class Home_model extends MY_model
 		$this->db->distinct();
 		// $this->db->select('category.*,');
 		// $this->db->from('category');				
-		$this->db->select('listing_items.business_name,category.id as category_id,category.category_name');
-		$this->db->from('listing_items');		
-		$this->db->join('category','category.id=listing_items.category_id','left');
-		$this->db->where('listing_items.city',$this->input->post('location'));
-		// $this->db->or_where('category.category_name',$this->input->post('keyword'));
-		$this->db->like('category.category_name', $this->input->post('keyword'));
-		$this->db->or_like('listing_items.business_name', $this->input->post('keyword'));
-		// $this->db->order_by('FIELD(category.category_name,listing_items.business_name)');
-		//$this->db->limit(10);		
-		$query = $this->db->get();		
+		// $this->db->select('listing_items.business_name as search_item,category.id as category_id,
+		// 	CASE WHEN category.category_name is not null THEN listing_items.business_name ELSE listing_items.business_name  END AS search_item ',FALSE);
+		// $this->db->select('listing_items.business_name as search_item,category.id as category_id,category.category_name as search_item');
+		// $this->db->from('listing_items');		
+		// //$this->db->join('category','category.id=listing_items.category_id','left');
+		// //$this->db->where('listing_items.city',$this->input->post('location'));
+		// // $this->db->or_where('category.category_name',$this->input->post('keyword'));
+		// $this->db->like('category.category_name', $this->input->post('keyword'));
+		// $this->db->or_like('listing_items.business_name', $this->input->post('keyword'));
+		// $this->db->group_by('category.category_name');
+		// // $this->db->order_by('FIELD(category.category_name,listing_items.business_name)');
+		// //$this->db->limit(10);		
+		// $query = $this->db->get();		
 		// $this->db->get();		
 		// echo $this->db->last_query();
 		// die();
+		// if ($query->num_rows() > 0) {
+		// 	return $query->result();		
+		// }		
+		$this->db->select('category_name as search_item,id as category_id, "category_type" as type, 0 as item_id');
+		$this->db->from('category');				
+		$this->db->like('category_name', $this->input->post('keyword'));		
+		$this->db->group_by('category.category_name');
+		$query1 = $this->db->get_compiled_select();	
+
+		$this->db->select('business_name as search_item,category_id as category_id, "item_type" as type, id as item_id');
+		$this->db->from('listing_items');				
+		$this->db->where('city',$this->input->post('location'));
+		$this->db->like('business_name', $this->input->post('keyword'));						
+		$query2 = $this->db->get_compiled_select();		
+
+
+		$query = $this->db->query($query1 . ' UNION ' . $query2);
 		if ($query->num_rows() > 0) {
 			return $query->result();		
-		}		
+		}				
 	}
 	public function getItemRating()
 	{		
