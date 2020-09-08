@@ -1,0 +1,41 @@
+/*free listing-sec*/
+.freelisting-sec.main-content.ng-scope {
+    padding: 15px 30px;
+}
+.freelisting-sec h4 {
+    margin-top: 30px;
+    text-align: center;
+    margin-bottom: 50px;
+}
+.freelisting-sec h6 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+.fl-btn-sec {
+    text-align: center;
+    margin: 50px auto;
+}
+.fl-btn-sec button {
+    color: #ffffff !important;
+    padding: 8px 40px;
+    font-size: 18px;
+    text-transform: uppercase;
+}
+label.control-label span {
+    color: red;
+    font-size: 20px;
+    display: inline-block;
+}
+label.control-label {
+   margin-bottom: 5px;
+}
+span.error-msg {
+    position: absolute;
+    bottom: 5px;
+    font-size: 12px;
+    color: red;
+}
+input.form-control.custom-input {
+    margin-bottom: 25px;
+}
+/*free listing-sec*/

@@ -104,6 +104,11 @@ app.config(function($stateProvider, $locationProvider,
             url : '/single-item/:itemId', 
             templateUrl : Base_url+'view/singleItem', 
             controller : "SingleItemCtrl"
+        })
+        .state('freeListing', { 
+            url : '/free-listing', 
+            templateUrl : Base_url+'view/freeListing'
+            // controller : "freeListingCtrl"
         });
   
     // Redirect to home page if url does not  
