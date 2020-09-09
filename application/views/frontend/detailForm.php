@@ -2,11 +2,13 @@
   <div class="df-top">
     <h3>You are few steps away from availing a Free listing at Welaska</h3>
   </div>
+  <div class="heading-li">
+    <a>Business Informating</a>
+  </div>
   <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-3 col-sm-3 col-xs-12">
       <div class="df-list">  
-        <ul>
-          <li class="heading-li"><a>Business Informating</a></li>
+        <ul class="hide-xs">
           <li class="active"><a>Location Informating</a></li>
           <li><a>Contact Informating</a></li>
           <li><a>Other Informating</a></li>
@@ -15,9 +17,18 @@
           <li><a>View/Remove Keywords</a></li>
           <li data-toggle="modal" data-target="#myModal"><a>Upload Video/Logo/Pictures</a></li>
         </ul>
+        <select class="df-select show-xs">
+          <option>Location Informating</option>
+          <option>Contact Informating</option>
+          <option>Other Informating</option>
+          <option>Business Keywords</option>
+          <option>Add Keywords</option>
+          <option>View/Remove Keywords</option>
+          <option>Upload Video/Logo/Pictures</option>
+        </select>
       </div>
     </div>    
-    <div class="col-md-9">
+    <div class="col-md-9 col-sm-9 col-xs-12">
       <div class="df-content main-content">
         <div class="df-form-sec" id="1" ng-show="step=='business'">
             <div class="row">

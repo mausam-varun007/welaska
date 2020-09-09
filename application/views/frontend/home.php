@@ -30,7 +30,7 @@
 </div> -->
 <div class="containers category-container">
 	<div class="row category-column">
-		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 con-card" data-ng-repeat="item in category">
+		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 con-card" data-ng-repeat="item in category">
 			<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
 				<p class="category-title"><a ui-sref="listing({location:listingObj.searchLocation,categoryId:item.id})">{{item.category_name}}</a></p>
 				<p class="category-more"><a >more...</a></p>

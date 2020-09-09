@@ -58,10 +58,10 @@
 		</div>	
 		<div class="review-content-section padding-card custom-row5">			
 			<div class="row review-card">
-				<div class="col-md-2 custom-col-2">
+				<div class="col-md-2 custom-col-2 col-xs-12">
 					<img src="<?= base_url()."assets/img/dummy-image.png" ?> " class="review-image">
 				</div>
-				<div class="col-md-10 custom-col-10">
+				<div class="col-md-10 custom-col-10 col-xs-12">
 					<p class="review-user-name">Mausam varun </p>
 					<p class="review-description">This restaurants serves variety of Cuisines across the world. We tried their signatures dishes which was fantastic. Cocktails are also great.</p>
 					<p class="review-date"><i class="fa fa-clock-o" aria-hidden="true"></i> 09 Sep 2020 11:12 PM </p>
