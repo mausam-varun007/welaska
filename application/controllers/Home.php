@@ -85,4 +85,31 @@ class Home extends MY_Controller {
       echo json_encode(array('status'=>0));
     }
   } 
+   public function getCityList(){ 
+
+    $recieved = $this->Home->getCityList();    
+    if($recieved){
+      echo json_encode(array('status'=>1,'data'=>$recieved));
+    }else{
+      echo json_encode(array('status'=>0));
+    }
+  } 
+  public function submitBasicDetails()
+  { 
+      $step = $this->input->post('step');
+      echo $step;
+      switch ($step) {
+              case 'business':                              
+                  $result = $this->Home->submitBasicDetails();    
+                   break;                             
+              case 'location':                              
+                  $result = $this->Home->submitLocationInfo();    
+                   break;               
+              case 'contact':                              
+                  $result = $this->Home->submitContact();    
+                   break;               
+              }
+            echo $result;
+  }
+  
 }

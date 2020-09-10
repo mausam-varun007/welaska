@@ -129,6 +129,21 @@ class Home_model extends MY_model
 			return $query->result();		
 		}				
 	}
+	public function getCityList()
+	{	
+		
+		$this->db->distinct();		
+		$this->db->select('*');
+		$this->db->from('cities');				
+		$this->db->like('city_name', $this->input->post('keyword'));		
+		$query = $this->db->get();		
+		// $this->db->get();		
+		// echo $this->db->last_query();
+		// die();
+		if ($query->num_rows() > 0) {
+			return $query->result();		
+		}		
+	}
 	public function getItemRating()
 	{		
 		$this->db->select('id,item_id,rating');
@@ -147,6 +162,112 @@ class Home_model extends MY_model
 		$query = $this->db->get();				
 		if($query->num_rows() > 0) {
 			return json_encode($query->row());			
+		}		
+	}
+	public function submitBasicDetails()
+	{		
+		if($this->input->post()){
+			$msg = '';
+			$this->form_validation->set_rules('first_name', 'First Name', 'required');
+			$this->form_validation->set_rules('last_name', 'Last Name', 'required');
+			$this->form_validation->set_rules('email', 'Email', 'required');
+			$this->form_validation->set_rules('company_name', 'Company Name', 'required');
+			$this->form_validation->set_rules('mobile', 'Mobile', 'required');
+			$this->form_validation->set_rules('city', 'City', 'required');
+
+			if ($this->form_validation->run() == FALSE){
+                $msg.= validation_errors();                
+            }
+            if (!empty($msg)) {
+                return json_encode(array('status'=>0,'msg'=>$msg));
+            }else{ 
+			
+					$userData = array('user_type'=>'client',
+						'first_name'=>$this->input->post('first_name'),
+						'last_name'=>$this->input->post('last_name'),
+						'email'=>$this->input->post('email'),
+						'company_name'=>$this->input->post('company_name'),
+						'mobile'=>$this->input->post('mobile'),
+						'city'=>$this->input->post('city'),
+						'land_line_number'=>$this->input->post('land_line_number'),
+						'is_active'=>1 );
+					$lastId = $this->insertData('user',$userData);
+					if($lastId){
+						return json_encode(array('status'=>1,'last_id'=>$lastId));					
+					}else{
+						return json_encode(array('status'=>0));					
+					}
+			}
+		}		
+	}
+	public function submitLocationInfo()
+	{		
+		if($this->input->post()){
+			$msg = '';
+			$this->form_validation->set_rules('business_name', 'Business Name', 'required');
+			$this->form_validation->set_rules('pin_code', 'Pin Code', 'required');
+			$this->form_validation->set_rules('state', 'State', 'required');
+			$this->form_validation->set_rules('city', 'City', 'required');
+
+			if ($this->form_validation->run() == FALSE){
+				print_r($this->input->post());
+                $msg.= validation_errors();                
+            }
+            if (!empty($msg)) {
+                return json_encode(array('status'=>0,'msg'=>$msg));
+            }else{ 
+				
+					$userData = array(
+						'business_name'=>$this->input->post('business_name'),
+						'building'=>$this->input->post('building'),
+						'street_address'=>$this->input->post('street_address'),
+						'landmark'=>$this->input->post('landmark'),
+						'city'=>$this->input->post('city'),
+						'state'=>$this->input->post('state'),
+						'pin_code'=>$this->input->post('pin_code'),
+						'is_active'=>1 );
+					$lastId = $this->insertData('listing_items',$userData);
+					if($lastId){
+						return json_encode(array('status'=>1,'last_id'=>$lastId));					
+					}else{
+						return json_encode(array('status'=>0));					
+					}
+			}
+		}		
+	}
+	public function submitContact()
+	{		
+		if($this->input->post()){
+			$msg = '';
+			$this->form_validation->set_rules('business_name', 'Business Name', 'required');
+			$this->form_validation->set_rules('pin_code', 'Pin Code', 'required');
+			$this->form_validation->set_rules('state', 'State', 'required');
+			$this->form_validation->set_rules('city', 'City', 'required');
+
+			if ($this->form_validation->run() == FALSE){
+				print_r($this->input->post());
+                $msg.= validation_errors();                
+            }
+            if (!empty($msg)) {
+                return json_encode(array('status'=>0,'msg'=>$msg));
+            }else{ 
+				
+					$userData = array(
+						'business_name'=>$this->input->post('business_name'),
+						'building'=>$this->input->post('building'),
+						'street_address'=>$this->input->post('street_address'),
+						'landmark'=>$this->input->post('landmark'),
+						'city'=>$this->input->post('city'),
+						'state'=>$this->input->post('state'),
+						'pin_code'=>$this->input->post('pin_code'),
+						'is_active'=>1 );
+					$lastId = $this->insertData('listing_items',$userData);
+					if($lastId){
+						return json_encode(array('status'=>1,'last_id'=>$lastId));					
+					}else{
+						return json_encode(array('status'=>0));					
+					}
+			}
 		}		
 	}
 

@@ -645,6 +645,15 @@ a span.search-all-list {
 a span.search-all-list:hover {
     text-decoration: none;    
 }
+.toast-message p{
+    color: #fff;
+}
+md-autocomplete.custom-md-autocomplete.custom-input {
+    height: 40px;
+    background-color: #f1f1f1;
+    border: none;
+    box-shadow: none;
+}
 
 @media screen and (max-width: 480px){
     .main-content {

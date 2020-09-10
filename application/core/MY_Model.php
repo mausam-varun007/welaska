@@ -4,6 +4,7 @@ class MY_Model extends CI_Model {
     public function __construct() {
 
         parent::__construct();
+         $this->load->library('form_validation');
         // Load form helper library    
 	//comment while merging    
         //$this->load->model(array('CustomUpload_model'=>'customUpload','CustomEmail_model','DeveloperProfileApi_model'=>'DeveloperProfileApi'));            

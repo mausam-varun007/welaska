@@ -1,4 +1,4 @@
-var app = angular.module('App', ['ui.bootstrap','ui.router','ngMaterial', 'ngMessages']); 
+var app = angular.module('App', ['ui.bootstrap','ui.router','ngMaterial', 'ngMessages','toastr']); 
 
 app.service('homeService', function ($http,$q,$rootScope) {
     var getCategoryList    = undefined;
@@ -34,6 +34,22 @@ app.factory('storageService', ['$rootScope', function ($rootScope) {
     };
 }]);
 
+app.config(function (toastrConfig) {
+    angular.extend(toastrConfig, {
+            autoDismiss: false,
+            allowHtml:true,
+            containerId: 'toast-container',
+            maxOpened: 0, 
+            progressBar: true,   
+            newestOnTop: true,
+            positionClass: 'toast-top-center custom-developer-toster',
+            preventDuplicates: false,
+            preventOpenDuplicates: false,
+            timeOut: 50000,
+            target: 'body',
+            bodyOutputType: 'trustedHtml'
+    });
+});
 
 //////////////////////////////////////////// Searching Directive
 
@@ -426,16 +442,126 @@ app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$time
         
 
 }); 
-app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService) {
+app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService,toastr,homeService) {
 
     $scope.listingObject = {};
     $scope.step = 'location';
-    console.log($scope.step);
+
+    $scope.searchObj = {};   
+    $scope.searchLocation =  $state.params.location ;    
+    $scope.citySelectedChange = citySelectedChange;
+    function loadAllCityList(data) {
+        var classMateAllStates = data;
+        $scope.generateArray = [];
+        angular.forEach(classMateAllStates, function (value, key) {                               
+            if(value.city_name){                    
+                $scope.generateArray.push({                        
+                    'id': value.id.toLowerCase(),
+                    'city':value.city_name,
+                    'state':value.city_state,
+                });                    
+            }
+        });
+        return $scope.generateArray;
+    }     
+    $scope.innerHeaderQuerySearch = function (keyword) {            
+        return $http
+        .post(Base_url+'Home/getCityList',{keyword:keyword})
+            .then(function(response){                                    
+                $scope.classmateStats = loadAllCityList(response.data.data);                                       
+                return $scope.classmateStats;
+        });
+    };
+
+    function createFilterForClassmate(query) {
+        var lowercaseQuery = query.toLowerCase();
+        return function filterFn(state) {                
+            return (state.name.indexOf(lowercaseQuery) === 0 );
+        };
+
+    }
+
+    function innerHeaderTextChange(text) {
+        $log.info('Text changed to ' + text);            
+    }
+    $scope.classmateData = '';
+
+    function citySelectedChange(item) {
+        console.log(item);
+      $scope.listingObject.city = item.city;
+    }   
 
     $scope.submitBasicDetails = function(){
             console.log($scope.listingObject);
-            $state.go('detailForm');
+            $http.post(Base_url+'Home/submitBasicDetails',{
+                    company_name:$scope.listingObject.company_name,
+                    first_name:$scope.listingObject.first_name,
+                    city:$scope.listingObject.city,
+                    last_name:$scope.listingObject.last_name,
+                    email:$scope.listingObject.email,
+                    mobile:$scope.listingObject.mobile,
+                    land_line:$scope.listingObject.land_line,
+                    step:'business'
+
+                })
+                .then(function(response){   
+                if(response.data.status){                    
+                    $state.go('detailForm');
+                }else{                    
+                    toastr.error(response.data.msg);
+                }                                 
+                    
+            });
     }
+    $scope.submitLocationInfo = function(){
+            
+            $http.post(Base_url+'Home/submitBasicDetails',{
+                    business_name:$scope.listingObject.business_name,
+                    building:$scope.listingObject.building,
+                    street_address:$scope.listingObject.street_address,
+                    landmark:$scope.listingObject.landmark,
+                    area:$scope.listingObject.area,
+                    city:$scope.listingObject.city,
+                    state:$scope.listingObject.state,
+                    pin_code:$scope.listingObject.pin_code,
+                    state:$scope.listingObject.state,
+                    step:'location'
+
+                })
+                .then(function(response){   
+                if(response.data.status){                    
+                    $scope.step = 'contact';
+                }else{                    
+                    toastr.error(response.data.msg);
+                }                                 
+                    
+            });
+    }
+    $scope.submitContact = function(){
+            
+            $http.post(Base_url+'Home/submitBasicDetails',{
+                    business_name:$scope.listingObject.business_name,
+                    building:$scope.listingObject.building,
+                    street_address:$scope.listingObject.street_address,
+                    landmark:$scope.listingObject.landmark,
+                    area:$scope.listingObject.area,
+                    city:$scope.listingObject.city,
+                    state:$scope.listingObject.state,
+                    pin_code:$scope.listingObject.pin_code,
+                    state:$scope.listingObject.state,
+                    step:'location'
+
+                })
+                .then(function(response){   
+                if(response.data.status){                    
+                    $scope.step = 'contact';
+                }else{                    
+                    toastr.error(response.data.msg);
+                }                                 
+                    
+            });
+    }
+
 
 });
 app.controller('SignupCtrl', function() {});

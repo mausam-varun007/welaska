@@ -7,11 +7,10 @@
       <div class="df-list">  
         <ul>
           <li class="heading-li"><a>Business Informating</a></li>
-          <li class="active"><a>Location Informating</a></li>
-          <li><a>Contact Informating</a></li>
-          <li><a>Other Informating</a></li>
-          <li><a>Business Keywords</a></li>
-          <li><a>Add Keywords</a></li>
+          <li ng-click="step='location'" class="active"><a>Location Informating</a></li>
+          <li ng-click="step='contact'"><a>Contact Informating</a></li>
+          <li ng-click="step='others'"><a>Other Informating</a></li>          
+          <li ng-click="step='keyword'"><a>Keywords</a></li>
           <li><a>View/Remove Keywords</a></li>
           <li data-toggle="modal" data-target="#myModal"><a>Upload Video/Logo/Pictures</a></li>
         </ul>
@@ -19,19 +18,19 @@
     </div>    
     <div class="col-md-9">
       <div class="df-content main-content">
-        <div class="df-form-sec" id="1" ng-show="step=='business'">
+        <div class="df-form-sec" id="1" ng-show="step=='location'">
             <div class="row">
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
                   <label class="control-label">Business Name</label>
-                  <input type="text" class="form-control custom-input">
+                  <input type="text" class="form-control custom-input" ng-model="listingObject.business_name">
                   <span  class="error-msg"></span>
                 </div>
               </div>
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
                   <label class="control-label">Building</label>
-                  <input type="text" class="form-control custom-input">
+                  <input type="text" class="form-control custom-input" ng-model="listingObject.building">
                   <span  class="error-msg" ></span>
                 </div>
               </div>
@@ -40,14 +39,14 @@
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
                   <label class="control-label">Street</label>
-                  <input type="text" class="form-control custom-input">
+                  <input type="text" class="form-control custom-input" ng-model="listingObject.street_address">
                   <span  class="error-msg"></span>
                 </div>
               </div>
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
                   <label class="control-label">Landmark</label>
-                  <input type="text" class="form-control custom-input">
+                  <input type="text" class="form-control custom-input" ng-model="listingObject.landmark">
                   <span  class="error-msg" ></span>
                 </div>
               </div>
@@ -56,14 +55,38 @@
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
                   <label class="control-label">Area</label>
-                  <input type="text" class="form-control custom-input">
+                  <input type="text" class="form-control custom-input" ng-model="listingObject.area">
                   <span  class="error-msg"></span>
                 </div>
               </div>
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
                   <label class="control-label">City</label>
-                  <input type="text" class="form-control custom-input">
+                  <md-autocomplete 
+                    ng-mouseover="enableScrollOnAutoCompleteList($event)"
+                    ng-click="enableScrollOnAutoCompleteList($event)"
+                    ng-focus="isSearchFocus=true"
+                    ng-blur="isSearchFocus=false"
+                    md-dropdown-position="{{customPosition}}"                            
+                    md-no-cache="noCache"
+                    ng-model="listingObject.city"
+                    md-selected-item="citySelectedItem"
+                    md-search-text-change="innerHeaderTextChange(searchObj.citySearchText)"
+                    md-search-text="searchObj.citySearchText"
+                    md-selected-item-change="citySelectedChange(item)"
+                    md-items="item in innerHeaderQuerySearch(searchObj.citySearchText)"
+                    md-item-text="item.city"                          
+                    md-clear-button="true" 
+                    input-aria-labelledby="favoriteStateLabel"
+                    class="custom-md-autocomplete custom-input"
+                    input-aria-describedby="autocompleteDetailedDescription" md-dropdown-position="auto">
+                    <mat-option >             
+                      <a ng-click="reditectToPage(item)"><span class="search-all-list" md-highlight-text="searchObj.citySearchText" md-highlight-flags="^i" class="capitalize">{{item.city}}</span></a>                             
+                    </mat-option>          
+                    <md-not-found>
+                      <i class="fa fa-exclamation-circle" style="color: red;"></i> No results found
+                    </md-not-found>
+                  </md-autocomplete>
                   <span  class="error-msg" ></span>
                 </div>
               </div>
@@ -72,40 +95,32 @@
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
                   <label class="control-label">Pin Code</label>
-                  <select class="custom-select">
+                  <input type="text" class="form-control custom-input" ng-model="listingObject.pin_code">
+                  <!-- <select class="custom-select">
                     <option>Select Pincode</option>
                     <option>Select Pincode</option>
-                  </select>
+                  </select> -->
                 </div>
               </div>
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
                   <label class="control-label">State</label>
-                  <input type="text" class="form-control custom-input">
+                  <input type="text" class="form-control custom-input" ng-model="listingObject.state">
                   <span  class="error-msg" ></span>
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="form-group">
-                  <label class="control-label">State</label>
-                  <input type="text" class="form-control custom-input">
-                  <span  class="error-msg" ></span>
-                </div>
-              </div>
-            </div>
+            </div>            
             <div class="fl-btn-sec">
-              <button class="btn">Submit</button>
+              <button ng-click="submitLocationInfo()" class="btn">Submit</button>
               <a href="" class="pull-right">Next <i class="fa fa-arrow-right"></i></a>
             </div>
         </div>
-        <div class="df-form-sec" id="2" ng-show="step=='location'">
+        <div class="df-form-sec" id="2" ng-show="step=='contact'">
             <div class="row">
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
                   <label class="control-label">Contact Person</label>
-                  <input type="text" class="form-control custom-input">
+                  <input type="text" class="form-control custom-input" ng-model="listingObject.pin_code">
                   <span  class="error-msg"></span>
                 </div>
               </div>
@@ -224,12 +239,12 @@
             </div>
             <div class="fl-btn-sec">
               <a href="" class="pull-left"><i class="fa fa-arrow-left"></i> Previous</a>
-              <button class="btn se-btn">Save & Exit</button>
-              <button class="btn sc-btn">Save & Continue</button>
-              <a href="" class="pull-right">Next <i class="fa fa-arrow-right"></i></a>
+              <!-- <button class="btn se-btn">Save & Exit</button> -->
+              <button class="btn sc-btn" ng-click="submitContact()">Save & Continue</button>
+              <a href="" class="pull-right" ng-click="submitContact()">Next <i class="fa fa-arrow-right"></i></a>
             </div>
         </div>
-        <div class="df-form-sec" id="3" ng-show="step=='contact'">
+        <div class="df-form-sec" id="3" ng-show="step=='others'">
             <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <h5 class="hurs-oprtn">Hours of Operation</h5>
@@ -497,7 +512,7 @@
               <a href="" class="pull-right">Next <i class="fa fa-arrow-right"></i></a>
             </div>
         </div>
-        <div class="df-form-sec" id="4" ng-show="step=='others'">
+        <div class="df-form-sec" id="4" ng-show="step=='keyword'">
           <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
               <h5 class="hurs-oprtn">Business Keywords</h5>
