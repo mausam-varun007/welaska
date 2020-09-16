@@ -22,17 +22,45 @@
 			<p class="logo-text"><a href="" style="color: #f00;">WE LASKA</a></p>
 		</div>
 		<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 header-listing-section">			
-			<a ui-sref="freeListing" class="free-listing">Free Listing</a>
-			<div class="user-login">
-				<a class="login-user" data-toggle="modal" data-target="#loginModal">Login</a>
-				<a class="signup-user" data-toggle="modal" data-target="#loginModal">Signup</a>
-				
+			<a ui-sref="freeListing" class="free-listing">Free Listing</a>			
+			<div class="user-login" ng-if="user_name=='' || user_name==null">
+				<a class="login-user" data-toggle="modal" data-target="#loginModal" ng-click="modalType='Login'">Login</a>
+				<a class="signup-user" data-toggle="modal" data-target="#loginModal" ng-click="modalType='Signup'">Signup</a>
+			</div>			
+			<div class="profile-image-section" ng-show="user_name">
+				<span>Hi {{user_name}} </span>  <img src="{{profile_image}}" class="profile-image">
 			</div>
 		</div>
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<div class="search">	        		        			        		
-        			<select class="form-control custom-select"  name="searchLocation" ng-model="listingObj.searchLocation" ng-options="o.value as o.value for o in cityList">
-                      </select>	 
+        			<!-- <select class="form-control custom-select"  name="searchLocation" 	ng-model="listingObj.searchLocation" ng-options="o.value as o.value for o in cityList">
+                      </select>	  -->
+                 <div class="city-dropdown">                 	
+                     <md-autocomplete 
+			            ng-mouseover="enableScrollOnAutoCompleteList($event)"
+			            ng-click="enableScrollOnAutoCompleteList($event)"			            
+			            md-dropdown-position="{{customPosition}}"                            
+			            md-no-cache="noCache"
+			            ng-model="listingObject.city"
+			            md-selected-item="citySelectedItem"
+			            md-search-text-change="innerHeaderTextChange(searchObj.citySearchText)"
+			            md-search-text="searchObj.citySearchText"
+			            md-selected-item-change="citySelectedChange(item)"
+			            md-items="item in cityQuerySearch(searchObj.citySearchText)"
+			            md-item-text="item.city"                          
+			            md-clear-button="false" 
+			            placeholder="City"
+			            input-aria-labelledby="favoriteStateLabel"
+			            class="custom-md-autocomplete custom-input"
+			            input-aria-describedby="autocompleteDetailedDescription" md-dropdown-position="auto">
+			            <mat-option >             
+			              <a ng-click="reditectToPage(item)"><span class="search-all-list" md-highlight-text="searchObj.citySearchText" md-highlight-flags="^i" class="capitalize">{{item.city}}</span></a>                             
+			            </mat-option>          
+			            <md-not-found>
+			              <i class="fa fa-exclamation-circle" style="color: red;"></i> No results found
+			            </md-not-found>
+			        </md-autocomplete>
+                 </div>
                       <div class="main-search-md-autocomple">
 					    <md-autocomplete 
 			              ng-mouseover="enableScrollOnAutoCompleteList($event)"
@@ -124,19 +152,27 @@
 	  <div class="modal-content">
 	    <div class="modal-header">
 	      <button type="button" class="close" data-dismiss="modal">&times;</button>
-	      <h4 class="modal-title">Login</h4>
+	      <h4 class="modal-title">{{modalType}}</h4>
 	    </div>
 	    <div class="modal-body">	      	
-	      	<div class="form-group">		      
-		      <input type="text" class="form-control custom-input" id="name" placeholder="Name" name="name">
-		    </div>
-		    <div class="form-group">		      
-		      <input type="text" class="form-control custom-input" id="mobile" placeholder="Mobile Number" name="mobile">
-		    </div>
+	    	<div class="mobile-section" ng-show="!isVerificationActive">	    		
+		      	<div class="form-group">		      
+			      <input type="text" class="form-control custom-input" id="name" placeholder="Name" name="name" ng-model="listingObj.user_name">
+			    </div>
+			    <div class="form-group">		      
+			      <input type="text" class="form-control custom-input" id="mobile" placeholder="Mobile Number" ng-model="listingObj.mobile" name="mobile">
+			    </div>
+	    	</div>
+	    	<div class="verification-section" ng-show="isVerificationActive">	    		
+	    		<p>Please enter your mobile verification code</p>
+		      	<div class="form-group">		      
+			      <input type="number" class="form-control custom-input" minlength="6" maxlength="6" id="verification_code" placeholder="Verification Code" ng-model="listingObj.verification_code" name="verification_code">
+			    </div>			    
+	    	</div>
 	    </div>
 	    <div class="modal-footer">
 		    <div>
-		    	<button class="btn btn-default otp-button">Send OTP</button>
+		    	<button class="btn btn-default otp-button" ng-click="loginCode()">Send OTP</button>
 		    </div>	      
 	    </div>
 	  </div>

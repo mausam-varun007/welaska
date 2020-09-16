@@ -1,4 +1,4 @@
-var app = angular.module('App', ['ui.bootstrap','ui.router','ngMaterial', 'ngMessages','toastr']); 
+var app = angular.module('App', ['ngAnimate','ngSanitize','ui.bootstrap','ui.router','ngMaterial', 'ngMessages','toastr']); 
 
 app.service('homeService', function ($http,$q,$rootScope) {
     var getCategoryList    = undefined;
@@ -138,8 +138,16 @@ app.config(function($stateProvider, $locationProvider,
 }); 
 
 app.controller('MainCtrl', function() {}); 
-app.controller('HomeCtrl', function($scope,homeService,$state,$log,$http) {
+app.controller('HomeCtrl', function($scope,homeService,$state,$log,$http,toastr,storageService,$rootScope) {
     
+    
+    if(storageService.get('user_name')){
+        $rootScope.mobile = storageService.get('mobile') ;
+        $rootScope.user_name = storageService.get('user_name') ;
+    }    
+    $rootScope.profile_image = Base_Url+'assets/img/welaska_dummy.png';
+   
+
     // UI SLIDER
     $scope.myInterval = 5000;
       var slides = $scope.slides = [];
@@ -154,13 +162,44 @@ app.controller('HomeCtrl', function($scope,homeService,$state,$log,$http) {
       for (var i=0; i<4; i++) {
         $scope.addSlide();
       }
+    $scope.listingObj = {};
+    $scope.isVerificationActive = false;
+    $rootScope.mobile = '' ;
+
+    ///////////////////////// Login Code
+    $scope.loginCode =function(){        
+        if(!$scope.isVerificationActive){
+            $scope.listingObj.verification_code = null ;
+        }
+        
+        $http.post(Base_url+'Home/LoginCode',{user_name:$scope.listingObj.user_name,mobile:$scope.listingObj.mobile,verification_code:$scope.listingObj.verification_code})
+                .then(function(response){ 
+                    
+                if(response.data.status==1){
+                    console.log(response.data.msg);
+                    angular.element("#loginModal").modal('hide');
+                    toastr.success(response.data.msg);
+                    $scope.listingObj = {};
+                    $scope.isVerificationActive = false;
+                    
+                    storageService.set('user_name', response.data.result.user_name);
+                    storageService.set('mobile', response.data.result.mobile);
+                    $rootScope.mobile = response.data.result.mobile ;
+                    $rootScope.user_name = response.data.result.user_name;
+                    $rootScope.profile_image = Base_Url+'assets/img/welaska_dummy.png';                    
+                }else if(response.data.status==2){
+                    $scope.isVerificationActive = true;
+                }                                   
+        });
+    }
+      
     
     $scope.previous = function(){
         console.log('k');
         angular.element('.glyphicon-chevron-left').trigger('click'); 
     }
 
-    $scope.listingObj = {};
+    
     $scope.test = 'jo';
     $scope.cityList = 0;
     $scope.cityList = [{id:1,value:'Indore'} ,{id:2,value:'Bangalore'} ,{id:3,value:'Jabalpur'} ,{id:4,value:'Pune'} ,{id:5,value:'Delhi'} ,{id:6,value:'Ahmedabed'} ,{id:7,value:'Chennai'}];     
@@ -224,15 +263,57 @@ app.controller('HomeCtrl', function($scope,homeService,$state,$log,$http) {
                 $state.go('singleItem',{'itemId':item.item_id});
             }
     }
+
+    $scope.searchObj = {};   
+    $scope.searchLocation =  $state.params.location ;    
+    $scope.citySelectedChange = citySelectedChange;
+    function loadAllCityList(data) {
+        var classMateAllStates = data;
+        $scope.generateArray = [];
+        angular.forEach(classMateAllStates, function (value, key) {                               
+            if(value.city_name){                    
+                $scope.generateArray.push({                        
+                    'id': value.id.toLowerCase(),
+                    'city':value.city_name,
+                    'state':value.city_state,
+                });                    
+            }
+        });
+        return $scope.generateArray;
+    }     
+    $scope.cityQuerySearch = function (keyword) {            
+        return $http
+        .post(Base_url+'Home/getCityList',{keyword:keyword})
+            .then(function(response){                                    
+                $scope.classmateStats = loadAllCityList(response.data.data);                                       
+                return $scope.classmateStats;
+        });
+    };
+    
+    function citySelectedChange(item) {        
+        if(item){
+              storageService.set('current_location',item.city);
+              // $scope.listingObject.city = item.city;
+              // $scope.listingObject.state = item.state;            
+        }else{
+              // $scope.listingObject.state = '';    
+        }
+    }   
+
     
 
     
     
 }); 
 app.controller('LoginCtrl', function() {}); 
-app.controller('ListingCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService) {
+app.controller('ListingCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService,$rootScope) {
 
     window.scrollTo(0, 0);      
+    if(storageService.get('user_name')){
+        $rootScope.mobile = storageService.get('mobile') ;
+        $rootScope.user_name = storageService.get('user_name') ;
+    }    
+    $rootScope.profile_image = Base_Url+'assets/img/welaska_dummy.png';
     $scope.listingObj = {};    
     
     $scope.listingDataVO = [];
@@ -242,6 +323,33 @@ app.controller('ListingCtrl', function($scope,$state,$http,$stateParams,$timeout
     $scope.premiumPageIndex = 1;  
     // $scope.pageSizeSelected = ($stateParams.paginationLength && angular.isNumber(parseInt($stateParams.paginationLength)))?$stateParams.paginationLength:5; // Maximum number of items per page.      
     $scope.pageSizeSelected = 5; // Maximum number of items per page.      
+
+
+    ////////////////// LOGIN
+
+    $scope.listingObj = {};
+    $scope.isVerificationActive = false;
+
+    ///////////////////////// Login Code
+    $scope.loginCode =function(){        
+        if(!$scope.isVerificationActive){
+            $scope.listingObj.verification_code = null ;
+        }
+        console.log($scope.listingObj);
+        $http.post(Base_url+'Home/LoginCode',{user_name:$scope.listingObj.user_name,mobile:$scope.listingObj.mobile,verification_code:$scope.listingObj.verification_code})
+                .then(function(response){ 
+                    
+                if(response.data.status==1){
+                    console.log(response.data.msg);
+                    angular.element("#loginModal").modal('hide');
+                    toastr.success(response.data.msg);
+                    $scope.listingObj = {};
+                    $scope.isVerificationActive = false;
+                }else if(response.data.status==2){
+                    $scope.isVerificationActive = true;
+                }                                   
+        });
+    }
 
     $scope.isLoaderActive = false ;
     $scope.pageChanged = function (Type) {
@@ -345,12 +453,40 @@ app.controller('ListingCtrl', function($scope,$state,$http,$stateParams,$timeout
     
 
 }); 
-app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService) {
+app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService,$rootScope) {
 
-    
+    if(storageService.get('user_name')){
+        $rootScope.mobile = storageService.get('mobile') ;
+        $rootScope.user_name = storageService.get('user_name') ;
+    }    
+    $rootScope.profile_image = Base_Url+'assets/img/welaska_dummy.png';
     $scope.searchLocation = storageService.get('current_location') ;
-    console.log($scope.searchLocation);
     $scope.itemDetailsByID = [];
+
+    $scope.listingObj = {};
+    $scope.isVerificationActive = false;
+
+    ///////////////////////// Login Code
+    $scope.loginCode =function(){        
+        if(!$scope.isVerificationActive){
+            $scope.listingObj.verification_code = null ;
+        }
+        console.log($scope.listingObj);
+        $http.post(Base_url+'Home/LoginCode',{user_name:$scope.listingObj.user_name,mobile:$scope.listingObj.mobile,verification_code:$scope.listingObj.verification_code})
+                .then(function(response){ 
+                    
+                if(response.data.status==1){
+                    console.log(response.data.msg);
+                    angular.element("#loginModal").modal('hide');
+                    toastr.success(response.data.msg);
+                    $scope.listingObj = {};
+                    $scope.isVerificationActive = false;
+                }else if(response.data.status==2){
+                    $scope.isVerificationActive = true;
+                }                                   
+        });
+    }
+
     $scope.getItemByID = function(){        
 
         $http.post(Base_url+'Home/getItemByID',{ item_id:$stateParams.itemId})
@@ -442,7 +578,58 @@ app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$time
         
 
 }); 
-app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService,toastr,homeService) {
+app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService,toastr,homeService,$rootScope) {
+
+    if(storageService.get('user_name')){
+        $rootScope.mobile = storageService.get('mobile') ;
+        $rootScope.user_name = storageService.get('user_name') ;
+    } 
+    $scope.listingObject = {};
+    $scope.selectObj = {};
+    $rootScope.profile_image = Base_Url+'assets/img/welaska_dummy.png';
+
+
+    $scope.workingHours = [{'id':1,value:'all_time',display:'Open 24 Hrs'},{'id':2,value:'00:00',display:'00:00'},{'id':3,value:'00:30',display:'00:30'},{'id':4,value:'01:00',display:'01:00'},{'id':5,value:'01:30',display:'01:30'},{'id':6,value:'02:00',display:'02:00'},{'id':6,value:'02:30',display:'02:30'},{'id':7,value:'03:00',display:'03:00'},{'id':8,value:'03:30',display:'03:30'},{'id':9,value:'04:00',display:'04:00'},{'id':10,value:'04:30',display:'04:30'},{'id':11,value:'05:00',display:'05:00'},{'id':12,value:'05:30',display:'05:30'},{'id':13,value:'06:00',display:'06:00'},{'id':14,value:'06:30',display:'06:20'},
+                            {'id':15,value:'07:00',display:'07:00'},{'id':16,value:'07:30',display:'07:30'},{'id':17,value:'08:00',display:'08:00'},{'id':18,value:'08:30',display:'08:30'},{'id':19,value:'09:00',display:'09:00'},{'id':19,value:'09:00',display:'09:00'},{'id':20,value:'09:30',display:'09:30'},{'id':21,value:'10:00',display:'10:00'},{'id':22,value:'10:30',display:'10:30'},{'id':23,value:'11:00',display:'11:00'},{'id':24,value:'11:30',display:'11:30'},{'id':25,value:'12:00',display:'12:00'},{'id':26,value:'12:30',display:'12:30'},{'id':27,value:'13:00',display:'13:00'},
+                            {'id':28,value:'13:30',display:'13:30'},{'id':29,value:'14:00',display:'14:00'},{'id':30,value:'14:30',display:'14:30'},{'id':31,value:'15:00',display:'15:00'},{'id':32,value:'15:30',display:'15:30'},{'id':33,value:'16:00',display:'16:00'},{'id':34,value:'16:30',display:'16:30'},{'id':35,value:'17:00',display:'17:00'},{'id':36,value:'17:30',display:'17:30'},{'id':37,value:'18:00',display:'18:00'},{'id':38,value:'18:30',display:'18:30'},{'id':39,value:'19:00',display:'19:00'},{'id':40,value:'19:30',display:'19:30'},{'id':41,value:'20:00',display:'20:00'},
+                            {'id':42,value:'21:00',display:'21:00'},{'id':43,value:'21:00',display:'21:00'},{'id':44,value:'21:30',display:'21:30'},{'id':45,value:'22:00',display:'22:00'},{'id':46,value:'22:30',display:'22:30'},{'id':47,value:'23:00',display:'23:00'},{'id':48,value:'23:30',display:'23:30'}];
+
+          
+    $scope.monday_from      = $scope.workingHours[0];
+    $scope.monday_to        = $scope.workingHours[0];
+    $scope.tuesday_from     = $scope.workingHours[0];
+    $scope.tuesday_to       = $scope.workingHours[0];
+    $scope.wednesday_from   = $scope.workingHours[0];
+    $scope.wednesday_to     = $scope.workingHours[0];    
+    $scope.thursday_from    = $scope.workingHours[0];
+    $scope.thursday_to      = $scope.workingHours[0];
+    $scope.friday_from      = $scope.workingHours[0];
+    $scope.friday_to        = $scope.workingHours[0];
+    $scope.saturday_from    = $scope.workingHours[0];
+    $scope.saturday_to      = $scope.workingHours[0];
+    $scope.sunday_from      = $scope.workingHours[0];
+    $scope.sunday_to        = $scope.workingHours[0];
+
+    $scope.paymentMode = [{id:0,value:'Cash',isChecked:false},{id:1,value:'Master Card',isChecked:false},{id:2,value:'Visa Card',isChecked:false},{id:3,value:'Debit Cards',isChecked:false},{id:4,value:'Money Orders',isChecked:false},{id:5,value:'Cheques',isChecked:false},{id:6,value:'Credit Card',isChecked:false},{id:7,value:'American Express Card',isChecked:false},{id:8,value:'Paytm',isChecked:false},{id:9,value:'G Pay',isChecked:false},{id:10,value:'UPI',isChecked:false},{id:11,value:'BHIM',isChecked:false},{id:12,value:'Airtel Money',isChecked:false},{id:13,value:'PhonePe',isChecked:false},{id:14,value:'NEFT',isChecked:false},{id:15,value:'Amazon Pay',isChecked:false}];
+
+    $scope.yearList = [{
+        key: 0,
+        value: 'Select Years'
+    }];
+    for (x = 1; x <= 31; x++) {
+        if (x > 1) {
+            $scope.yearList.push({
+                key: x,
+                value: x + ' Years'
+            });
+        } else {
+            $scope.yearList.push({
+                key: x,
+                value: x + ' Year'
+            });
+        }
+    }    
+
 
     $scope.listingObject = {};
     $scope.step = 'location';
@@ -488,8 +675,18 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
 
     function citySelectedChange(item) {
         console.log(item);
-      $scope.listingObject.city = item.city;
+        if(item){
+              $scope.listingObject.city = item.city;
+              $scope.listingObject.state = item.state;            
+        }else{
+                $scope.listingObject.state = '';    
+        }
     }   
+    $scope.keywordObject = [];
+    //$scope.ngChangeFruitNames = angular.copy($scope.fruitNames);
+    $scope.onModelChange = function(newModel) {
+      $log.log('The model has changed to ' + newModel + '.');
+    };
 
     $scope.submitBasicDetails = function(){
             console.log($scope.listingObject);
@@ -497,8 +694,7 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
                     company_name:$scope.listingObject.company_name,
                     first_name:$scope.listingObject.first_name,
                     city:$scope.listingObject.city,
-                    last_name:$scope.listingObject.last_name,
-                    email:$scope.listingObject.email,
+                    last_name:$scope.listingObject.last_name,                    
                     mobile:$scope.listingObject.mobile,
                     land_line:$scope.listingObject.land_line,
                     step:'business'
@@ -540,26 +736,114 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
     $scope.submitContact = function(){
             
             $http.post(Base_url+'Home/submitBasicDetails',{
-                    business_name:$scope.listingObject.business_name,
-                    building:$scope.listingObject.building,
-                    street_address:$scope.listingObject.street_address,
-                    landmark:$scope.listingObject.landmark,
-                    area:$scope.listingObject.area,
-                    city:$scope.listingObject.city,
-                    state:$scope.listingObject.state,
-                    pin_code:$scope.listingObject.pin_code,
-                    state:$scope.listingObject.state,
-                    step:'location'
+                    contact_person:$scope.listingObject.contact_person,
+                    designation:$scope.listingObject.designation,
+                    land_line_number:$scope.listingObject.land_line_number,
+                    mobile:$scope.listingObject.mobile,
+                    fax:$scope.listingObject.fax,
+                    toll_free_number:$scope.listingObject.toll_free_number,
+                    email:$scope.listingObject.email,
+                    website:$scope.listingObject.website,
+                    facebook:$scope.listingObject.facebook,
+                    twitter:$scope.listingObject.twitter,
+                    youtube:$scope.listingObject.youtube,
+                    others:$scope.listingObject.others,
+                    step:'contact'
 
                 })
                 .then(function(response){   
                 if(response.data.status){                    
-                    $scope.step = 'contact';
+                    $scope.step = 'others';
                 }else{                    
                     toastr.error(response.data.msg);
                 }                                 
                     
             });
+    }
+    $scope.submitOthers = function(){
+
+            $scope.shopTimingObj = [];
+            if($scope.monday_from){
+                $scope.shopTimingObj.push({id:0,days:'monday',from:$scope.monday_from.display,to:$scope.monday_to.display,isClosed:$scope.monday_closed ? 1 : 0})
+            }
+            if($scope.tuesday_from){
+                $scope.shopTimingObj.push({id:1,days:'tuesday',from:$scope.tuesday_from.display,to:$scope.tuesday_to.display,isClosed:$scope.tuesday_closed ? 1 : 0})
+            }
+            if($scope.wednesday_from){
+                $scope.shopTimingObj.push({id:2,days:'wednesday',from:$scope.wednesday_from.display,to:$scope.wednesday_to.display,isClosed:$scope.wednesday_closed ? 1 : 0})
+            }
+            if($scope.thursday_from){
+                $scope.shopTimingObj.push({id:3,days:'thursday',from:$scope.thursday_from.display,to:$scope.thursday_to.display,isClosed:$scope.thursday_closed ? 1 : 0})
+            }
+            if($scope.friday_from){
+                $scope.shopTimingObj.push({id:4,days:'friday',from:$scope.friday_from.display,to:$scope.friday_to.display,isClosed:$scope.friday_closed ? 1 : 0})
+            }
+            if($scope.saturday_from){
+                $scope.shopTimingObj.push({id:4,days:'saturday',from:$scope.saturday_from.display,to:$scope.saturday_to.display,isClosed:$scope.saturday_closed ? 1 : 0})
+            }
+            if($scope.sunday_from){
+                $scope.shopTimingObj.push({id:4,days:'sunday',from:$scope.sunday_from.display,to:$scope.sunday_to.display,isClosed:$scope.sunday_closed ? 1 : 0})
+            }
+            console.log($scope.shopTimingObj);
+            console.log($scope.paymentMode);
+            
+
+            $http.post(Base_url+'Home/submitBasicDetails',{                    
+                    shop_timing:$scope.shopTimingObj,
+                    payment_mode:$scope.paymentMode,
+                    step:'others'
+                })
+                .then(function(response){   
+                if(response.data.status){                    
+                    $scope.step = 'keyword';                    
+                }else{                    
+                    toastr.error(response.data.msg);
+                }                                 
+                    
+            });
+    }
+    $scope.submitKeywords = function(){
+            
+            $http.post(Base_url+'Home/submitBasicDetails',{
+                    keywords:$scope.keywordObject,                 
+                    step:'keywords'
+                })
+                .then(function(response){   
+                // if(response.data.status){                    
+                //     $scope.step = 'others';
+                // }else{                    
+                //     toastr.error(response.data.msg);
+                // }                                 
+                    
+            });
+    }
+    $scope.isVerificationActive = false; 
+    $scope.item_verification_code = '';
+    $scope.getVerificatioCode = function(){
+        console.log($scope.item_verification_code);
+            $http.post(Base_url+'Home/submitBasicDetails',{                    
+                    step:'get_verification_code',
+                    item_verification_code:$scope.item_verification_code ? $scope.item_verification_code : null
+                })
+                .then(function(response){   
+                    
+                if(response.data.status==2){                    
+                    $scope.isVerificationActive = true;
+                }else if(response.data.status==1){                    
+                    toastr.success(response.data.msg);
+                    angular.element("#myModal").modal('hide');            
+                    $scope.item_verification_code = '';
+                    
+                    $timeout(function () {                    
+                        $state.go('Home');
+                    }, 500);
+
+                }else{                    
+                    toastr.error(response.data.msg);
+                }                                 
+                    
+            });
+
     }
 
 

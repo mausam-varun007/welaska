@@ -70,13 +70,15 @@ input.form-control.custom-input {
 .df-list ul li.active {
     background: #ff0000;
     border: 1px solid #ff0000;
+    outline: none;
 }
 .df-list ul li:hover {
-    background: #ff0000;
     border: 1px solid #ff0000;
+    outline: none;
+
 }
 .df-list ul li:hover a{
-    color: #fff;
+    color: #337ab7;
 }
 .df-list ul li.active a{
     color: #fff;
@@ -158,19 +160,20 @@ p.bk-p {
     font-size: 14px;
     margin: 50px 0px;
 }
-li.heading-li {
+.heading-li {
     background: #008cba;
     margin-bottom: 20px;
+    padding: 10px;
     border:1px solid #008cba;
 }
-.df-list ul li.heading-li:hover {
+.heading-li:hover {
     background: #fff;
     border:1px solid #008cba;
 }
-.df-list ul li.heading-li:hover a{
+.heading-li:hover a{
     color: #008cba;
 }
-li.heading-li a{
+.heading-li a{
     color: #fff;
 }
 .modal-dialog.custom-modal {
@@ -206,4 +209,7 @@ li.heading-li a{
 }
 .toast-message{
     color: #fff !important;
+}
+.df-select.show-xs{
+  display: none;
 }

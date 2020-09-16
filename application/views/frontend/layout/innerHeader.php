@@ -19,66 +19,58 @@
 
 <body>
 	<div class="row search-header" >	
-		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 header-logo-section">
+		<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 header-logo-section">
 			<p class="logo-text"><a  href="<?= base_url(); ?>">WELASKA</a></p>
 		</div>
-		<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 header-listing-section">			
-
-			<!-- <form class="example" action="/action_page.php" style="margin:auto;max-width:300px">
-			  <input type="text" search-listing-data id="search_input" name="search_input" ng-model="searchData" placeholder="Search.." autocomplete="off" >
-			  <button type="submit"><i class="fa fa-search"></i></button>
-			</form>		 -->	
-			<!-- <div class="search">	        		        			
-        		<div class="search-area ">	        			        			
-        			<input type="search" id="search_input" name="search_input" placeholder="Search.." class="form-control search-input" name="key_words" >
-        			<button type="submit" class="form-control search-button" ><i class="fa fa-search" aria-hidden="true" class="search-icon"></i>
-					</button>
-					<div class="home-search-result home-search-hide" id="dataList">						
-					</div>
-        			
-        		</div>	        	
-		    </div> -->
-
-      <div class="search-md-autocomple">
-		    <md-autocomplete 
-              ng-mouseover="enableScrollOnAutoCompleteList($event)"
-              ng-click="enableScrollOnAutoCompleteList($event)"
-              ng-focus="isSearchFocus=true"
-              ng-blur="isSearchFocus=false"
-              md-dropdown-position="{{customPosition}}"                            
-              md-no-cache="noCache"
-              ng-model="searchData"
-              md-selected-item="classmateSelectedItem"
-              md-search-text-change="innerHeaderTextChange(searchObj.innerHeaderSearchText)"
-              md-search-text="searchObj.innerHeaderSearchText"
-              md-selected-item-change="innerHeaderChange(item)"
-              md-items="item in innerHeaderQuerySearch(searchObj.innerHeaderSearchText)"
-              md-item-text="item.name"              
-              placeholder="{{isSearchFocus ? searchLocation : 'Search'}}"
-              md-clear-button="true" 
-              input-aria-labelledby="favoriteStateLabel"
-              class="custom-md-autocomplete"
-              input-aria-describedby="autocompleteDetailedDescription" md-dropdown-position="auto">
-              <mat-option >
-               <!--  <img style="vertical-align:middle;" aria-hidden data-ng-src="{{(item.image) ? item.image : '<?= base_url() ?>assets/img/defualt-logo.png'}}" height="20" /> -->               
-                <a ng-click="reditectToPage(item)"><span class="search-all-list" md-highlight-text="searchObj.innerHeaderSearchText" md-highlight-flags="^i" class="capitalize">{{item.name}}</span></a>                
-               <!-- <a href="" ng-if="item.type='item_type'">               	
-                <span class="category-item" md-highlight-text="searchObj.innerHeaderSearchText" md-highlight-flags="^i" class="capitalize">{{item.name}}</span>                
-               </a> -->
-              </mat-option>
-              <!-- <md-item-template>
-                <span md-highlight-text="searchObj.innerHeaderSearchText" md-highlight-flags="^i" class="capitalize">{{item.name + ' ' +item.last_name}} </span>&nbsp; <span class="help-email">{{item.email}}</span>
-              </md-item-template> -->
-              <md-not-found>
-                <i class="fa fa-exclamation-circle" style="color: red;"></i> No results found
-              </md-not-found>
-            </md-autocomplete>   
-            <button type="submit" class="form-control search-button" ><i class="fa fa-search" aria-hidden="true" class="search-icon"></i>
-			</button>
-      </div>
-
-			<a ui-sref="freeListing" class="free-inner-listing">Free Listing</a>
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 header-listing-section">
+	      <div class="search-md-autocomple">
+			    <md-autocomplete 
+	              ng-mouseover="enableScrollOnAutoCompleteList($event)"
+	              ng-click="enableScrollOnAutoCompleteList($event)"
+	              ng-focus="isSearchFocus=true"
+	              ng-blur="isSearchFocus=false"
+	              md-dropdown-position="{{customPosition}}"                            
+	              md-no-cache="noCache"
+	              ng-model="searchData"
+	              md-selected-item="classmateSelectedItem"
+	              md-search-text-change="innerHeaderTextChange(searchObj.innerHeaderSearchText)"
+	              md-search-text="searchObj.innerHeaderSearchText"
+	              md-selected-item-change="innerHeaderChange(item)"
+	              md-items="item in innerHeaderQuerySearch(searchObj.innerHeaderSearchText)"
+	              md-item-text="item.name"              
+	              placeholder="{{isSearchFocus ? searchLocation : 'Search'}}"
+	              md-clear-button="true" 
+	              input-aria-labelledby="favoriteStateLabel"
+	              class="custom-md-autocomplete"
+	              input-aria-describedby="autocompleteDetailedDescription" md-dropdown-position="auto">
+	              <mat-option >
+	               <!--  <img style="vertical-align:middle;" aria-hidden data-ng-src="{{(item.image) ? item.image : '<?= base_url() ?>assets/img/defualt-logo.png'}}" height="20" /> -->               
+	                <a ng-click="reditectToPage(item)"><span class="search-all-list" md-highlight-text="searchObj.innerHeaderSearchText" md-highlight-flags="^i" class="capitalize">{{item.name}}</span></a>                
+	               <!-- <a href="" ng-if="item.type='item_type'">               	
+	                <span class="category-item" md-highlight-text="searchObj.innerHeaderSearchText" md-highlight-flags="^i" class="capitalize">{{item.name}}</span>                
+	               </a> -->
+	              </mat-option>
+	              <!-- <md-item-template>
+	                <span md-highlight-text="searchObj.innerHeaderSearchText" md-highlight-flags="^i" class="capitalize">{{item.name + ' ' +item.last_name}} </span>&nbsp; <span class="help-email">{{item.email}}</span>
+	              </md-item-template> -->
+	              <md-not-found>
+	                <i class="fa fa-exclamation-circle" style="color: red;"></i> No results found
+	              </md-not-found>
+	            </md-autocomplete>   
+	            <button type="submit" class="form-control search-button" ><i class="fa fa-search" aria-hidden="true" class="search-icon"></i>
+				</button>
+	      </div>
 		</div>				  
+      	<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 header-listing-section">
+			<div class="user-login" ng-if="user_name=='' || user_name==null">
+				<a class="login-user" data-toggle="modal" data-target="#loginModal" ng-click="modalType='Login'">Login</a>
+				<a class="signup-user" data-toggle="modal" data-target="#loginModal" ng-click="modalType='Signup'">Signup</a>
+			</div>
+			<a ui-sref="freeListing" class="free-inner-listing">Free Listing</a>
+			<div class="profile-image-section" ng-show="user_name">
+				<span>Hi {{user_name}} </span>  <img src="{{profile_image}}" class="profile-image">
+			</div>
+	  	</div>
 		</div>
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			
@@ -97,3 +89,38 @@
 
 </body>
 </html>
+
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" role="dialog">
+	<div class="modal-dialog">
+	  <!-- Modal content-->
+	  <div class="modal-content">
+	    <div class="modal-header">
+	      <button type="button" class="close" data-dismiss="modal">&times;</button>
+	      <h4 class="modal-title">{{modalType}}</h4>
+	    </div>
+	    <div class="modal-body">	      	
+	    	<div class="mobile-section" ng-show="!isVerificationActive">	    		
+		      	<div class="form-group">		      
+			      <input type="text" class="form-control custom-input" id="name" placeholder="Name" name="name" ng-model="listingObj.user_name">
+			    </div>
+			    <div class="form-group">		      
+			      <input type="text" class="form-control custom-input" id="mobile" placeholder="Mobile Number" ng-model="listingObj.mobile" name="mobile">
+			    </div>
+	    	</div>
+	    	<div class="verification-section" ng-show="isVerificationActive">	    		
+	    		<p>Please enter your mobile verification code</p>
+		      	<div class="form-group">		      
+			      <input type="number" class="form-control custom-input" minlength="6" maxlength="6" id="verification_code" placeholder="Verification Code" ng-model="listingObj.verification_code" name="verification_code">
+			    </div>			    
+	    	</div>
+	    </div>
+	    <div class="modal-footer">
+		    <div>
+		    	<button class="btn btn-default otp-button" ng-click="loginCode()">Send OTP</button>
+		    </div>	      
+	    </div>
+	  </div>
+	  
+	</div>
+</div>

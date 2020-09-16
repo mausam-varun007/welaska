@@ -6,11 +6,11 @@
       <div class="form-group">
         <label class="control-label">Company Name <span>*</span></label>
         <input type="text" ng-model="listingObject.company_name" class="form-control custom-input">
-        <span  class="error-msg">ddfdf</span>
+        <!-- <span  class="error-msg">ddfdf</span> -->
       </div>
     </div>
     <div class="col-md-6 col-sm-6 col-xs-12">
-      <div class="form-group">
+      <div class="form-group freelist-city" >
         <label class="control-label">City <span>*</span></label>
          <md-autocomplete 
             ng-mouseover="enableScrollOnAutoCompleteList($event)"
@@ -60,20 +60,11 @@
   <div class="row">
     <div class="col-md-6 col-sm-6 col-xs-12">
       <div class="form-group">
-        <label class="control-label">Email</label>
-        <input type="text" ng-model="listingObject.email" class="form-control custom-input">
-        <span  class="error-msg"></span>
-      </div>
-    </div>
-    <div class="col-md-6 col-sm-6 col-xs-12">
-      <div class="form-group">
         <label class="control-label">Mobile Number</label>
         <input type="text" ng-model="listingObject.mobile" class="form-control custom-input">
-        <span  class="error-msg" ></span>
+        <span  class="error-msg" ></span>        
       </div>
     </div>
-  </div>
-  <div class="row">
     <div class="col-md-6 col-sm-6 col-xs-12">
       <div class="form-group">
         <label class="control-label">Landline Number </label>
@@ -81,7 +72,7 @@
         <span  class="error-msg"></span>
       </div>
     </div>
-  </div>
+  </div>  
   <div class="fl-btn-sec">
   	<button type="button" class="btn" ng-click="submitBasicDetails()">Submit</button>
   </div>

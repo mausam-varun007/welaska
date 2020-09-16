@@ -13,6 +13,10 @@ class Home extends MY_Controller {
 	{
 		$this->load->view('index');
 	}
+  public function LoginCode()
+  { 
+    echo $this->Home->LoginCode();    
+  }
 
 	public function view($page)
 	{
@@ -96,8 +100,7 @@ class Home extends MY_Controller {
   } 
   public function submitBasicDetails()
   { 
-      $step = $this->input->post('step');
-      echo $step;
+      $step = $this->input->post('step');      
       switch ($step) {
               case 'business':                              
                   $result = $this->Home->submitBasicDetails();    
@@ -108,6 +111,15 @@ class Home extends MY_Controller {
               case 'contact':                              
                   $result = $this->Home->submitContact();    
                    break;               
+              case 'others':                              
+                  $result = $this->Home->submitOthers();    
+                   break;               
+              case 'keywords':                              
+                  $result = $this->Home->submitKeywords();    
+                   break;
+              case 'get_verification_code':                              
+                  $result = $this->Home->getVerifcationCode();    
+                   break;                                  
               }
             echo $result;
   }
