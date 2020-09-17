@@ -66,7 +66,9 @@
 				<a class="login-user" data-toggle="modal" data-target="#loginModal" ng-click="modalType='Login'">Login</a>
 				<a class="signup-user" data-toggle="modal" data-target="#loginModal" ng-click="modalType='Signup'">Signup</a>
 			</div>
-			<a ui-sref="freeListing" class="free-inner-listing">Free Listing</a>
+			<div class="inner-free-listing">				
+				<a ui-sref="freeListing" class="free-inner-listing">Free Listing</a>
+			</div>
 			<div class="profile-image-section" ng-show="user_name">
 				<span>Hi {{user_name}} </span>  <img src="{{profile_image}}" class="profile-image">
 			</div>

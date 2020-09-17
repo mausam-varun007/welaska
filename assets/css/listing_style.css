@@ -608,7 +608,7 @@ span.no-records {
     border-bottom: 1px solid #e2e2e2;
 }
 .main-search-md-autocomple md-autocomplete {
-    width: 86%;
+    width: 82%;
     height: 45px;
 }
 .search-md-autocomple md-autocomplete {
@@ -636,6 +636,7 @@ span.no-records {
     position: absolute;
     margin-left: 91px;
     top: 0px;
+    border-radius: 0px;
 }
 .main-search-md-autocomple md-autocomplete-wrap {
     height: 45px;
@@ -689,21 +690,22 @@ input.close-checkbox {
 .keyword-chips input.md-input:focus {     
      background-color: transparent;
 }
-.heading-li {
-    background: #008cba;
-    margin-bottom: 20px;
-    padding: 10px;
-    border:1px solid #008cba;
+.city-dropdown md-autocomplete input:not(.md-input) {
+    background-color: #f1f1f1;
 }
-.heading-li:hover {
-    background: #fff;
-    border:1px solid #008cba;
+md-autocomplete input:not(.md-input) {    
+    height: 45px;
 }
-.heading-li:hover a{
-    color: #008cba;
+md-autocomplete {
+    border-radius: 0px;
 }
-.heading-li a{
-    color: #fff;
+.inner-free-listing {
+    padding: 5px;
+}
+p.free-listing-logo {
+    font-size: 26px;
+    font-family: fantasy;
+    letter-spacing: 1.2px;
 }
 /*media query start*/
 @media screen and (max-width: 568px){

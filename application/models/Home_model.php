@@ -160,10 +160,14 @@ class Home_model extends MY_model
 		$this->db->group_by('category.category_name');
 		$query1 = $this->db->get_compiled_select();	
 
+		$where = "FIND_IN_SET('".$this->input->post('keyword')."', keywords)"; 
+
+
 		$this->db->select('business_name as search_item,category_id as category_id, "item_type" as type, id as item_id');
 		$this->db->from('listing_items');				
 		$this->db->where('city',$this->input->post('location'));
-		$this->db->like('business_name', $this->input->post('keyword'));						
+		$this->db->like('business_name', $this->input->post('keyword'));				
+		$this->db->or_where($where);
 		$query2 = $this->db->get_compiled_select();		
 
 
@@ -377,8 +381,9 @@ class Home_model extends MY_model
 	public function submitKeywords()
 	{		
 		if($this->input->post()){				
+			$NewsString =implode(',',$this->input->post('keywords')); 
 
-				$Updated = $this->updateData('listing_items',array('keywords'=>json_encode($this->input->post('keywords'))),array('id'=>$this->session->userdata('last_id')));
+				$Updated = $this->updateData('listing_items',array('keywords'=>$NewsString),array('id'=>$this->session->userdata('last_id')));
 				
 				if($Updated){
 					return json_encode(array('status'=>1));					
@@ -389,7 +394,8 @@ class Home_model extends MY_model
 	}
 	public function getVerifcationCode()
 	{		
-		if($this->input->post()){							
+		if($this->input->post()){	
+			
 			if(empty($this->input->post('item_verification_code'))){
 
 				$exist = $this->db->select('mobile')->from('listing_items')->where('id',$this->session->userdata('last_id'))->get();
@@ -399,8 +405,8 @@ class Home_model extends MY_model
                	    return json_encode(array('status'=>2,'msg'=>'OTP sent to mobile number'));	
 				}
 			}else if(!empty($this->input->post('item_verification_code'))){
-
-				if($this->session->userdata('temp_verification_code')==$this->input->post('item_verification_code')){
+					
+				if($this->session->userdata('temp_item_verification_code')==$this->input->post('item_verification_code')){
 
 					$Updated = $this->updateData('listing_items',array('is_mobile_verified'=>1) ,array('id'=>$this->session->userdata('last_id')));					
   					if($Updated){
