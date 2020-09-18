@@ -35,6 +35,7 @@
 			<div class="search">	        		        			        		
         			<!-- <select class="form-control custom-select"  name="searchLocation" 	ng-model="listingObj.searchLocation" ng-options="o.value as o.value for o in cityList">
                       </select>	  -->
+
                  <div class="city-dropdown">                 	
                      <md-autocomplete 
 			            ng-mouseover="enableScrollOnAutoCompleteList($event)"
@@ -49,7 +50,7 @@
 			            md-items="item in cityQuerySearch(searchObj.citySearchText)"
 			            md-item-text="item.city"                          
 			            md-clear-button="false" 
-			            placeholder="City"
+			            placeholder="{{(listingObject.city) ? listingObject.city : 'City' }}"
 			            input-aria-labelledby="favoriteStateLabel"
 			            class="custom-md-autocomplete custom-input"
 			            input-aria-describedby="autocompleteDetailedDescription" md-dropdown-position="auto">
@@ -83,7 +84,7 @@
 			              input-aria-describedby="autocompleteDetailedDescription" md-dropdown-position="auto">
 			              <mat-option >
 			               <!--  <img style="vertical-align:middle;" aria-hidden data-ng-src="{{(item.image) ? item.image : '<?= base_url() ?>assets/img/defualt-logo.png'}}" height="20" /> -->               
-			                <a ng-click="reditectToPage(item)"><span class="search-all-list" md-highlight-text="searchObj.innerHeaderSearchText" md-highlight-flags="^i" class="capitalize">{{item.name}}</span></a>                
+			                <a class="category-items"><span class="search-all-list" md-highlight-text="searchObj.innerHeaderSearchText" md-highlight-flags="^i" class="capitalize">{{item.name}}</span></a>                
 			               <!-- <a href="" ng-if="item.type='item_type'">               	
 			                <span class="category-item" md-highlight-text="searchObj.innerHeaderSearchText" md-highlight-flags="^i" class="capitalize">{{item.name}}</span>                
 			               </a> -->
@@ -94,8 +95,8 @@
 			              <md-not-found>
 			                <i class="fa fa-exclamation-circle" style="color: red;"></i> No results found
 			              </md-not-found>
-			            </md-autocomplete>   
-			            <button type="submit" class="form-control search-button main-search-button" ><i class="fa fa-search" aria-hidden="true" class="search-icon"></i>
+			            </md-autocomplete>   			            
+			            <button type="submit" ng-click="reditectToPage(selectItem)" class="form-control search-button main-search-button" ><i class="fa fa-search" aria-hidden="true" class="search-icon"></i>
 						</button>
 			      </div>       	
 		    </div>

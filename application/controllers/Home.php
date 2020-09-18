@@ -67,14 +67,18 @@ class Home extends MY_Controller {
       $selectedItemsData = $this->Home->getListingItemByCategoryID($countAllItem='category');    
 
 
-      echo json_encode(array('status'=>1,
-                            'allData'=>$itemsData['data'],
-                            'allCount'=>$itemsData['allCount'],
-                            'allItemsOffsetResult'=>$itemsData['offsetResult'],
-                            'selectedAllData'=>$selectedItemsData['data'],
-                            'selectedAllCount'=>$selectedItemsData['allCount'],
-                            'selectedAllItemsOffsetResult'=>$selectedItemsData['offsetResult'],
-                          ));
+      if($itemsData){        
+        echo json_encode(array('status'=>1,
+                              'allData'=>$itemsData['data'],
+                              'allCount'=>$itemsData['allCount'],
+                              'allItemsOffsetResult'=>$itemsData['offsetResult'],
+                              'selectedAllData'=>$selectedItemsData['data'],
+                              'selectedAllCount'=>$selectedItemsData['allCount'],
+                              'selectedAllItemsOffsetResult'=>$selectedItemsData['offsetResult'],
+                            ));
+      }else{
+        echo json_encode(array('status'=>0));
+      }
   } 
   public function getItemByID()
   { 

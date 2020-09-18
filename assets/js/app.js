@@ -138,15 +138,67 @@ app.config(function($stateProvider, $locationProvider,
 }); 
 
 app.controller('MainCtrl', function() {}); 
-app.controller('HomeCtrl', function($scope,homeService,$state,$log,$http,toastr,storageService,$rootScope) {
+app.controller('HomeCtrl', function($scope,homeService,$state,$log,$http,toastr,storageService,$rootScope,$timeout) {
     
+    $scope.listingObject = {};
+
+    var x=document.getElementById("demo");
+    function getLocation(){
+
+        if (navigator.geolocation){
+            navigator.geolocation.getCurrentPosition(showPosition);
+        }
+        else{x.innerHTML="Geolocation is not supported by this browser.";}
+    }
+    function showPosition(position){
     
+        var coordinates = [position.coords.latitude, position.coords.longitude]; 
+        getCity(coordinates)
+        // x.innerHTML="Latitude: " + position.coords.latitude + 
+        // "<br>Longitude: " + position.coords.longitude;  
+    }
+    if(storageService.get('current_location')==null){
+        getLocation()
+    }
+
+    // Step 2: Get city name 
+    function getCity(coordinates) { 
+        var xhr = new XMLHttpRequest(); 
+        var lat = coordinates[0]; 
+        var lng = coordinates[1]; 
+
+        // Paste your LocationIQ token below. 
+        xhr.open('GET',"https://us1.locationiq.com/v1/reverse.php?key=pk.d4ec4ea9a7d5ebd1a19e02b225b8dd7c&lat="+lat+"&lon="+lng+"&format=json", true);     
+        //xhr.open('GET',"https://us1.locationiq.com/v1/reverse.php?key=pk.d4ec4ea9a7d5ebd1a19e02b225b8dd7c&lat=22.7196&lon=75.8577&format=json", true);     
+        xhr.send(); 
+        xhr.onreadystatechange = processRequest; 
+        xhr.addEventListener("readystatechange", processRequest, false); 
+      
+        function processRequest(e) { 
+            if (xhr.readyState == 4 && xhr.status == 200) { 
+                var response = JSON.parse(xhr.responseText); 
+                
+                if(response.address.city){
+                    var city = response.address.city; 
+                }else{
+                    var city = response.address.county; 
+                }                 
+                if(storageService.get('current_location')==null || storageService.get('current_location')=='null' || storageService.get('current_location')==''){
+                        $scope.listingObject.city = city;
+                        storageService.set('current_location',city);
+                }
+                return city;  
+            } 
+        } 
+    } 
+    
+    $scope.listingObject.city = storageService.get('current_location');
+
     if(storageService.get('user_name')){
         $rootScope.mobile = storageService.get('mobile') ;
         $rootScope.user_name = storageService.get('user_name') ;
     }    
-    $rootScope.profile_image = Base_Url+'assets/img/welaska_dummy.png';
-   
+    $rootScope.profile_image = Base_Url+'assets/img/welaska_dummy.png';   
 
     // UI SLIDER
     $scope.myInterval = 5000;
@@ -200,11 +252,8 @@ app.controller('HomeCtrl', function($scope,homeService,$state,$log,$http,toastr,
     }
 
     
-    $scope.test = 'jo';
     $scope.cityList = 0;
-    $scope.cityList = [{id:1,value:'Indore'} ,{id:2,value:'Bangalore'} ,{id:3,value:'Jabalpur'} ,{id:4,value:'Pune'} ,{id:5,value:'Delhi'} ,{id:6,value:'Ahmedabed'} ,{id:7,value:'Chennai'}];     
-    
-    $scope.listingObj.searchLocation = $scope.cityList[0].value;
+
 
     homeService.getCategoryList().then(function(response){
          $scope.category = angular.copy(response); 
@@ -213,6 +262,8 @@ app.controller('HomeCtrl', function($scope,homeService,$state,$log,$http,toastr,
     
     $scope.searchObj = {};   
     $scope.searchLocation =  $state.params.location ;    
+    $scope.innerHeaderChange = innerHeaderChange;
+
     function loadAllClassmate(data) {
 
         var classMateAllStates = data;
@@ -247,19 +298,21 @@ app.controller('HomeCtrl', function($scope,homeService,$state,$log,$http,toastr,
     }
 
     function innerHeaderTextChange(text) {
+        console.log(text);
         $log.info('Text changed to ' + text);            
     }
     $scope.classmateData = '';
+    $scope.selectItem = [];
 
     function innerHeaderChange(item) {
-      
+        $scope.selectItem = item;
     }
     $scope.reditectToPage = function(item){
-            console.log(item);
-            if(item.type=='category_type'){
-                $state.go('listing',{'location':$scope.listingObj.searchLocation,'categoryId':item.category_id})
+           
+            if(item.type=='category_type'){                
+                $state.go('listing',{'location':storageService.get('current_location'),'categoryId':item.category_id})
             }else if(item.type=='item_type'){                    
-                storageService.set('current_location',$state.params.location);                
+                storageService.set('current_location',storageService.get('current_location'));                
                 $state.go('singleItem',{'itemId':item.item_id});
             }
     }
@@ -290,15 +343,17 @@ app.controller('HomeCtrl', function($scope,homeService,$state,$log,$http,toastr,
         });
     };
     
-    function citySelectedChange(item) {        
+    function citySelectedChange(item) {                
         if(item){
               storageService.set('current_location',item.city);
+              $scope.listingObject.city = item.city;
               // $scope.listingObject.city = item.city;
               // $scope.listingObject.state = item.state;            
         }else{
               // $scope.listingObject.state = '';    
         }
     }   
+    
 
     
 
@@ -352,7 +407,7 @@ app.controller('ListingCtrl', function($scope,$state,$http,$stateParams,$timeout
     }
 
     $scope.isLoaderActive = false ;
-    $scope.pageChanged = function (Type) {
+    $scope.pageChanged = function (Type) {        
         $scope.listingDataVO = [] ;
         $scope.getListingByCategoryID();
     };
@@ -492,7 +547,6 @@ app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$time
         $http.post(Base_url+'Home/getItemByID',{ item_id:$stateParams.itemId})
             .then(function(response){                
                 if(response.data.status) {  
-                    console.log(response.data.data);
                     // toastr.success(response.data.message);
                     $scope.itemDetailsByID = response.data.data ;
                  
@@ -689,7 +743,6 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
     };
 
     $scope.submitBasicDetails = function(){
-            console.log($scope.listingObject);
             $http.post(Base_url+'Home/submitBasicDetails',{
                     company_name:$scope.listingObject.company_name,
                     first_name:$scope.listingObject.first_name,
