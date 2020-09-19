@@ -45,11 +45,13 @@ app.config(function (toastrConfig) {
             positionClass: 'toast-top-center custom-developer-toster',
             preventDuplicates: false,
             preventOpenDuplicates: false,
-            timeOut: 50000,
+            timeOut: 6000,
             target: 'body',
             bodyOutputType: 'trustedHtml'
     });
 });
+
+
 
 //////////////////////////////////////////// Searching Directive
 
@@ -183,6 +185,7 @@ app.config(function($stateProvider, $locationProvider,
 app.controller('MainCtrl', function() {}); 
 app.controller('HomeCtrl', function($scope,homeService,$state,$log,$http,toastr,storageService,$rootScope,$timeout) {
     
+    angular.element("#loader-for-page").addClass("loading-spiner-show").removeClass("loading-spiner-hide");
     $scope.listingObject = {};
 
     var x=document.getElementById("demo");
@@ -259,8 +262,7 @@ app.controller('HomeCtrl', function($scope,homeService,$state,$log,$http,toastr,
       }
     
     
-    $scope.previous = function(){
-        console.log('k');
+    $scope.previous = function(){        
         angular.element('.glyphicon-chevron-left').trigger('click'); 
     }
 
@@ -269,7 +271,8 @@ app.controller('HomeCtrl', function($scope,homeService,$state,$log,$http,toastr,
 
 
     homeService.getCategoryList().then(function(response){
-         $scope.category = angular.copy(response); 
+         $scope.category = angular.copy(response);          
+         angular.element("#loader-for-page").addClass("loading-spiner-hide").removeClass("loading-spiner-show");
     });
 
     
@@ -325,7 +328,6 @@ app.controller('HomeCtrl', function($scope,homeService,$state,$log,$http,toastr,
             if(item.length==0){
                 toastr.error("Please enter category name or business name");
             }
-            console.log(item);
             if(item.type=='category_type'){                
                 $state.go('listing',{'location':storageService.get('current_location'),'categoryId':item.category_id})
             }else if(item.type=='item_type'){                    
@@ -378,8 +380,9 @@ app.controller('HomeCtrl', function($scope,homeService,$state,$log,$http,toastr,
     
 }); 
 app.controller('LoginCtrl', function() {}); 
-app.controller('ListingCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService,$rootScope) {
+app.controller('ListingCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService,$rootScope,toastr) {
 
+    angular.element("#loader-for-page").addClass("loading-spiner-show").removeClass("loading-spiner-hide");
     window.scrollTo(0, 0);      
     if(storageService.get('user_name')){
         $rootScope.mobile = storageService.get('mobile') ;
@@ -414,10 +417,12 @@ app.controller('ListingCtrl', function($scope,$state,$http,$stateParams,$timeout
                 if(response.data.status) {                      
                     $scope.isLoaderActive = false ;
                     // toastr.success(response.data.message);
+                    angular.element("#loader-for-page").addClass("loading-spiner-hide").removeClass("loading-spiner-show");
                     $scope.listingDataVO = response.data.selectedAllData ;
                     $scope.allListCount = response.data.allCount;
                  
                 }else{
+                    angular.element("#loader-for-page").addClass("loading-spiner-hide").removeClass("loading-spiner-show");
                     $scope.isLoaderActive = false ;
                 }
         });
@@ -477,12 +482,15 @@ app.controller('ListingCtrl', function($scope,$state,$http,$stateParams,$timeout
         $log.info('Text changed to ' + text);            
     }
     $scope.classmateData = '';
-
+    $scope.selectItem = [];
     function innerHeaderChange(item) {
-      
+        $scope.selectItem = item;      
     }
     $scope.reditectToPage = function(item){
-            
+            if(item.length==0){
+                toastr.error("Please enter category name or business name");
+            }        
+            console.log(item);            
             if(item.type=='category_type'){
                 $state.go('listing',{'location':$state.params.location,'categoryId':item.category_id})
             }else if(item.type=='item_type'){                    
@@ -490,18 +498,10 @@ app.controller('ListingCtrl', function($scope,$state,$http,$stateParams,$timeout
                 $state.go('singleItem',{'itemId':item.item_id});
             }
     }
-
-
-
-
-
-    
-
-    
-
 }); 
 app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService,$rootScope) {
 
+    angular.element("#loader-for-page").addClass("loading-spiner-show").removeClass("loading-spiner-hide");
     if(storageService.get('user_name')){
         $rootScope.mobile = storageService.get('mobile') ;
         $rootScope.user_name = storageService.get('user_name') ;
@@ -517,6 +517,7 @@ app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$time
         $http.post(Base_url+'Home/getItemByID',{ item_id:$stateParams.itemId})
             .then(function(response){                
                 if(response.data.status) {  
+                    angular.element("#loader-for-page").addClass("loading-spiner-hide").removeClass("loading-spiner-show");
                     // toastr.success(response.data.message);
                     $scope.itemDetailsByID = response.data.data ;
                  
@@ -604,10 +605,14 @@ app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$time
 }); 
 app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService,toastr,homeService,$rootScope) {
 
+    angular.element("#loader-for-page").addClass("loading-spiner-show").removeClass("loading-spiner-hide");
     if(storageService.get('user_name')){
         $rootScope.mobile = storageService.get('mobile') ;
         $rootScope.user_name = storageService.get('user_name') ;
     } 
+    $timeout(function () {                    
+        angular.element("#loader-for-page").addClass("loading-spiner-hide").removeClass("loading-spiner-show");
+    }, 500);
     $scope.listingObject = {};
     $scope.selectObj = {};
     $rootScope.profile_image = Base_Url+'assets/img/welaska_dummy.png';

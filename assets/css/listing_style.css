@@ -708,6 +708,31 @@ p.free-listing-logo {
     font-family: fantasy;
     letter-spacing: 1.2px;
 }
+.toast.toast-error {
+    background-color: #f12c2c;
+}
+.toast.toast-error .toast-progress{
+    opacity: 0.8;
+    background-color: #fff;
+}
+/*Loader*/
+/*.loading-spiner{
+    height: 100vh;
+    background-color: white;
+    background-position: center;
+}
+  .loading-spiner img{
+    position: absolute;
+    left: 45%;
+    top: 4%;    
+}
+   .loading-spiner-hide{
+    display: none;
+}*/
+
+
+
+/*End Loader*/
 /*media query start*/
 @media screen and (max-width: 568px){
   .search-md-autocomple md-autocomplete {

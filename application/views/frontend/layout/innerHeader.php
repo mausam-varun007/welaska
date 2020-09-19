@@ -57,7 +57,7 @@
 	                <i class="fa fa-exclamation-circle" style="color: red;"></i> No results found
 	              </md-not-found>
 	            </md-autocomplete>   
-	            <button type="submit" class="form-control search-button" ><i class="fa fa-search" aria-hidden="true" class="search-icon"></i>
+	            <button type="submit" ng-click="reditectToPage(selectItem)" class="form-control search-button" ><i class="fa fa-search" aria-hidden="true" class="search-icon"></i>
 				</button>
 	      </div>
 		</div>				  
