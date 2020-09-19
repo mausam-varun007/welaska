@@ -717,7 +717,9 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
       $log.log('The model has changed to ' + newModel + '.');
     };
 
+    $scope.isLoadingActive = false;
     $scope.submitBasicDetails = function(){
+            $scope.isLoadingActive = true;            
             $http.post(Base_url+'Home/submitBasicDetails',{
                     company_name:$scope.listingObject.company_name,
                     first_name:$scope.listingObject.first_name,
@@ -734,11 +736,12 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
                 }else{                    
                     toastr.error(response.data.msg);
                 }                                 
+                $scope.isLoadingActive = false;
                     
             });
     }
     $scope.submitLocationInfo = function(){
-            
+            $scope.isLoadingActive = true;            
             $http.post(Base_url+'Home/submitBasicDetails',{
                     business_name:$scope.listingObject.business_name,
                     building:$scope.listingObject.building,
@@ -752,7 +755,8 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
                     step:'location'
 
                 })
-                .then(function(response){   
+                .then(function(response){
+                $scope.isLoadingActive = false;               
                 if(response.data.status){                    
                     $scope.step = 'contact';
                 }else{                    
@@ -762,7 +766,7 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
             });
     }
     $scope.submitContact = function(){
-            
+            $scope.isLoadingActive = true;            
             $http.post(Base_url+'Home/submitBasicDetails',{
                     contact_person:$scope.listingObject.contact_person,
                     designation:$scope.listingObject.designation,
@@ -780,6 +784,7 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
 
                 })
                 .then(function(response){   
+                $scope.isLoadingActive = false;            
                 if(response.data.status){                    
                     $scope.step = 'others';
                 }else{                    
@@ -789,7 +794,7 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
             });
     }
     $scope.submitOthers = function(){
-
+            $scope.isLoadingActive = true;            
             $scope.shopTimingObj = [];
             if($scope.monday_from){
                 $scope.shopTimingObj.push({id:0,days:'monday',from:$scope.monday_from.display,to:$scope.monday_to.display,isClosed:$scope.monday_closed ? 1 : 0})
@@ -812,8 +817,6 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
             if($scope.sunday_from){
                 $scope.shopTimingObj.push({id:4,days:'sunday',from:$scope.sunday_from.display,to:$scope.sunday_to.display,isClosed:$scope.sunday_closed ? 1 : 0})
             }
-            console.log($scope.shopTimingObj);
-            console.log($scope.paymentMode);
             
 
             $http.post(Base_url+'Home/submitBasicDetails',{                    
@@ -822,6 +825,7 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
                     step:'others'
                 })
                 .then(function(response){   
+                $scope.isLoadingActive = false;            
                 if(response.data.status){                    
                     $scope.step = 'keyword';                    
                 }else{                    
@@ -831,12 +835,13 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
             });
     }
     $scope.submitKeywords = function(){
-            
+            $scope.isLoadingActive = true;            
             $http.post(Base_url+'Home/submitBasicDetails',{
                     keywords:$scope.keywordObject,                 
                     step:'keywords'
                 })
                 .then(function(response){   
+                $scope.isLoadingActive = false;            
                 // if(response.data.status){                    
                 //     $scope.step = 'others';
                 // }else{                    

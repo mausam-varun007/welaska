@@ -123,7 +123,7 @@
               </div>
             </div>            
             <div class="fl-btn-sec">
-              <button ng-click="submitLocationInfo()" class="btn">Submit</button>
+              <button ng-click="submitLocationInfo()" class="btn submit-button"> <img src="<?php echo base_url() ?>assets/img/btn-loading.gif" class="load-img" ng-show="isLoadingActive"><span>{{(isLoadingActive) ?'':'Submit'}}</span></button>
               <a href="" class="pull-right">Next <i class="fa fa-arrow-right"></i></a>
             </div>
         </div>
@@ -236,7 +236,7 @@
             <div class="fl-btn-sec">
               <a href="" class="pull-left"><i class="fa fa-arrow-left"></i> Previous</a>
               <!-- <button class="btn se-btn">Save & Exit</button> -->
-              <button class="btn sc-btn" ng-click="submitContact()">Save & Continue</button>
+              <button class="btn sc-btn submit-button" ng-click="submitContact()"><img src="<?php echo base_url() ?>assets/img/btn-loading.gif" class="load-img" ng-show="isLoadingActive"><span>{{(isLoadingActive) ?'':'Save & Continue'}}</span></button>
               <a href="" class="pull-right" ng-click="submitContact()">Next <i class="fa fa-arrow-right"></i></a>
             </div>
         </div>
@@ -371,7 +371,7 @@
             <div class="fl-btn-sec">
               <a href="" class="pull-left"><i class="fa fa-arrow-left"></i> Previous</a>
               <!-- <button class="btn se-btn">Save & Exit</button> -->
-              <button class="btn sc-btn" ng-click="submitOthers()">Save & Continue</button>
+              <button class="btn sc-btn submit-button" ng-click="submitOthers()"><img src="<?php echo base_url() ?>assets/img/btn-loading.gif" class="load-img" ng-show="isLoadingActive"><span>{{(isLoadingActive) ?'':'Save & Continue'}}</span></button>
               <a href="" class="pull-right">Next <i class="fa fa-arrow-right"></i></a>
             </div>
         </div>
@@ -391,7 +391,7 @@
           <div class="fl-btn-sec">
             <a href="" class="pull-left"><i class="fa fa-arrow-left"></i> Previous</a>
             <!-- <button class="btn se-btn">Save & Exit</button> -->
-            <button ng-click="submitKeywords()" class="btn sc-btn">Save & Continue</button>
+            <button ng-click="submitKeywords()" class="btn sc-btn submit-button"><img src="<?php echo base_url() ?>assets/img/btn-loading.gif" class="load-img" ng-show="isLoadingActive"><span>{{(isLoadingActive) ?'':'Save & Continue'}}</span></button>
           </div>
         </div>
       </div>
@@ -422,7 +422,7 @@
           </div>
         </div>
         <div class="modal-footer fl-btn-sec">
-          <button type="button" class="btn btn-default" ng-click="getVerificatioCode()" > {{!isVerificationActive ? 'Click to get verification code' : 'Verify' }} </button>
+          <button type="button" class="btn btn-default submit-button" ng-click="getVerificatioCode()" > {{!isVerificationActive ? 'Click to get verification code' : 'Verify' }} </button>
         </div>
       </div>
       

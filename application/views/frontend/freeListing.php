@@ -74,6 +74,6 @@
     </div>
   </div>  
   <div class="fl-btn-sec">
-  	<button type="button" class="btn" ng-click="submitBasicDetails()">Submit</button>
+  	<button type="button" class="btn submit-button" ng-click="submitBasicDetails()"><img src="<?php echo base_url() ?>assets/img/btn-loading.gif" class="load-img" ng-show="isLoadingActive"><span>{{(isLoadingActive) ?'':'Submit'}}</span></button>
   </div>
 </div>

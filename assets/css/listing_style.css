@@ -715,22 +715,12 @@ p.free-listing-logo {
     opacity: 0.8;
     background-color: #fff;
 }
-/*Loader*/
-/*.loading-spiner{
-    height: 100vh;
-    background-color: white;
-    background-position: center;
+img.load-img {
+    height: 22px;
 }
-  .loading-spiner img{
-    position: absolute;
-    left: 45%;
-    top: 4%;    
+button.btn.submit-button:focus{
+    outline: none;
 }
-   .loading-spiner-hide{
-    display: none;
-}*/
-
-
 
 /*End Loader*/
 /*media query start*/
