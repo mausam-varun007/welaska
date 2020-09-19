@@ -321,7 +321,11 @@ app.controller('HomeCtrl', function($scope,homeService,$state,$log,$http,toastr,
         $scope.selectItem = item;
     }
     $scope.reditectToPage = function(item){
-           
+            
+            if(item.length==0){
+                toastr.error("Please enter category name or business name");
+            }
+            console.log(item);
             if(item.type=='category_type'){                
                 $state.go('listing',{'location':storageService.get('current_location'),'categoryId':item.category_id})
             }else if(item.type=='item_type'){                    
