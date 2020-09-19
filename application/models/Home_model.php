@@ -162,7 +162,6 @@ class Home_model extends MY_model
 
 		$where = "FIND_IN_SET('".$this->input->post('keyword')."', keywords)"; 
 
-
 		$this->db->select('business_name as search_item,category_id as category_id, "item_type" as type, id as item_id');
 		$this->db->from('listing_items');				
 		$this->db->where('city',$this->input->post('location'));

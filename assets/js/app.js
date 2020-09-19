@@ -92,8 +92,9 @@ app.directive('searchListingData',function ($http, $window, $timeout,$http,stora
 });
 
 app.config(function($stateProvider, $locationProvider,  
-                                $urlRouterProvider) { 
-    
+                                $urlRouterProvider) {
+                                 
+    $locationProvider.html5Mode(true).hashPrefix('');
     // creating routes or states 
     $stateProvider 
         .state('Home', { 
