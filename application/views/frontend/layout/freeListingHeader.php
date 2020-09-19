@@ -57,7 +57,7 @@
 	      <h4 class="modal-title">{{modalType}}</h4>
 	    </div>
 	    <div class="modal-body">	      	
-	    	<div class="mobile-section" ng-show="!isVerificationActive">	    		
+	    	<div class="mobile-section" ng-show="!isVerificationActives">	    		
 		      	<div class="form-group">		      
 			      <input type="text" class="form-control custom-input" id="name" placeholder="Name" name="name" ng-model="listingObj.user_name">
 			    </div>
@@ -65,7 +65,7 @@
 			      <input type="text" class="form-control custom-input" id="mobile" placeholder="Mobile Number" ng-model="listingObj.mobile" name="mobile">
 			    </div>
 	    	</div>
-	    	<div class="verification-section" ng-show="isVerificationActive">	    		
+	    	<div class="verification-section" ng-show="isVerificationActives">	    		
 	    		<p>Please enter your mobile verification code</p>
 		      	<div class="form-group">		      
 			      <input type="number" class="form-control custom-input" minlength="6" maxlength="6" id="verification_code" placeholder="Verification Code" ng-model="listingObj.verification_code" name="verification_code">
@@ -74,7 +74,7 @@
 	    </div>
 	    <div class="modal-footer">
 		    <div>
-		    	<button class="btn btn-default otp-button" ng-click="loginCode()">Send OTP</button>
+		    	<button class="btn btn-default otp-button" login-signup ng-click="SignupLogin()">{{!isVerificationActives ? 'Send OTP' : 'Verify'}}</button>
 		    </div>	      
 	    </div>
 	  </div>

@@ -343,6 +343,7 @@ span.active-star::before {
     border-bottom-right-radius: 5%;
     border: none;
     color: #fff;
+    border-radius: 0;
 }
 .home-search-result {
     background-color: #fff;

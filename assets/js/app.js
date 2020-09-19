@@ -91,10 +91,52 @@ app.directive('searchListingData',function ($http, $window, $timeout,$http,stora
 
 });
 
+app.directive('loginSignup',function ($http, $window, $timeout,$http,storageService,$state,$rootScope,toastr) {
+        return {
+            restrict: 'AE',
+            scope: true,            
+            link: function ($scope,elm,attr,ctrl,$event) {
+                                    
+                    $rootScope.listingObj = {};
+                    $rootScope.isVerificationActives = false;
+                    $rootScope.mobile = '' ;
+                    $scope.SignupLogin =function(){        
+                        if(!$rootScope.isVerificationActives){
+                            $rootScope.listingObj.verification_code = null ;
+                        }
+                        
+                        $http.post(Base_url+'Home/LoginCode',{user_name:$scope.listingObj.user_name,mobile:$scope.listingObj.mobile,verification_code:$scope.listingObj.verification_code})
+                                .then(function(response){                                     
+                                
+                                console.log(response);
+                                if(response.data.status==1){
+                                    angular.element("#loginModal").modal('hide');
+                                    toastr.success(response.data.msg);
+                                    $rootScope.listingObj = {};
+                                    $rootScope.isVerificationActives = false;
+                                    
+                                    storageService.set('user_name', response.data.result.user_name);
+                                    storageService.set('mobile', response.data.result.mobile);
+                                    $rootScope.mobile = response.data.result.mobile ;
+                                    $rootScope.user_name = response.data.result.user_name;
+                                    $rootScope.profile_image = Base_Url+'assets/img/welaska_dummy.png';                    
+                                }else if(response.data.status==2){
+                                    console.log('test')
+                                    $rootScope.isVerificationActives = true;
+                                }         
+                                console.log($scope.isVerificationActives);
+                        });
+                    }
+                
+            },
+        };
+
+});
+
 app.config(function($stateProvider, $locationProvider,  
                                 $urlRouterProvider) {
-                                 
-    $locationProvider.html5Mode(true).hashPrefix('');
+
+    //$locationProvider.html5Mode(true).hashPrefix('');
     // creating routes or states 
     $stateProvider 
         .state('Home', { 
@@ -215,37 +257,7 @@ app.controller('HomeCtrl', function($scope,homeService,$state,$log,$http,toastr,
       for (var i=0; i<4; i++) {
         $scope.addSlide();
       }
-    $scope.listingObj = {};
-    $scope.isVerificationActive = false;
-    $rootScope.mobile = '' ;
-
-    ///////////////////////// Login Code
-    $scope.loginCode =function(){        
-        if(!$scope.isVerificationActive){
-            $scope.listingObj.verification_code = null ;
-        }
-        
-        $http.post(Base_url+'Home/LoginCode',{user_name:$scope.listingObj.user_name,mobile:$scope.listingObj.mobile,verification_code:$scope.listingObj.verification_code})
-                .then(function(response){ 
-                    
-                if(response.data.status==1){
-                    console.log(response.data.msg);
-                    angular.element("#loginModal").modal('hide');
-                    toastr.success(response.data.msg);
-                    $scope.listingObj = {};
-                    $scope.isVerificationActive = false;
-                    
-                    storageService.set('user_name', response.data.result.user_name);
-                    storageService.set('mobile', response.data.result.mobile);
-                    $rootScope.mobile = response.data.result.mobile ;
-                    $rootScope.user_name = response.data.result.user_name;
-                    $rootScope.profile_image = Base_Url+'assets/img/welaska_dummy.png';                    
-                }else if(response.data.status==2){
-                    $scope.isVerificationActive = true;
-                }                                   
-        });
-    }
-      
+    
     
     $scope.previous = function(){
         console.log('k');
@@ -380,33 +392,8 @@ app.controller('ListingCtrl', function($scope,$state,$http,$stateParams,$timeout
     // $scope.pageSizeSelected = ($stateParams.paginationLength && angular.isNumber(parseInt($stateParams.paginationLength)))?$stateParams.paginationLength:5; // Maximum number of items per page.      
     $scope.pageSizeSelected = 5; // Maximum number of items per page.      
 
-
-    ////////////////// LOGIN
-
-    $scope.listingObj = {};
-    $scope.isVerificationActive = false;
-
-    ///////////////////////// Login Code
-    $scope.loginCode =function(){        
-        if(!$scope.isVerificationActive){
-            $scope.listingObj.verification_code = null ;
-        }
-        console.log($scope.listingObj);
-        $http.post(Base_url+'Home/LoginCode',{user_name:$scope.listingObj.user_name,mobile:$scope.listingObj.mobile,verification_code:$scope.listingObj.verification_code})
-                .then(function(response){ 
-                    
-                if(response.data.status==1){
-                    console.log(response.data.msg);
-                    angular.element("#loginModal").modal('hide');
-                    toastr.success(response.data.msg);
-                    $scope.listingObj = {};
-                    $scope.isVerificationActive = false;
-                }else if(response.data.status==2){
-                    $scope.isVerificationActive = true;
-                }                                   
-        });
-    }
-
+   
+    
     $scope.isLoaderActive = false ;
     $scope.pageChanged = function (Type) {        
         $scope.listingDataVO = [] ;
@@ -519,30 +506,8 @@ app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$time
     $scope.searchLocation = storageService.get('current_location') ;
     $scope.itemDetailsByID = [];
 
-    $scope.listingObj = {};
-    $scope.isVerificationActive = false;
-
-    ///////////////////////// Login Code
-    $scope.loginCode =function(){        
-        if(!$scope.isVerificationActive){
-            $scope.listingObj.verification_code = null ;
-        }
-        console.log($scope.listingObj);
-        $http.post(Base_url+'Home/LoginCode',{user_name:$scope.listingObj.user_name,mobile:$scope.listingObj.mobile,verification_code:$scope.listingObj.verification_code})
-                .then(function(response){ 
-                    
-                if(response.data.status==1){
-                    console.log(response.data.msg);
-                    angular.element("#loginModal").modal('hide');
-                    toastr.success(response.data.msg);
-                    $scope.listingObj = {};
-                    $scope.isVerificationActive = false;
-                }else if(response.data.status==2){
-                    $scope.isVerificationActive = true;
-                }                                   
-        });
-    }
-
+   
+    
     $scope.getItemByID = function(){        
 
         $http.post(Base_url+'Home/getItemByID',{ item_id:$stateParams.itemId})

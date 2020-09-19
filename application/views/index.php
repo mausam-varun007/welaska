@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script>
+  <!-- <script>
       if (location.href.indexOf("#!") > -1) 
         location.assign(location.href.replace(/\/?#!/, ""));      
-  </script>
+  </script> -->
   <title>Welaska</title>
-  <base href="<?php echo base_url('/') ?>" >
+  <!-- <base href="<?php echo base_url('/') ?>" > -->
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css" > -->

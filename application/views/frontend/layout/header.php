@@ -156,24 +156,24 @@
 	      <h4 class="modal-title">{{modalType}}</h4>
 	    </div>
 	    <div class="modal-body">	      	
-	    	<div class="mobile-section" ng-show="!isVerificationActive">	    		
+	    	<div class="mobile-section" ng-show="!isVerificationActives">	    		
 		      	<div class="form-group">		      
 			      <input type="text" class="form-control custom-input" id="name" placeholder="Name" name="name" ng-model="listingObj.user_name">
 			    </div>
 			    <div class="form-group">		      
-			      <input type="text" class="form-control custom-input" id="mobile" placeholder="Mobile Number" ng-model="listingObj.mobile" name="mobile">
+			      <input type="text" onkeypress="return (event.charCode == 8 || event.charCode == 0) ? false : (event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46 || event.charCode==46)" class="form-control custom-input" id="mobile" placeholder="Mobile Number" ng-model="listingObj.mobile" name="mobile">
 			    </div>
-	    	</div>
-	    	<div class="verification-section" ng-show="isVerificationActive">	    		
+	    	</div>	    	
+	    	<div class="verification-section" ng-show="isVerificationActives">	    		
 	    		<p>Please enter your mobile verification code</p>
 		      	<div class="form-group">		      
-			      <input type="number" class="form-control custom-input" minlength="6" maxlength="6" id="verification_code" placeholder="Verification Code" ng-model="listingObj.verification_code" name="verification_code">
+			      <input type="number" class="form-control custom-input" onKeyPress="if(this.value.length==6) return false;" id="verification_code" placeholder="Verification Code" ng-model="listingObj.verification_code" name="verification_code">
 			    </div>			    
 	    	</div>
 	    </div>
 	    <div class="modal-footer">
 		    <div>
-		    	<button class="btn btn-default otp-button" ng-click="loginCode()">Send OTP</button>
+		    	<button class="btn btn-default otp-button" login-signup ng-click="SignupLogin()">{{!isVerificationActives ? 'Send OTP' : 'Verify'}}</button>
 		    </div>	      
 	    </div>
 	  </div>
