@@ -40,7 +40,7 @@ class Home_model extends MY_model
             			$getUserData = $verifyUser->row();
             			if(!empty($this->input->post('verification_code'))){
             				if($this->session->userdata('temp_verification_code')==$this->input->post('verification_code')){
-		      					$sessionData = array('user_name'=>$this->input->post('user_name'),'mobile'=>$getUserData->mobile,'user_type'=>$getUserData->user_type);
+		      					$sessionData = array('user_name'=>$this->input->post('user_name'),'mobile'=>$getUserData->mobile,'user_type'=>$getUserData->user_type,'user_id'=>$getUserData->id);
 								$this->session->set_userdata($sessionData); 
 								return json_encode(array('status'=>1,'msg'=>'Successfully Login','result'=>$sessionData));	
             				}
@@ -63,7 +63,7 @@ class Home_model extends MY_model
             					// die();
             					if($lastId){
 									$this->session->set_userdata($userData); 
-									return json_encode(array('status'=>1,'msg'=>'Successfully Signup','result'=>$userData));	
+									return json_encode(array('status'=>1,'msg'=>'Successfully Signup','result'=>$lastId));	
             					}else{
             						return json_encode(array('status'=>0));							
             					}		
@@ -107,6 +107,7 @@ class Home_model extends MY_model
 			}
 			$this->db->where('category_id',$id);
 			$this->db->group_by('listing_items.id');
+			$this->db->order_by('listing_items.id desc');
 			//$this->db->limit(10);					
 			$pageSize = $this->input->post('pageSize');
 	        $pageIndex = $this->input->post('pageIndex');
@@ -140,13 +141,31 @@ class Home_model extends MY_model
 	public function getItemByID()
 	{		
 		$id = $this->input->post('item_id');
-		$this->db->select('listing_items.*,category.id as category_id,category.category_name');
+		$this->db->select('listing_items.*,category.id as category_id,category.category_name,
+						(SELECT GROUP_CONCAT(payment_mode) FROM payment_modes
+                    		WHERE item_id = '.$id.') AS payment_mode');
 		$this->db->from('listing_items');		
-		$this->db->join('category','category.id=listing_items.category_id');
+		$this->db->join('category','category.id=listing_items.category_id');		
 		$this->db->where('listing_items.id',$id);
-		$query = $this->db->get();								
+		$query = $this->db->get();				
+
+		$this->db->select('shop_timming.days,shop_timming.start_from,shop_timming.start_to,shop_timming.is_closed');
+		$this->db->from('shop_timming');				
+		$this->db->where('shop_timming.item_id',$id);
+		$query1 = $this->db->get();								
+
+		$this->db->select('reviews.review,reviews.created_at,listing_items.id,user.user_name,user.first_name,user.last_name,user.image');
+		$this->db->from('reviews');				
+		$this->db->join('listing_items','listing_items.id=reviews.user_id');		
+		$this->db->join('user','user.id=reviews.user_id');		
+		$this->db->where('item_id',$id);
+		$query2 = $this->db->get();								
+
 		if ($query->num_rows() > 0) {
-			return json_encode(array('status'=>1,'data'=>$query->row()));
+			$data['listing_items'] = $query->row();
+			$data['shop_timming'] = $query1->result();
+			$data['reviews'] = $query2->result();
+			return json_encode(array('status'=>1,'data'=>$data));
 		}	
 	}
 
@@ -163,8 +182,10 @@ class Home_model extends MY_model
 		$where = "FIND_IN_SET('".$this->input->post('keyword')."', keywords)"; 
 
 		$this->db->select('business_name as search_item,category_id as category_id, "item_type" as type, id as item_id');
-		$this->db->from('listing_items');				
-		$this->db->where('city',$this->input->post('location'));
+		$this->db->from('listing_items');	
+		if(!empty($this->input->post('location'))){
+			$this->db->where('city',$this->input->post('location'));
+		}			
 		$this->db->like('business_name', $this->input->post('keyword'));				
 		$this->db->or_where($where);
 		$query2 = $this->db->get_compiled_select();		
@@ -216,7 +237,7 @@ class Home_model extends MY_model
 			$msg = '';
 			$this->form_validation->set_rules('first_name', 'First Name', 'required');
 			$this->form_validation->set_rules('last_name', 'Last Name', 'required');			
-			$this->form_validation->set_rules('company_name', 'Company Name', 'required');
+			$this->form_validation->set_rules('business_name', 'Company Name', 'required');
 			$this->form_validation->set_rules('mobile', 'Mobile', 'required');
 			$this->form_validation->set_rules('city', 'City', 'required');
 
@@ -231,10 +252,10 @@ class Home_model extends MY_model
 						// 'user_type'=>'client',
 						'first_name'=>$this->input->post('first_name'),
 						'last_name'=>$this->input->post('last_name'),						
-						'company_name'=>$this->input->post('company_name'),
+						'business_name'=>$this->input->post('business_name'),
 						'mobile'=>$this->input->post('mobile'),
 						'city'=>$this->input->post('city'),
-						'land_line_number'=>$this->input->post('land_line_number'),
+						'land_line'=>$this->input->post('land_line'),
 						'is_active'=>0 );
 					$lastId = $this->insertData('listing_items',$userData);					
 					if($lastId){
@@ -296,9 +317,9 @@ class Home_model extends MY_model
             }else{ 
 				
 					$userData = array(
-						'contact_person'=>$this->input->post('contact_person'),
+						// 'contact_person'=>$this->input->post('contact_person'),
 						'designation'=>$this->input->post('designation'),
-						'land_line_number'=>$this->input->post('land_line_number'),
+						'land_line'=>$this->input->post('land_line'),
 						'mobile'=>$this->input->post('mobile'),
 						'fax'=>$this->input->post('fax'),
 						'toll_free_number'=>$this->input->post('toll_free_number'),
@@ -306,7 +327,7 @@ class Home_model extends MY_model
 						'website'=>$this->input->post('website'),
 						'facebook'=>$this->input->post('facebook'),
 						'twitter'=>$this->input->post('twitter'),
-						'youtube'=>$this->input->post('youtube'),
+						'linkedin'=>$this->input->post('linkedin'),
 						'others'=>$this->input->post('others')						 );
 					$Updated = $this->updateData('listing_items',$userData,array('id'=>$this->session->userdata('last_id')));
 					if($Updated){
@@ -320,61 +341,37 @@ class Home_model extends MY_model
 	public function submitOthers()
 	{		
 		if($this->input->post()){
-			// print_r($this->input->post('shop_timing'));
-			// print_r($this->input->post('payment_mode'));
-			// die();
-			// $msg = '';
-			// $this->form_validation->set_rules('contact_person', 'Contact Person', 'required');
-			// $this->form_validation->set_rules('email', 'Email', 'required');			
-			// $this->form_validation->set_rules('mobile', 'Mobile', 'required');			
-
-			// if ($this->form_validation->run() == FALSE){				
-   //              $msg.= validation_errors();                
-   //          }
-   //          if (!empty($msg)) {
-   //              return json_encode(array('status'=>0,'msg'=>$msg));
-   //          }else{ 
+			
+								
 				foreach ($this->input->post('shop_timing') as $key => $value) {					
 					
 					$data = array('item_id'=>$this->session->userdata('last_id'),
 								  'days'=>$value['days'],
 								  'start_from'=>$value['from'],
-								  'start_to'=>$value['to']
-									 );
-					// $exist = $this->db->select('id')->from('shop_timming')->where('item_id',$this->session->userdata('last_id'))->get();
-		   //          if($exist->num_rows() > 6){
-		   //          	$this->updateData('shop_timming',$data,array('item_id'=>$this->session->userdata('last_id')));
-		   //          }else{
-		   //          }
+								  'start_to'=>$value['to'],
+								  'is_closed'=>$value['isClosed']
+									 );											 		
 						$lastId = $this->insertData('shop_timming',$data);
 				}
 				foreach ($this->input->post('payment_mode') as $key => $value) {					
 					
-					$exist = $this->db->select('id')->from('payment_modes')->where('item_id',$this->session->userdata('last_id'))->get();
-
-		    //         if($exist->num_rows() > 0){
-		    //         	if($value['isChecked']==1){
-						// 	$data = array('item_id'=>$this->session->userdata('last_id'),
-						// 			  'payment_mode'=>$value['value'] );							
-		    //         		$this->updateData('payment_modes',$data,array('item_id'=>$this->session->userdata('last_id')));
-						// }
-		    //         }else{						
+					$exist = $this->db->select('id')->from('payment_modes')->where('item_id',$this->session->userdata('last_id'))->get();		    
 						if($value['isChecked']==1){
-
 							$data = array('item_id'=>$this->session->userdata('last_id'),
 									  'payment_mode'=>$value['value'] );
 							$lastId = $this->insertData('payment_modes',$data);
 						}
-		            //}
 
 				}
-				
+				if($this->input->post('is_display_hours')){
+					$Updated = $this->updateData('listing_items',array('is_display_hours'=>$this->input->post('is_display_hours')),array('id'=>$this->session->userdata('last_id')));
+				}
+
 				if($lastId){
 					return json_encode(array('status'=>1));					
 				}else{
 					return json_encode(array('status'=>0));					
-				}
-			// }
+				}			
 		}		
 	}
 	public function submitKeywords()
@@ -382,8 +379,7 @@ class Home_model extends MY_model
 		if($this->input->post()){				
 			$NewsString =implode(',',$this->input->post('keywords')); 
 
-				$Updated = $this->updateData('listing_items',array('keywords'=>$NewsString),array('id'=>$this->session->userdata('last_id')));
-				
+				$Updated = $this->updateData('listing_items',array('keywords'=>$NewsString,'category_id'=>$this->input->post('category_id')),array('id'=>$this->session->userdata('last_id')));
 				if($Updated){
 					return json_encode(array('status'=>1));					
 				}else{
@@ -419,6 +415,35 @@ class Home_model extends MY_model
 				return json_encode(array('status'=>0,'msg'=>'Error'));					
 			}
 				
+		}		
+	}
+	public function checkCompany()
+	{
+		if($this->input->post('keyword')){						
+			$this->db->select('*');
+			$this->db->from('category');				
+			$this->db->where('category_name', $this->input->post('keyword'));		
+			$query = $this->db->get();				
+			if ($query->num_rows() > 0) {
+				return $query->result();		
+			}		
+		}	
+	}
+	public function submitReview()
+	{		
+		if($this->input->post()){				
+
+				$userData = array(
+								'item_id'=>$this->input->post('item_id'),						
+								'user_id'=>$this->input->post('user_id'),
+								'review'=>$this->input->post('review'));
+      					
+    			$lastId = $this->insertData('reviews',$userData);	
+				if($lastId){
+					return json_encode(array('status'=>1));					
+				}else{
+					return json_encode(array('status'=>0));					
+				}
 		}		
 	}
 

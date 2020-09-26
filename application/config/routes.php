@@ -62,6 +62,10 @@ $route['Home/getItemByID'] = 'Home/getItemByID';
 $route['Home/getSearchItems'] = 'Home/getSearchItems';
 $route['Home/getCityList'] = 'Home/getCityList';
 $route['Home/submitBasicDetails'] = 'Home/submitBasicDetails';
+$route['Home/checkCompany'] = 'Home/checkCompany';
+$route['Home/submitReview'] = 'Home/submitReview';
+
+
 
 
 

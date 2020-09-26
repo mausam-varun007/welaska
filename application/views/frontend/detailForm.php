@@ -72,9 +72,11 @@
                 </div>
               </div>
               <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="form-group">
+                <div class="form-group freelist-city">
                   <label class="control-label">City</label>
-                  <md-autocomplete 
+                  <input type="text" ng-click="notEditable('City')" ng-model="listingObject.city" readonly="" class="form-control custom-input" ng-change="checkCategoryOrCompany()">
+                  
+                  <!-- <md-autocomplete 
                     ng-mouseover="enableScrollOnAutoCompleteList($event)"
                     ng-click="enableScrollOnAutoCompleteList($event)"
                     ng-focus="isSearchFocus=true"
@@ -98,7 +100,7 @@
                     <md-not-found>
                       <i class="fa fa-exclamation-circle" style="color: red;"></i> No results found
                     </md-not-found>
-                  </md-autocomplete>
+                  </md-autocomplete> -->
                   <span  class="error-msg" ></span>
                 </div>
               </div>
@@ -107,7 +109,7 @@
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
                   <label class="control-label">Pin Code</label>
-                  <input type="text" class="form-control custom-input" ng-model="listingObject.pin_code">
+                  <input type="text" class="form-control custom-input" ng-model="listingObject.pin_code" onkeypress="return (event.charCode == 8 || event.charCode == 0) ? false : (event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46 || event.charCode==46)" maxlength="6">
                   <!-- <select class="custom-select">
                     <option>Select Pincode</option>
                     <option>Select Pincode</option>
@@ -117,7 +119,7 @@
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
                   <label class="control-label">State</label>
-                  <input type="text" class="form-control custom-input" ng-model="listingObject.state" readonly="">
+                  <input type="text" ng-click="notEditable('State')"  class="form-control custom-input" ng-model="listingObject.state" readonly="">
                   <span  class="error-msg" ></span>
                 </div>
               </div>
@@ -148,14 +150,14 @@
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
                   <label class="control-label">Landline No.</label>
-                  <input type="text" class="form-control custom-input" ng-model="listingObject.land_line_number">
+                  <input type="text" class="form-control custom-input" ng-model="listingObject.land_line">
                   <span  class="error-msg"></span>
                 </div>
               </div>
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
                   <label class="control-label">Mobile No.</label>
-                  <input type="text" class="form-control custom-input" ng-model="listingObject.mobile">
+                  <input type="text" class="form-control custom-input" ng-model="listingObject.mobile" onkeypress="return (event.charCode == 8 || event.charCode == 0) ? false : (event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46 || event.charCode==46)" maxlength="10">
                   <span  class="error-msg" ></span>
                 </div>
               </div>
@@ -180,7 +182,7 @@
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
                   <label class="control-label">Email Id</label>
-                  <input type="text" class="form-control custom-input" ng-model="listingObject.email">
+                  <input type="email" class="form-control custom-input" ng-model="listingObject.email">
                   <span  class="error-msg" ></span>
                 </div>
               </div>
@@ -218,8 +220,8 @@
               </div>
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
-                  <label class="control-label">YouTube</label>
-                  <input type="text" class="form-control custom-input" ng-model="listingObject.youtube">
+                  <label class="control-label">Linkedin</label>
+                  <input type="text" class="form-control custom-input" ng-model="listingObject.linkedin">
                   <span  class="error-msg" ></span>
                 </div>
               </div>
@@ -234,25 +236,21 @@
               </div>
             </div>
             <div class="fl-btn-sec">
-              <a href="" class="pull-left"><i class="fa fa-arrow-left"></i> Previous</a>
+              <a ng-click="step='location'" class="pull-left"><i class="fa fa-arrow-left"></i> Previous</a>
               <!-- <button class="btn se-btn">Save & Exit</button> -->
               <button class="btn sc-btn submit-button" ng-click="submitContact()"><img src="<?php echo base_url() ?>assets/img/btn-loading.gif" class="load-img" ng-show="isLoadingActive"><span>{{(isLoadingActive) ?'':'Save & Continue'}}</span></button>
-              <a href="" class="pull-right" ng-click="submitContact()">Next <i class="fa fa-arrow-right"></i></a>
+              <!-- <a href="" class="pull-right" ng-click="submitContact()">Next <i class="fa fa-arrow-right"></i></a> -->
             </div>
         </div>
         <div class="df-form-sec" id="3" ng-show="step=='others'">
             <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <h5 class="hurs-oprtn">Hours of Operation</h5>
-                <div class="form-group">
-                  <span class="custom-radio-left"> 
-                    <input type="radio" id="male" name="gender" value="male" class="custom-radio"  checked="checked">
-                    <label for="male">Display hours of operation</label>
-                  </span>
-                  <span class="custom-radio-left"> 
-                    <input type="radio" id="female" name="gender" value="female" class="custom-radio">
-                    <label for="female">Do not display hours of operation</label>
-                  </span>
+                <div class="display-radio" ng-init="is_display_hours=1">                  
+                  <md-radio-group ng-model="is_display_hours" ng-blur="submitForm(3)">
+                    <md-radio-button value="1" name="is_display_hours"  class="md-primary">Display hours of operation</md-radio-button>                                  
+                    <md-radio-button value="0" name="is_display_hours"  class="md-primary">Do not display hours of operation</md-radio-button>                  
+                  </md-radio-group>
                 </div>
               </div>
             </div>
@@ -336,40 +334,9 @@
                 </div>
               </div>
             </div>
-            <hr>
-            <!-- <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <h5 class="hurs-oprtn">Company Information</h5>
-                <div class="company_info">
-                  <p>
-                    <label>Year Of Establishment:</label>
-                    <input class="small jd_rule" type="text" name="year_establishment" id="year_establishment" value="" placeholder="1995" maxlength="4" validation="yearestablish">
-                    <input class="medium" type="text" name="annual_turnover" id="annual_turnover" value="" placeholder="Annual Turnover">
-                    <select class="large" id="number_employees" name="number_employees">
-                      <option value="Not Answered">Select No of Employees</option>
-                      <option value="Less than 10">Less than 10</option>
-                      <option value="10-100">10-100</option>
-                      <option value="100-500">100-500</option>
-                      <option value="500-1000">500-1000</option>
-                      <option value="1000-2000">1000-2000</option>
-                      <option value="2000-5000">2000-5000</option>
-                      <option value="5000-10000">5000-10000</option>
-                      <option value="More than 10000">More than 10000</option>
-                    </select>
-                  </p>
-                  <p>
-                    <label>Professional Associations:</label>
-                    <input type="text" name="assoc" value="" class="input-right">
-                  </p>
-                  <p>
-                    <label>Certifications:</label>
-                    <input type="text" name="certifications" value="" class="input-right">
-                  </p>
-                </div>
-              </div>
-            </div> -->
+            <hr>           
             <div class="fl-btn-sec">
-              <a href="" class="pull-left"><i class="fa fa-arrow-left"></i> Previous</a>
+              <a ng-click="step='contact'" class="pull-left"><i class="fa fa-arrow-left"></i> Previous</a>
               <!-- <button class="btn se-btn">Save & Exit</button> -->
               <button class="btn sc-btn submit-button" ng-click="submitOthers()"><img src="<?php echo base_url() ?>assets/img/btn-loading.gif" class="load-img" ng-show="isLoadingActive"><span>{{(isLoadingActive) ?'':'Save & Continue'}}</span></button>
               <a href="" class="pull-right">Next <i class="fa fa-arrow-right"></i></a>
@@ -377,6 +344,36 @@
         </div>
         <div class="df-form-sec" id="4" ng-show="step=='keyword'">
           <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <h5 class="hurs-oprtn">Add Category</h5>
+              <div class="form-group ">                  
+                <md-autocomplete ng-disabled="isDisabled" 
+                  ng-mouseover="enableScrollOnAutoCompleteList($event)"
+                  ng-click="enableScrollOnAutoCompleteList($event)"
+                  ng-focus="isSearchFocus=true"
+                  ng-blur="isSearchFocus=false"
+                  md-dropdown-position="{{customPosition}}"                            
+                  md-selected-item="selectedItem" 
+                  md-search-text-change="searchTextChange(searchText)" 
+                  md-search-text="searchText" 
+                  md-selected-item-change="categorySelectedChange(item)" 
+                  md-items="item in categoryQuerySearch(searchText)" 
+                  md-item-text="item.city" 
+                  md-min-length="0" 
+                  md-escape-options="clear" 
+                  placeholder="Choose Category" 
+                  input-aria-labelledby="favoriteStateLabel">
+                  <md-item-template>
+                    <span md-highlight-text="searchText" md-highlight-flags="^i">{{item.city}}</span>
+                  </md-item-template>
+                  <md-not-found>
+                    No states matching "{{searchText}}" were found.
+                    <a ng-click="newState(searchText)">Create a new one!</a>
+                  </md-not-found>
+                </md-autocomplete>
+              </div>
+            </div>
+
             <div class="col-md-12 col-sm-12 col-xs-12">
               <h5 class="hurs-oprtn">Business Keywords</h5>
               <p class="bk-p">For business keywords that you no longer wish to be listed in simply click on cross next to the keyword and when you are done, Click "Save"</p>
@@ -389,7 +386,7 @@
             </div>
           </div>
           <div class="fl-btn-sec">
-            <a href="" class="pull-left"><i class="fa fa-arrow-left"></i> Previous</a>
+            <a href="" class="pull-left" ng-click="step='others'" ><i class="fa fa-arrow-left"></i> Previous</a>
             <!-- <button class="btn se-btn">Save & Exit</button> -->
             <button ng-click="submitKeywords()" class="btn sc-btn submit-button"><img src="<?php echo base_url() ?>assets/img/btn-loading.gif" class="load-img" ng-show="isLoadingActive"><span>{{(isLoadingActive) ?'':'Save & Continue'}}</span></button>
           </div>
@@ -417,7 +414,7 @@
           <div class="verification-section" ng-show="isVerificationActive">         
             <p>Please enter your verification code</p>
               <div class="form-group">          
-              <input type="number" class="form-control custom-input" minlength="6" maxlength="6" id="verification_code" placeholder="Verification Code" ng-model="item_verification_code" name="item_verification_code">
+              <input type="text" class="form-control custom-input" onkeypress="return (event.charCode == 8 || event.charCode == 0) ? false : (event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46 || event.charCode==46)" maxlength="6" id="verification_code" placeholder="Verification Code" ng-model="item_verification_code" name="item_verification_code">
             </div>          
           </div>
         </div>

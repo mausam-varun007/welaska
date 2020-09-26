@@ -70,7 +70,7 @@ app.directive('searchListingData',function ($http, $window, $timeout,$http,stora
                 $scope.$watch(attr.ngModel, function (newkeyword,keyword) {                    
                     
                     if(keyword!=''){                        
-                        $http.post(Base_url+'Home/getSearchItems',{keyword:keyword,location:$state.params.location,category_id:$state.params.categoryId})
+                        $http.post(Base_url+'Home/getSearchItems',{keyword:keyword,location:storageService.get('current_location'),category_id:$state.params.categoryId})
                             .then(function(response){                
                                 if(response.data.status) {  
                                     $rootScope.searchDataListVO = angular.copy(response.data.data) ;
@@ -110,7 +110,7 @@ app.directive('loginSignup',function ($http, $window, $timeout,$http,storageServ
                         $http.post(Base_url+'Home/LoginCode',{user_name:$scope.listingObj.user_name,mobile:$scope.listingObj.mobile,verification_code:$scope.listingObj.verification_code})
                                 .then(function(response){                                     
                                 
-                                console.log(response);
+                                console.log(response.data);
                                 if(response.data.status==1){
                                     angular.element("#loginModal").modal('hide');
                                     toastr.success(response.data.msg);
@@ -119,14 +119,14 @@ app.directive('loginSignup',function ($http, $window, $timeout,$http,storageServ
                                     
                                     storageService.set('user_name', response.data.result.user_name);
                                     storageService.set('mobile', response.data.result.mobile);
+                                    storageService.set('user_id', response.data.result.user_id);
                                     $rootScope.mobile = response.data.result.mobile ;
                                     $rootScope.user_name = response.data.result.user_name;
                                     $rootScope.profile_image = Base_Url+'assets/img/welaska_dummy.png';                    
-                                }else if(response.data.status==2){
-                                    console.log('test')
+                                }else if(response.data.status==2){                                    
                                     $rootScope.isVerificationActives = true;
                                 }         
-                                console.log($scope.isVerificationActives);
+                                
                         });
                     }
                 
@@ -298,7 +298,7 @@ app.controller('HomeCtrl', function($scope,homeService,$state,$log,$http,toastr,
     }     
     $scope.innerHeaderQuerySearch = function (keyword) {            
         return $http
-        .post(Base_url+'Home/getSearchItems',{keyword:keyword,location:$scope.listingObj.searchLocation,category_id:$state.params.categoryId})
+        .post(Base_url+'Home/getSearchItems',{keyword:keyword,location:storageService.get('current_location'),category_id:$state.params.categoryId})
             .then(function(response){                                    
                 $scope.classmateStats = loadAllClassmate(response.data.data);                                       
                 return $scope.classmateStats;
@@ -461,7 +461,7 @@ app.controller('ListingCtrl', function($scope,$state,$http,$stateParams,$timeout
     }     
     $scope.innerHeaderQuerySearch = function (keyword) {            
         return $http
-        .post(Base_url+'Home/getSearchItems',{keyword:keyword,location:$state.params.location,category_id:$state.params.categoryId})
+        .post(Base_url+'Home/getSearchItems',{keyword:keyword,location:storageService.get('current_location'),category_id:$state.params.categoryId})
             .then(function(response){                                    
                 $scope.classmateStats = loadAllClassmate(response.data.data);                    
                 // var results = keyword ? $scope.classmateStats.filter(createFilterForClassmate(keyword)) : $scope.classmateStats,
@@ -508,19 +508,68 @@ app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$time
     }    
     $rootScope.profile_image = Base_Url+'assets/img/welaska_dummy.png';
     $scope.searchLocation = storageService.get('current_location') ;
-    $scope.itemDetailsByID = [];
+    $scope.itemDetailsByID = [];    
+    $scope.itemReviewsVO = [];
+    $scope.todayDay = '';
+    $scope.review = '';
+
+    $scope.submitReview = function(item_id){
+        console.log($scope.review);
+        if(storageService.get('user_id')==null){            
+            angular.element('#loginModal').modal('show');
+            return false;
+        }
+        $http.post(Base_url+'Home/submitReview',{ item_id:item_id,user_id:storageService.get('user_id'),review:$scope.review})
+            .then(function(response){                
+                console.log(response);
+                $scope.getItemByID();
+                $scope.review = '';
+        });
+
+    }
 
    
     
     $scope.getItemByID = function(){        
+        $scope.itemShopDetailsByID = [];
 
         $http.post(Base_url+'Home/getItemByID',{ item_id:$stateParams.itemId})
             .then(function(response){                
                 if(response.data.status) {  
+
                     angular.element("#loader-for-page").addClass("loading-spiner-hide").removeClass("loading-spiner-show");
                     // toastr.success(response.data.message);
-                    $scope.itemDetailsByID = response.data.data ;
-                 
+                    $scope.itemDetailsByID = response.data.data.listing_items ;                    
+                    $scope.itemShopDetailsByIDObj = angular.copy(response.data.data.shop_timming);                    
+                    $scope.itemReviewsVO = angular.copy(response.data.data.reviews);                                        
+
+                    angular.forEach($scope.itemShopDetailsByIDObj, function (value) {                               
+                        if(value.days=='monday'){
+                            value.id=1;
+                        }else if(value.days=='tuesday'){
+                            value.id=2;
+                        }else if(value.days=='wednesday'){
+                            value.id=3;
+                        }else if(value.days=='thursday'){
+                            value.id=4;
+                        }else if(value.days=='friday'){
+                            value.id=5;
+                        }else if(value.days=='saturday'){
+                            value.id=6;
+                        }else if(value.days=='sunday'){
+                            value.id=7;
+                        }
+                        
+                        $scope.itemShopDetailsByID.push({'id':value.id, 'day':value.days.charAt(0).toUpperCase()+ value.days.slice(1),'start_from':value.start_from,'start_to':value.start_to,'isChecked':value.is_closed});
+                    });
+                    var dayss = new Date();
+                    var dayNumber = dayss.getDay();
+                    $scope.todayDay = dayNumber;
+
+                    var today = new Date();
+                    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                    // var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                    $scope.currenrtTime = today.getHours() + ":" + today.getMinutes();
                 }
         });
     }
@@ -565,8 +614,9 @@ app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$time
         return $scope.generateArray;
     }     
     $scope.innerHeaderQuerySearch = function (keyword) {            
+        console.log(storageService.get('current_location'));
         return $http
-        .post(Base_url+'Home/getSearchItems',{keyword:keyword,location:$state.params.location,category_id:$state.params.categoryId})
+        .post(Base_url+'Home/getSearchItems',{keyword:keyword,location:storageService.get('current_location') ,category_id:$state.params.categoryId})
             .then(function(response){                                    
                 $scope.classmateStats = loadAllClassmate(response.data.data);                    
                 // var results = keyword ? $scope.classmateStats.filter(createFilterForClassmate(keyword)) : $scope.classmateStats,
@@ -605,6 +655,10 @@ app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$time
 }); 
 app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService,toastr,homeService,$rootScope) {
 
+      
+    $scope.listingObject    = {};
+    $scope.selectObj        = {};
+    
     angular.element("#loader-for-page").addClass("loading-spiner-show").removeClass("loading-spiner-hide");
     if(storageService.get('user_name')){
         $rootScope.mobile = storageService.get('mobile') ;
@@ -613,9 +667,9 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
     $timeout(function () {                    
         angular.element("#loader-for-page").addClass("loading-spiner-hide").removeClass("loading-spiner-show");
     }, 500);
-    $scope.listingObject = {};
-    $scope.selectObj = {};
     $rootScope.profile_image = Base_Url+'assets/img/welaska_dummy.png';
+    
+
 
 
     $scope.workingHours = [{'id':1,value:'all_time',display:'Open 24 Hrs'},{'id':2,value:'00:00',display:'00:00'},{'id':3,value:'00:30',display:'00:30'},{'id':4,value:'01:00',display:'01:00'},{'id':5,value:'01:30',display:'01:30'},{'id':6,value:'02:00',display:'02:00'},{'id':6,value:'02:30',display:'02:30'},{'id':7,value:'03:00',display:'03:00'},{'id':8,value:'03:30',display:'03:30'},{'id':9,value:'04:00',display:'04:00'},{'id':10,value:'04:30',display:'04:30'},{'id':11,value:'05:00',display:'05:00'},{'id':12,value:'05:30',display:'05:30'},{'id':13,value:'06:00',display:'06:00'},{'id':14,value:'06:30',display:'06:20'},
@@ -704,33 +758,144 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
 
     function citySelectedChange(item) {
         console.log(item);
-        if(item){
-              $scope.listingObject.city = item.city;
-              $scope.listingObject.state = item.state;            
+        if(item){         
+              storageService.set('selected_city',item.city);
+              storageService.set('selected_state',item.state);
         }else{
+                storageService.set('selected_state');
                 $scope.listingObject.state = '';    
-        }
-    }   
+        }        
+    }    
+    if(storageService.get('selected_state')){
+            $scope.listingObject.state = storageService.get('selected_state');            
+            $scope.listingObject.city = storageService.get('selected_city');            
+            $scope.listingObject.mobile = storageService.get('mobile');
+            $scope.listingObject.land_line = storageService.get('landline_number');
+            $scope.listingObject.contact_person = storageService.get('contact_person');
+            $scope.listingObject.business_name = storageService.get('business_name');
+
+    }    
+    /////////////////////
+    $scope.isCompanyNameInCategoryName = false;
+    $scope.checkCategoryOrCompany = function(){
+        
+        $http.post(Base_url+'Home/checkCompany',{keyword:$scope.listingObject.business_name})
+                .then(function(response){                    
+                    if(response.data.status){
+                        $scope.isCompanyNameInCategoryName = true;
+                    }else{
+                        $scope.isCompanyNameInCategoryName = false;
+                    }
+            });
+    }
+
+
+    /////////////////////
+    $scope.category = [];
+    $scope.categoryQuerySearch = categoryQuerySearch;
+    $scope.categorySelectedChange = categorySelectedChange;
+    homeService.getCategoryList().then(function(response){
+        $scope.category = angular.copy(response);                 
+        $scope.toolList = angular.copy(response);
+        //$scope.protfoliotoolsstates = loadAllProjectTools($scope.toolList);
+        $scope.toolsStates = loadAllProjectTools($scope.toolList);
+    });
+
+    $scope.citySelectedChange = citySelectedChange;
+    // function loadAllCategoryList(data) {
+    //     console.log(data);
+    //     var classMateAllStates = data;
+    //     $scope.generateArray = [];
+    //     angular.forEach(classMateAllStates, function (value, key) {                               
+    //         if(value.city_name){                    
+    //             $scope.generateArray.push({                        
+    //                 'id': value.id,
+    //                 'city':value.category_name,
+    //             });                    
+    //         }
+    //     });
+    //     return $scope.generateArray;
+    // } 
+    function loadAllProjectTools(data) {
+            var projectToolsallStates = data;
+            $scope.generateArray = [];
+            angular.forEach(projectToolsallStates, function (value, key) {
+                var smallCaseTechnologies = value.category_name.toLowerCase();
+                $scope.generateArray.push({
+                    'id': value.id,
+                    'city': value.category_name,
+                    'filter': smallCaseTechnologies
+                });
+                $scope.projectToolsSearchText = '';
+            });
+            return $scope.generateArray;
+    }
+    function categoryQuerySearch(query) {
+            
+            var results = query ? $scope.toolsStates.filter(createFilterForClassmate(query)) : $scope.toolsStates,
+                deferred;                
+            return results;                
+            //return results;                
+    }    
+    
+
+    function createFilterForClassmate(query) {
+
+        var lowercaseQuery = query.toLowerCase();
+        return function filterFn(state) {                                        
+            return (state.filter.indexOf(lowercaseQuery) === 0 );
+        };
+
+    }
+
+    function categoryTextChange(text) {
+        $log.info('Text changed to ' + text);            
+    }
+    $scope.classmateData = '';
+    $scope.category_id = []
+    function categorySelectedChange(item) {         
+        if(item){
+            $scope.category_id = [];
+            $scope.category_id = item.id;
+        }        
+    }
+
+    // ///////////// 
+    $scope.customPosition = '';
+    $scope.enableScrollOnAutoCompleteList = function (event) {         
+            var totalHeigh = event.view.innerHeight;
+            var topMargin = event.screenY;
+            var bottomMargin = parseInt(totalHeigh)-parseInt(topMargin);                
+            if(topMargin > bottomMargin){
+                $scope.customPosition = 'top';
+            }else{
+                $scope.customPosition = 'bottom';
+            }
+    }
+
+
+
     $scope.keywordObject = [];
     //$scope.ngChangeFruitNames = angular.copy($scope.fruitNames);
     $scope.onModelChange = function(newModel) {
       $log.log('The model has changed to ' + newModel + '.');
     };
+    $scope.notEditable = function(text){
+                toastr.error("Sorry you cannot change the "+text+".");
+    }
 
     $scope.isLoadingActive = false;
     $scope.submitBasicDetails = function(){
             $scope.isLoadingActive = true;            
-            $http.post(Base_url+'Home/submitBasicDetails',{
-                    company_name:$scope.listingObject.company_name,
-                    first_name:$scope.listingObject.first_name,
-                    city:$scope.listingObject.city,
-                    last_name:$scope.listingObject.last_name,                    
-                    mobile:$scope.listingObject.mobile,
-                    land_line:$scope.listingObject.land_line,
-                    step:'business'
-
-                })
+            var serialize = $scope.listingObject;
+                serialize['step'] = 'business' ;
+                serialize['city'] = storageService.get('selected_city');
+            $http.post(Base_url+'Home/submitBasicDetails', serialize)
                 .then(function(response){   
+                storageService.set('mobile', $scope.listingObject.mobile);
+                storageService.set('business_name', $scope.listingObject.business_name);
+                storageService.set('landline_number', $scope.listingObject.land_line);
+                storageService.set('contact_person', $scope.listingObject.first_name+" "+$scope.listingObject.last_name);
                 if(response.data.status){                    
                     $state.go('detailForm');
                 }else{                    
@@ -742,19 +907,10 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
     }
     $scope.submitLocationInfo = function(){
             $scope.isLoadingActive = true;            
-            $http.post(Base_url+'Home/submitBasicDetails',{
-                    business_name:$scope.listingObject.business_name,
-                    building:$scope.listingObject.building,
-                    street_address:$scope.listingObject.street_address,
-                    landmark:$scope.listingObject.landmark,
-                    area:$scope.listingObject.area,
-                    city:$scope.listingObject.city,
-                    state:$scope.listingObject.state,
-                    pin_code:$scope.listingObject.pin_code,
-                    state:$scope.listingObject.state,
-                    step:'location'
+            var serialize = $scope.listingObject;
+            serialize['step'] = 'location';
 
-                })
+            $http.post(Base_url+'Home/submitBasicDetails',serialize)
                 .then(function(response){
                 $scope.isLoadingActive = false;               
                 if(response.data.status){                    
@@ -767,22 +923,9 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
     }
     $scope.submitContact = function(){
             $scope.isLoadingActive = true;            
-            $http.post(Base_url+'Home/submitBasicDetails',{
-                    contact_person:$scope.listingObject.contact_person,
-                    designation:$scope.listingObject.designation,
-                    land_line_number:$scope.listingObject.land_line_number,
-                    mobile:$scope.listingObject.mobile,
-                    fax:$scope.listingObject.fax,
-                    toll_free_number:$scope.listingObject.toll_free_number,
-                    email:$scope.listingObject.email,
-                    website:$scope.listingObject.website,
-                    facebook:$scope.listingObject.facebook,
-                    twitter:$scope.listingObject.twitter,
-                    youtube:$scope.listingObject.youtube,
-                    others:$scope.listingObject.others,
-                    step:'contact'
-
-                })
+            var seriaLize = $scope.listingObject;
+            seriaLize['step'] = 'contact' ;
+            $http.post(Base_url+'Home/submitBasicDetails',seriaLize)
                 .then(function(response){   
                 $scope.isLoadingActive = false;            
                 if(response.data.status){                    
@@ -794,6 +937,7 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
             });
     }
     $scope.submitOthers = function(){
+            
             $scope.isLoadingActive = true;            
             $scope.shopTimingObj = [];
             if($scope.monday_from){
@@ -822,6 +966,7 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
             $http.post(Base_url+'Home/submitBasicDetails',{                    
                     shop_timing:$scope.shopTimingObj,
                     payment_mode:$scope.paymentMode,
+                    is_display_hours:$scope.is_display_hours,
                     step:'others'
                 })
                 .then(function(response){   
@@ -835,9 +980,11 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
             });
     }
     $scope.submitKeywords = function(){
+
             $scope.isLoadingActive = true;            
             $http.post(Base_url+'Home/submitBasicDetails',{
                     keywords:$scope.keywordObject,                 
+                    category_id:$scope.category_id,                 
                     step:'keywords'
                 })
                 .then(function(response){   

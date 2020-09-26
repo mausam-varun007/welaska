@@ -5,13 +5,13 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
       <div class="form-group">
         <label class="control-label">Company Name <span>*</span></label>
-        <input type="text" ng-model="listingObject.company_name" class="form-control custom-input">
-        <!-- <span  class="error-msg">ddfdf</span> -->
+        <input type="text" ng-model="listingObject.business_name" class="form-control custom-input" ng-change="checkCategoryOrCompany()">
+        <span  ng-show="isCompanyNameInCategoryName" class="error-msg">Company name is exist in category name</span>
       </div>
     </div>
     <div class="col-md-6 col-sm-6 col-xs-12">
       <div class="form-group freelist-city" >
-        <label class="control-label">City <span>*</span></label>
+        <label class="control-label">City <span>*</span></label>        
          <md-autocomplete 
             ng-mouseover="enableScrollOnAutoCompleteList($event)"
             ng-click="enableScrollOnAutoCompleteList($event)"
@@ -61,19 +61,19 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
       <div class="form-group">
         <label class="control-label">Mobile Number</label>
-        <input type="text" ng-model="listingObject.mobile" class="form-control custom-input">
+        <input type="text" ng-model="listingObject.mobile" class="form-control custom-input" onkeypress="return (event.charCode == 8 || event.charCode == 0) ? false : (event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46 || event.charCode==46)" maxlength="10">
         <span  class="error-msg" ></span>        
       </div>
     </div>
     <div class="col-md-6 col-sm-6 col-xs-12">
       <div class="form-group">
         <label class="control-label">Landline Number </label>
-        <input type="text" ng-model="listingObject.land_line" class="form-control custom-input">
+        <input type="text" ng-model="listingObject.land_line"  class="form-control custom-input" onkeypress="return (event.charCode == 8 || event.charCode == 0) ? false : (event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46 || event.charCode==46)" maxlength="10">
         <span  class="error-msg"></span>
       </div>
     </div>
   </div>  
   <div class="fl-btn-sec">
-  	<button type="button" class="btn submit-button" ng-click="submitBasicDetails()"><img src="<?php echo base_url() ?>assets/img/btn-loading.gif" class="load-img" ng-show="isLoadingActive"><span>{{(isLoadingActive) ?'':'Submit'}}</span></button>
+  	<button type="button" class="btn submit-button" ng-disabled="isCompanyNameInCategoryName" ng-click="submitBasicDetails()"><img src="<?php echo base_url() ?>assets/img/btn-loading.gif" class="load-img" ng-show="isLoadingActive"><span>{{(isLoadingActive) ?'':'Submit'}}</span></button>
   </div>
 </div>

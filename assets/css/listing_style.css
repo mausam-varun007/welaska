@@ -721,6 +721,110 @@ img.load-img {
 button.btn.submit-button:focus{
     outline: none;
 }
+.display-radio md-radio-button {
+    font-size: 14px;
+    margin-right: 5px;
+    display: inherit;
+}
+.display-radio md-radio-button .md-off{
+    width: 16px;
+    height: 16px;
+}
+.display-radio md-radio-button .md-on{
+    width: 16px;
+    height: 16px;   
+}
+.display-radio .md-label {
+    margin-bottom: 5px;
+}
+.display-radio {
+    margin-bottom: 20px;
+}
+p::first-letter {
+    text-transform: capitalize;
+}
+p.available-hours {
+    margin-bottom: 2px;
+}
+table.shop-hourse {
+    border: none;
+}
+table.shop-hourse tr.even, table tr.alt, table tr:nth-of-type(even) {
+    background: none;
+}
+.row.main-content-box {
+    border: 1px solid #e8d8d8;
+}
+.main-content-box .row {
+    margin: 0;
+    padding: 30px 50px;
+}
+.row.first-card, .second-card, .third-card, .forth-card, .fifth-card  {
+    border-bottom: 1px solid #e4e4e4;
+}
+.first-card {
+}
+span.shop-open {
+    font-weight: 600;
+    color: #2fb925;
+}
+span.shop-close {
+    font-weight: 600;
+    color: #f15d56;
+}
+span.show-more, span.show-less{
+    font-size: 12px;    
+}
+span.show-more, span.show-less:focus{
+    outline: none;  
+}
+.second-card p {
+    margin-bottom: 0;
+}
+p.frequently-question {
+    background-color: #f7f7f7;
+    padding: 10px;
+    margin-top: 15px;    
+}
+.shop-hourse-questions td {
+    padding: 2px 15px;
+    font-size: 13px;
+}
+p.hours-operation {
+    font-size: 16px;
+    font-weight: 600;
+}
+p.question {
+    margin-bottom: 5px;
+}
+p.answer-of-q {
+    font-size: 13px;
+    padding-left: 16px;
+    /*margin-bottom: 5px;*/
+}
+p.question {
+    margin-bottom: 5px;
+}
+button.btn.review-submit {
+    background-color: #2ecacd;
+    border-radius: 0;
+    float: right;
+    padding: 10px 30px;
+}
+.customer-feedback-sec textarea {
+    border-radius: 0;
+    transition: 0.4s ease-in-out;
+}
+.customer-feedback-sec textarea:focus {
+    border: none;
+    box-shadow:none;
+    transition: 0.4s ease-in-out;
+    border: 1px solid;
+    /*box-shadow: -1px 1px 9px rgba(0, 0, 0, 0.2);*/
+}
+.row.review-card {
+    margin-bottom: 10px;
+}
 
 /*End Loader*/
 /*media query start*/

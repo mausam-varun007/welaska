@@ -93,7 +93,7 @@ class Home extends MY_Controller {
       echo json_encode(array('status'=>0));
     }
   } 
-   public function getCityList(){ 
+  public function getCityList(){ 
 
     $recieved = $this->Home->getCityList();    
     if($recieved){
@@ -127,5 +127,23 @@ class Home extends MY_Controller {
               }
             echo $result;
   }
+  public function checkCompany(){ 
+
+    $recieved = $this->Home->checkCompany();    
+    if($recieved){
+      echo json_encode(array('status'=>1,'data'=>$recieved));
+    }else{
+      echo json_encode(array('status'=>0));
+    }
+  } 
+  public function submitReview(){ 
+
+    $recieved = $this->Home->submitReview();    
+    if($recieved){
+      echo json_encode(array('status'=>1));
+    }else{
+      echo json_encode(array('status'=>0));
+    }
+  } 
   
 }
