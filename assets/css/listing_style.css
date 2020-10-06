@@ -866,6 +866,9 @@ i.fa.fa-star-half-o {
 .profile-image-section ul.dropdown-menu {
     margin: 6px -52px 0;
 }
+span.category-sign span {
+    color: red;
+}
 /*End Loader*/
 /*media query start*/
 @media screen and (max-width: 568px){

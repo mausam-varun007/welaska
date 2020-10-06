@@ -90,7 +90,7 @@
 			              input-aria-describedby="autocompleteDetailedDescription" md-dropdown-position="auto">
 			              <mat-option >
 			               <!--  <img style="vertical-align:middle;" aria-hidden data-ng-src="{{(item.image) ? item.image : '<?= base_url() ?>assets/img/defualt-logo.png'}}" height="20" /> -->               
-			                <a class="category-items"><span class="search-all-list" md-highlight-text="searchObj.innerHeaderSearchText" md-highlight-flags="^i" class="capitalize">{{item.name}}</span></a>                
+			                <a class="category-items"><span class="search-all-list" md-highlight-text="searchObj.innerHeaderSearchText" md-highlight-flags="^i" class="capitalize">{{item.name}} </span></a><span ng-show="item.type=='category_type'" class="category-sign">[<span>+</span>]</span>                
 			               <!-- <a href="" ng-if="item.type='item_type'">               	
 			                <span class="category-item" md-highlight-text="searchObj.innerHeaderSearchText" md-highlight-flags="^i" class="capitalize">{{item.name}}</span>                
 			               </a> -->
