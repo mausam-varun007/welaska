@@ -391,6 +391,9 @@
             <button ng-click="submitKeywords()" class="btn sc-btn submit-button"><img src="<?php echo base_url() ?>assets/img/btn-loading.gif" class="load-img" ng-show="isLoadingActive"><span>{{(isLoadingActive) ?'':'Save & Continue'}}</span></button>
           </div>
         </div>
+        <div class="df-form-sec" id="4" ng-show="step=='upload'">
+          <h3>Veriy Your Listing</h3>
+        </div>
       </div>
     </div>
   </div>

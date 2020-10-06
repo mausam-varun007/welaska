@@ -1047,7 +1047,11 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
                     step:'keywords'
                 })
                 .then(function(response){   
-                $scope.isLoadingActive = false;            
+                $scope.isLoadingActive = false;        
+
+                angular.element("#myModal").modal('show');            
+                $scope.step = 'upload';                    
+
                 // if(response.data.status){                    
                 //     $scope.step = 'others';
                 // }else{                    
