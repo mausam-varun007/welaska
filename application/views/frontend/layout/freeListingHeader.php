@@ -24,8 +24,14 @@
 				<a class="login-user" data-toggle="modal" data-target="#loginModal" ng-click="modalType='Login'">Login</a>
 				<a class="signup-user" data-toggle="modal" data-target="#loginModal" ng-click="modalType='Signup'">Signup</a>
 			</div>			
-			<div class="profile-image-section" ng-show="user_name">
-				<span>Hi {{user_name}} </span>  <img src="{{profile_image}}" class="profile-image">
+			<div class="profile-image-section dropdown" ng-show="user_name">
+				<span class="menu-custom-drp dropdown-toggle" data-toggle="dropdown"><span>Hi {{user_name}} </span>  <img src="{{profile_image}}" class="profile-image"></span>
+				<ul class="dropdown-menu">
+			      <li><a href="#">My Account</a></li>
+			      <li><a href="#">My Profile</a></li>
+			      <li class="divider"></li>
+			      <li><a ui-sref="Logout">Log Out</a></li>
+			    </ul>				
 			</div>
 	  	</div>
 		</div>

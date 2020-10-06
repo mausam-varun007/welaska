@@ -39,16 +39,12 @@ p.content-title {
     font-size: 20px;
     font-weight: 600;
 }
-.content-rating i.fa.fa-star {
+/*.content-rating i.fa.fa-star {
     font-size: 20px;
     color: #c7c5c5;
-}
+}*/
 i.fa.fa-star.filled-start {
     color: #f3e216;
-}
-i.fa.fa-star-half-o {
-    font-size: 20px;
-    color: #c7c5c5;
 }
 .select-hide {
   display: none;
@@ -811,6 +807,10 @@ button.btn.review-submit {
     float: right;
     padding: 10px 30px;
 }
+button.btn.review-submit:hover {
+    background-color: #19a4a7;
+    color: #fff;
+}
 .customer-feedback-sec textarea {
     border-radius: 0;
     transition: 0.4s ease-in-out;
@@ -825,7 +825,47 @@ button.btn.review-submit {
 .row.review-card {
     margin-bottom: 10px;
 }
+.rating-section i.glyphicon.ng-scope.glyphicon-star:focus {
+    outline: none;
+}
+.rating-section i.glyphicon.ng-scope.glyphicon-star {
+    color: #ffcf46;
+}
+.rating-section i.glyphicon.ng-scope.glyphicon-star-empty{
+    color: #9a7200c2;
+}
+span.rating-avg{
+    background-color: #4dcc36;
+    color: #fff;
+    padding: 2px 5px;
+    font-size: 13px;
+}
+p.load-more {
+    display: block;
+    text-align: center;
+    margin: 35px;
+}
+span.load-more-button {
+    background-color: #f3f3f3;
+    padding: 10px 15px;
+    font-size: 13px;
+}
 
+i.fa.fa-star.active {
+    color: coral;
+}
+i.fa.fa-star.active {
+    color: coral;
+}
+i.fa.fa-star-half-o {    
+    color: coral;
+}
+.review-star i {
+    font-size: 20px;
+}
+.profile-image-section ul.dropdown-menu {
+    margin: 6px -52px 0;
+}
 /*End Loader*/
 /*media query start*/
 @media screen and (max-width: 568px){

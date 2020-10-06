@@ -59,11 +59,15 @@ class Home_model extends MY_model
 										'is_active'=>1);
 		      					
             					$lastId = $this->insertData('user',$userData);	
+            					if($lastId){
+            						$this->session->set_userdata($userData); 
+            					}
             					// echo $this->db->last_query();
             					// die();
             					if($lastId){
 									$this->session->set_userdata($userData); 
-									return json_encode(array('status'=>1,'msg'=>'Successfully Signup','result'=>$lastId));	
+									$userData['user_id'] = $lastId;
+									return json_encode(array('status'=>1,'msg'=>'Successfully Signup','result'=>$userData));	
             					}else{
             						return json_encode(array('status'=>0));							
             					}		
@@ -98,7 +102,7 @@ class Home_model extends MY_model
 		if(!empty($this->input->post('category_id'))){
 
 			$id = $this->input->post('category_id');
-			$this->db->select('listing_items.*,category.id as category_id,category.category_name, count(rating.id) as total_ratings, SUM(rating.rating) as total_rating_sum ,AVG(rating.rating) as rating_average ');
+			$this->db->select('listing_items.*,category.id as category_id,category.category_name, count(rating.id) as total_ratings, SUM(rating.rating) as total_rating_sum , FORMAT(AVG(rating.rating), 1) as rating_average ');
 			$this->db->from('listing_items');		
 			$this->db->join('category','category.id=listing_items.category_id');
 			$this->db->join('rating','rating.item_id=listing_items.id','left');
@@ -141,11 +145,19 @@ class Home_model extends MY_model
 	public function getItemByID()
 	{		
 		$id = $this->input->post('item_id');
-		$this->db->select('listing_items.*,category.id as category_id,category.category_name,
+		if(empty($this->input->post('user_id'))){
+			$this->db->select('listing_items.*,category.id as category_id,category.category_name,
 						(SELECT GROUP_CONCAT(payment_mode) FROM payment_modes
-                    		WHERE item_id = '.$id.') AS payment_mode');
+                    		WHERE item_id = '.$id.') AS payment_mode, (select count(id) from item_likes where item_likes.item_id = '.$this->input->post('item_id').') as likes_count , (select FORMAT(AVG(rating), 1) from rating where rating.item_id = '.$this->input->post('item_id').')  as rating_avg');
+		}else{
+			$this->db->select('listing_items.*,category.id as category_id,category.category_name,
+						(SELECT GROUP_CONCAT(payment_mode) FROM payment_modes
+                    		WHERE item_id = '.$id.') AS payment_mode,rating.rating, EXISTS( select * from item_likes join user on user.id= item_likes.user_id  where user.id = '.$this->input->post('user_id').') as likes_exist, (select count(id) from item_likes where item_likes.item_id = '.$this->input->post('item_id').') as likes_count , (select FORMAT(AVG(rating), 1) from rating where rating.item_id = '.$this->input->post('item_id').')  as rating_avg');
+		}
 		$this->db->from('listing_items');		
-		$this->db->join('category','category.id=listing_items.category_id');		
+		$this->db->join('category','category.id=listing_items.category_id');				
+		$this->db->join('rating','rating.item_id=listing_items.id','left');				
+		$this->db->join('user','user.id=rating.user_id','left');				
 		$this->db->where('listing_items.id',$id);
 		$query = $this->db->get();				
 
@@ -154,7 +166,7 @@ class Home_model extends MY_model
 		$this->db->where('shop_timming.item_id',$id);
 		$query1 = $this->db->get();								
 
-		$this->db->select('reviews.review,reviews.created_at,listing_items.id,user.user_name,user.first_name,user.last_name,user.image');
+		$this->db->select('reviews.review,reviews.created_at,listing_items.id,user.user_name as review_user_name,user.first_name,user.last_name,user.image');
 		$this->db->from('reviews');				
 		$this->db->join('listing_items','listing_items.id=reviews.user_id');		
 		$this->db->join('user','user.id=reviews.user_id');		
@@ -446,5 +458,48 @@ class Home_model extends MY_model
 				}
 		}		
 	}
+	public function giveRating()
+	{		
+		if($this->input->post()){				
+				$exist = $this->db->select('id')->from('rating')->where(array('item_id'=>$this->input->post('item_id'),'user_id'=>$this->input->post('user_id')))->get();
+				$userData = array(
+							'item_id'=>$this->input->post('item_id'),						
+							'user_id'=>$this->input->post('user_id'),
+							'rating'=>$this->input->post('stars'));
+
+      			if($exist->num_rows() > 0){
+    				$lastId = $this->updateData('rating',$userData,array('item_id'=>$this->input->post('item_id'),'user_id'=>$this->input->post('user_id')));	
+      			}else{
+    				$lastId = $this->insertData('rating',$userData);	
+      			}
+				if($lastId){
+					return json_encode(array('status'=>1));					
+				}else{
+					return json_encode(array('status'=>0));					
+				}
+		}		
+	}
+	public function productLike()
+	{		
+		if($this->input->post()){				
+				$exist = $this->db->select('id')->from('item_likes')->where(array('item_id'=>$this->input->post('item_id'),'user_id'=>$this->input->post('user_id')))->get()->num_rows();
+				if($exist == 0){					
+					
+					$userData = array(
+								'item_id'=>$this->input->post('item_id'),						
+								'user_id'=>$this->input->post('user_id'),
+								'likes'=>1);					
+	    			$lastId = $this->insertData('item_likes',$userData);	
+	      			
+					if($lastId){
+						return json_encode(array('status'=>1));					
+					}else{
+						return json_encode(array('status'=>0));					
+					}
+				}
+
+		}		
+	}
+	
 
 }

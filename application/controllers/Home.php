@@ -145,5 +145,23 @@ class Home extends MY_Controller {
       echo json_encode(array('status'=>0));
     }
   } 
+  public function giveRating(){ 
+
+    $recieved = $this->Home->giveRating();    
+    if($recieved){
+      echo json_encode(array('status'=>1));
+    }else{
+      echo json_encode(array('status'=>0));
+    }
+  } 
+  public function productLike(){ 
+
+    $recieved = $this->Home->productLike();    
+    if($recieved){
+      echo json_encode(array('status'=>1));
+    }else{
+      echo json_encode(array('status'=>0));
+    }
+  } 
   
 }

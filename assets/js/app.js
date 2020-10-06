@@ -150,7 +150,11 @@ app.config(function($stateProvider, $locationProvider,
             url : '/login', 
             template : "<h1>Login Page</h1>", 
             controller : "LoginCtrl"
-        }) 
+        })
+        .state('Logout', { 
+            url : '/logout',             
+            controller : "LogoutCtrl"
+        })  
         .state('Signup', { 
             url : '/signup', 
             template : "<h1>Signup Page</h1>", 
@@ -187,6 +191,8 @@ app.controller('HomeCtrl', function($scope,homeService,$state,$log,$http,toastr,
     
     angular.element("#loader-for-page").addClass("loading-spiner-show").removeClass("loading-spiner-hide");
     $scope.listingObject = {};
+
+
 
     var x=document.getElementById("demo");
     function getLocation(){
@@ -380,6 +386,16 @@ app.controller('HomeCtrl', function($scope,homeService,$state,$log,$http,toastr,
     
 }); 
 app.controller('LoginCtrl', function() {}); 
+app.controller('LogoutCtrl', function($state,storageService,$rootScope ) {    
+    localStorage.removeItem('user_name');
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('mobile');
+    $rootScope.mobile = '' ;
+    $rootScope.user_name = '' ;
+    $rootScope.profile_image = '';
+    $state.go('Home');
+
+}); 
 app.controller('ListingCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService,$rootScope,toastr) {
 
     angular.element("#loader-for-page").addClass("loading-spiner-show").removeClass("loading-spiner-hide");
@@ -499,7 +515,7 @@ app.controller('ListingCtrl', function($scope,$state,$http,$stateParams,$timeout
             }
     }
 }); 
-app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService,$rootScope) {
+app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService,$rootScope,toastr) {
 
     angular.element("#loader-for-page").addClass("loading-spiner-show").removeClass("loading-spiner-hide");
     if(storageService.get('user_name')){
@@ -513,12 +529,19 @@ app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$time
     $scope.todayDay = '';
     $scope.review = '';
 
+    
+
     $scope.submitReview = function(item_id){
-        console.log($scope.review);
+        
         if(storageService.get('user_id')==null){            
             angular.element('#loginModal').modal('show');
             return false;
         }
+        if($scope.review==''){
+            toastr.error('Please fill review');
+            return false;
+        }
+
         $http.post(Base_url+'Home/submitReview',{ item_id:item_id,user_id:storageService.get('user_id'),review:$scope.review})
             .then(function(response){                
                 console.log(response);
@@ -533,7 +556,7 @@ app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$time
     $scope.getItemByID = function(){        
         $scope.itemShopDetailsByID = [];
 
-        $http.post(Base_url+'Home/getItemByID',{ item_id:$stateParams.itemId})
+        $http.post(Base_url+'Home/getItemByID',{ item_id:$stateParams.itemId,user_id:storageService.get('user_id')})
             .then(function(response){                
                 if(response.data.status) {  
 
@@ -542,6 +565,16 @@ app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$time
                     $scope.itemDetailsByID = response.data.data.listing_items ;                    
                     $scope.itemShopDetailsByIDObj = angular.copy(response.data.data.shop_timming);                    
                     $scope.itemReviewsVO = angular.copy(response.data.data.reviews);                                        
+                    if($scope.itemDetailsByID.rating_avg){
+                        $scope.starAvg = parseFloat($scope.itemDetailsByID.rating_avg);
+                    }                    
+
+                    if($scope.itemDetailsByID.rating){
+                        console.log($scope.itemDetailsByID.rating);
+                        $scope.rate = $scope.itemDetailsByID.rating ;
+                    }else{
+                        $scope.rate = 0 ;
+                    }
 
                     angular.forEach($scope.itemShopDetailsByIDObj, function (value) {                               
                         if(value.days=='monday'){
@@ -575,14 +608,40 @@ app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$time
     }
     $scope.getItemByID();
 
-    $scope.rate = 7;
-      $scope.max = 5;
-      $scope.isReadonly = false;
+    // $scope.rate = 2;
+    $scope.max = 5;
+    $scope.isReadonly = false;
 
-      $scope.hoveringOver = function(value) {
+    $scope.hoveringOver = function(value) {        
         $scope.overStar = value;
-        $scope.percent = 100 * (value / $scope.max);
-      };
+        $scope.percent = 100 * (value / $scope.max);        
+    };
+    $scope.giveRating = function(item_id){
+        if(storageService.get('user_id')==null){            
+            angular.element('#loginModal').modal('show');
+            return false;
+        }        
+
+        $http.post(Base_url+'Home/giveRating',{ item_id:item_id,user_id:storageService.get('user_id'),stars:$scope.overStar})
+            .then(function(response){                                
+                $scope.getItemByID();
+        });
+    }
+    $scope.likesItems = function(item_id){
+        if(storageService.get('user_id')==null){            
+            angular.element('#loginModal').modal('show');
+            return false;
+        }        
+
+        $http.post(Base_url+'Home/productLike',{ item_id:item_id,user_id:storageService.get('user_id'),stars:$scope.overStar})
+            .then(function(response){                
+                console.log(response);
+                $scope.getItemByID();
+        });
+    }
+    
+
+
     $scope.ratingStates = [
         {stateOn: 'glyphicon-ok-sign', stateOff: 'glyphicon-ok-circle'},
         {stateOn: 'glyphicon-star', stateOff: 'glyphicon-star-empty'},

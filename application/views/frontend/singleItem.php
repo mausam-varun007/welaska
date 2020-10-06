@@ -40,10 +40,12 @@
 	</div>		
 	<div class="row third-card">			
 		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-2">
-			<a class="single-content-whatsapp"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>	
+			<a ng-show="itemDetailsByID.likes_exist > 0" class="single-content-whatsapp"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
+			<a ng-show="itemDetailsByID.likes_exist==0 || !itemDetailsByID.likes_exist" ng-click="likesItems(itemDetailsByID.id)" class="single-content-whatsapp"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></a>
+			<p ng-show="itemDetailsByID.likes_count > 0" class="likes-count">{{itemDetailsByID.likes_count}} Likes</p>
 		</div>
 		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-8 text-center rating-section">
-			<rating ng-model="rate" max="max" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null"></rating>				
+			<rating ng-model="rate" max="max" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null" ng-click="giveRating(itemDetailsByID.id)"></rating>				
 		    <!-- <span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" ng-show="overStar && !isReadonly">{{percent}}%</span> -->
 		</div>
 		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-2 text-right">
@@ -51,12 +53,14 @@
 		</div>
 	</div>		
 	<div class="row forth-card">			
-		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-			<i class="fa fa-star" aria-hidden="true"></i>
-			<i class="fa fa-star" aria-hidden="true"></i>
-			<i class="fa fa-star" aria-hidden="true"></i>
-			<i class="fa fa-star" aria-hidden="true"></i>
-			<i class="fa fa-star" aria-hidden="true"></i>
+		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 review-star">			
+			<i class="fa fa-star" ng-class="starAvg > 0 ? 'active':'fa-star-o' " aria-hidden="true"></i>
+			<i class="fa fa-star" ng-class="starAvg > 1 ? (starAvg > 1 && starAvg < 2 ? 'fa-star-half-o':'active'):'fa-star-o' " aria-hidden="true"></i>
+			<i class="fa fa-star" ng-class="starAvg > 2  ? (starAvg > 2 && starAvg < 3 ? 'fa-star-half-o':'active') :'fa-star-o' " aria-hidden="true"></i>
+			<i class="fa fa-star" ng-class="starAvg > 3 ? (starAvg > 3 && starAvg < 4 ? 'fa-star-half-o':'active') :'fa-star-o' " aria-hidden="true"></i>
+			<i class="fa fa-star" ng-class="starAvg > 4 ? (starAvg > 4 && starAvg < 5 ? 'fa-star-half-o':'active') : 'fa-star-o' " aria-hidden="true"></i>
+
+			<P ng-show="itemDetailsByID.rating_avg" class="average-rating"><span class="rating-avg">{{itemDetailsByID.rating_avg}}</span> </P>
 		</div>			
 		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 			<div class="customer-feedback-sec">										
@@ -67,18 +71,22 @@
 			</div>	
 		</div>
 	</div>	
-	<div class="row fifth-card">					
-		<div class="row review-card" ng-repeat="item in itemReviewsVO">
+	<div class="row fifth-card" ng-init="showDefault=5">					
+		<div class="row review-card" ng-repeat="item in itemReviewsVO" ng-show="$index < showDefault">
 			<div class="col-md-2 custom-col-2 col-xs-12">
 				<img ng-src="{{item.image}}" src="<?= base_url()."assets/img/dummy-image.png" ?> " class="review-image">
 			</div>
 			<div class="col-md-10 custom-col-10 col-xs-12">
 				<p class="review-user-name" ng-show="item.first_name">{{item.first_name}} {{item.last_name}} </p>
-				<p class="review-user-name"  ng-show="!item.first_name">{{user_name}}</p>
+				<p class="review-user-name"  >{{item.review_user_name}}</p>
 				<p class="review-description">{{item.review}}.</p>
 				<p class="review-date"><i class="fa fa-clock-o" aria-hidden="true"></i> {{item.created_at}}</p>
 			</div>
 		</div>			
+		<div ng-show="itemReviewsVO.length > 5">			
+			<p class="load-more" ng-show="showDefault==5" ng-click="showDefault=itemReviewsVO.length"><span class="load-more-button">Show All....</span> </p>
+			<p class="load-more" ng-show="showDefault > 5" ng-click="showDefault=5"><span class="load-more-button">Show Less....</span></p>
+		</div>
 		<!-- <div class="row review-card">
 			<div class="col-md-2 custom-col-2">
 				<img src="<?= base_url()."assets/img/dummy-image.png" ?> " class="review-image">

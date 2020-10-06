@@ -69,8 +69,26 @@
 			<div class="inner-free-listing">				
 				<a ui-sref="freeListing" class="free-inner-listing">Free Listing</a>
 			</div>
-			<div class="profile-image-section" ng-show="user_name">
-				<span>Hi {{user_name}} </span>  <img src="{{profile_image}}" class="profile-image">
+			<div class="profile-image-section dropdown" ng-show="user_name">
+				<span class="menu-custom-drp dropdown-toggle" data-toggle="dropdown"><span>Hi {{user_name}} </span>  <img src="{{profile_image}}" class="profile-image"></span>
+				<ul class="dropdown-menu">
+			      <li><a href="#">My Account</a></li>
+			      <li><a href="#">My Profile</a></li>
+			      <li class="divider"></li>
+			      <li><a ui-sref="Logout">Log Out</a></li>
+			    </ul>
+				<!-- <div class="dropdown">
+				    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Tutorials
+				    <span class="caret"></span></button>
+				    <ul class="dropdown-menu">
+				      <li><a href="#">HTML</a></li>
+				      <li><a href="#">CSS</a></li>
+				      <li><a href="#">JavaScript</a></li>
+				      <li class="divider"></li>
+				      <li><a href="#">About Us</a></li>
+				    </ul>
+				</div> -->
+
 			</div>
 	  	</div>
 		</div>
@@ -93,9 +111,8 @@
 </html>
 
 <!-- Login Modal -->
-<div class="modal fade" id="loginModal" role="dialog">
-	<div class="modal-dialog">
-	  <!-- Modal content-->
+<!-- <div class="modal fade" id="loginModal" role="dialog">
+	<div class="modal-dialog">	  
 	  <div class="modal-content">
 	    <div class="modal-header">
 	      <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -125,4 +142,4 @@
 	  </div>
 	  
 	</div>
-</div>
+</div> -->

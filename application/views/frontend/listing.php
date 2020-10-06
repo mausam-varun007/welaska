@@ -10,13 +10,12 @@
 				<p class="content-title" ><a ui-sref="singleItem({itemId:item.id})">{{item.business_name}} </a></p>				
 				<p class="content-contact"><i class="fa fa-phone" aria-hidden="true"></i>{{item.phone1}}</p> 
 
-				<p class="content-rating"><span class="rating-text">4.2</span>&nbsp; 
-					<span> <i class="fa fa-star" aria-hidden="true"></i></span>
-					<span><i class="fa fa-star" aria-hidden="true"></i></span> 
-					<span><i class="fa fa-star" aria-hidden="true"></i></span>
-					<span><i class="fa fa-star" aria-hidden="true"></i></span>
-					<span><i class="fa fa-star" aria-hidden="true"></i></span>
-					<span><i class="fa fa-star-half-o" aria-hidden="true"></i></span>
+				<p class="content-rating review-star"><span ng-show="item.rating_average > 0" class="rating-text">{{item.rating_average}} </span>&nbsp; 
+					<i class="fa fa-star" ng-class="item.rating_average > 0 ? 'active':'fa-star-o' " aria-hidden="true"></i>
+					<i class="fa fa-star" ng-class="item.rating_average > 1 ? (item.rating_average > 1 && item.rating_average < 2 ? 'fa-star-half-o':'active'):'fa-star-o' " aria-hidden="true"></i>
+					<i class="fa fa-star" ng-class="item.rating_average > 2  ? (item.rating_average > 2 && item.rating_average < 3 ? 'fa-star-half-o':'active') :'fa-star-o' " aria-hidden="true"></i>
+					<i class="fa fa-star" ng-class="item.rating_average > 3 ? (item.rating_average > 3 && item.rating_average < 4 ? 'fa-star-half-o':'active') :'fa-star-o' " aria-hidden="true"></i>
+					<i class="fa fa-star" ng-class="item.rating_average > 4 ? (item.rating_average > 4 && item.rating_average < 5 ? 'fa-star-half-o':'active') : 'fa-star-o' " aria-hidden="true"></i>
 					<span class="number-of-rating">Rating</span>
 				</p>
 
