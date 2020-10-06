@@ -51,7 +51,8 @@
 		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-2 text-right">
 			<a href=""><span class="single-content-whatsapp"><i class="fa fa-whatsapp" aria-hidden="true"></i></span> </a>
 		</div>
-	</div>		
+	</div>	
+		
 	<div class="row forth-card">			
 		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 review-star">			
 			<i class="fa fa-star" ng-class="starAvg > 0 ? 'active':'fa-star-o' " aria-hidden="true"></i>

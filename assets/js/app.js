@@ -109,8 +109,6 @@ app.directive('loginSignup',function ($http, $window, $timeout,$http,storageServ
                         
                         $http.post(Base_url+'Home/LoginCode',{user_name:$scope.listingObj.user_name,mobile:$scope.listingObj.mobile,verification_code:$scope.listingObj.verification_code})
                                 .then(function(response){                                     
-                                
-                                console.log(response.data);
                                 if(response.data.status==1){
                                     angular.element("#loginModal").modal('hide');
                                     toastr.success(response.data.msg);
@@ -570,7 +568,6 @@ app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$time
                     }                    
 
                     if($scope.itemDetailsByID.rating){
-                        console.log($scope.itemDetailsByID.rating);
                         $scope.rate = $scope.itemDetailsByID.rating ;
                     }else{
                         $scope.rate = 0 ;
@@ -673,7 +670,6 @@ app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$time
         return $scope.generateArray;
     }     
     $scope.innerHeaderQuerySearch = function (keyword) {            
-        console.log(storageService.get('current_location'));
         return $http
         .post(Base_url+'Home/getSearchItems',{keyword:keyword,location:storageService.get('current_location') ,category_id:$state.params.categoryId})
             .then(function(response){                                    
