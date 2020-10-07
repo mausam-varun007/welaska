@@ -362,6 +362,7 @@
                   md-min-length="0" 
                   md-escape-options="clear" 
                   placeholder="Choose Category" 
+                  class="category-dropdown"
                   input-aria-labelledby="favoriteStateLabel">
                   <md-item-template>
                     <span md-highlight-text="searchText" md-highlight-flags="^i">{{item.city}}</span>

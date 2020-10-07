@@ -875,6 +875,13 @@ span.inline-edit {
     float: right;
     font-size: 12px;
 }
+md-autocomplete.category-dropdown {
+    background-color: #f1f1f1;
+    box-shadow: none;
+}
+.category-dropdown md-autocomplete-wrap {
+    box-shadow: none;
+}
 /*End Loader*/
 /*media query start*/
 @media screen and (max-width: 568px){
