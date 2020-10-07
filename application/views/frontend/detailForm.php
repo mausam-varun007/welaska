@@ -239,7 +239,7 @@
               <a ng-click="step='location'" class="pull-left"><i class="fa fa-arrow-left"></i> Previous</a>
               <!-- <button class="btn se-btn">Save & Exit</button> -->
               <button class="btn sc-btn submit-button" ng-click="submitContact()"><img src="<?php echo base_url() ?>assets/img/btn-loading.gif" class="load-img" ng-show="isLoadingActive"><span>{{(isLoadingActive) ?'':'Save & Continue'}}</span></button>
-              <!-- <a href="" class="pull-right" ng-click="submitContact()">Next <i class="fa fa-arrow-right"></i></a> -->
+              <a ng-click="step='others'" class="pull-right" >Next <i class="fa fa-arrow-right"></i></a>
             </div>
         </div>
         <div class="df-form-sec" id="3" ng-show="step=='others'">
