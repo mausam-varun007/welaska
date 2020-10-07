@@ -4,7 +4,9 @@
 	  overflow-y:scroll
 	}
 </style>
-<div class="row main-content-box" >					
+<div class="row main-content-box" >	
+	<span class="inline-edit"><a ><img src="<?=base_url()?>assets/img/timesheet-ic-min.png"></a> Edit Listing</span>
+
 	<div class="row first-card">			
 		<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">				
 			<p class="content-title">{{itemDetailsByID.business_name}}</p>				

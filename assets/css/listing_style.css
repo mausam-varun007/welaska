@@ -869,6 +869,12 @@ i.fa.fa-star-half-o {
 span.category-sign {
     color: red;
 }
+span.inline-edit {
+    display: inline-grid;
+    text-align: center;
+    float: right;
+    font-size: 12px;
+}
 /*End Loader*/
 /*media query start*/
 @media screen and (max-width: 568px){

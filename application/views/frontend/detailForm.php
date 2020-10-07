@@ -126,7 +126,7 @@
             </div>            
             <div class="fl-btn-sec">
               <button ng-click="submitLocationInfo()" class="btn submit-button"> <img src="<?php echo base_url() ?>assets/img/btn-loading.gif" class="load-img" ng-show="isLoadingActive"><span>{{(isLoadingActive) ?'':'Submit'}}</span></button>
-              <a href="" class="pull-right">Next <i class="fa fa-arrow-right"></i></a>
+              <a ng-click="step='contact'" class="pull-right">Next <i class="fa fa-arrow-right"></i></a>
             </div>
         </div>
         <div class="df-form-sec" id="2" ng-show="step=='contact'">
@@ -339,7 +339,7 @@
               <a ng-click="step='contact'" class="pull-left"><i class="fa fa-arrow-left"></i> Previous</a>
               <!-- <button class="btn se-btn">Save & Exit</button> -->
               <button class="btn sc-btn submit-button" ng-click="submitOthers()"><img src="<?php echo base_url() ?>assets/img/btn-loading.gif" class="load-img" ng-show="isLoadingActive"><span>{{(isLoadingActive) ?'':'Save & Continue'}}</span></button>
-              <a href="" class="pull-right">Next <i class="fa fa-arrow-right"></i></a>
+              <a ng-click="step='keyword'"  class="pull-right">Next <i class="fa fa-arrow-right"></i></a>
             </div>
         </div>
         <div class="df-form-sec" id="4" ng-show="step=='keyword'">
