@@ -1,7 +1,4 @@
-<div class="detail-form-sec">
-  <div class="df-top">
-    <h3>You are few steps away from availing a Free listing at Welaska</h3>
-  </div>
+<div class="detail-form-sec">  
   <!-- <div class="heading-li">
     <a>Business Informating</a>
   </div> -->
