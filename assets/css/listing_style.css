@@ -882,6 +882,36 @@ md-autocomplete.category-dropdown {
 .category-dropdown md-autocomplete-wrap {
     box-shadow: none;
 }
+span.inline-edit.edit-lst {
+    position: absolute;
+    right: 25px;
+    top: 10px;
+}
+.edit-lst img {
+    width: 20px;
+}
+span.inline-edit.edit-lst2 {
+    width: 20px;
+    position: absolute;
+    right: 25px;
+}
+.edit-sections {
+    height: 25px;
+}
+label span.level-edit {
+    font-size: 16px;
+    color: #444 ;
+}
+.listing-edit-sec label {
+    font-size: 18px;
+    color: #304a86;
+}
+h4.heading-title {
+    display: block;
+    text-align: center;
+     background-color: #f3f3f3; 
+    padding: 10px;
+}
 /*End Loader*/
 /*media query start*/
 @media screen and (max-width: 568px){

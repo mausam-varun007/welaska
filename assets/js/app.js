@@ -173,6 +173,11 @@ app.config(function($stateProvider, $locationProvider,
             templateUrl : Base_url+'view/freeListing',
             controller : "freeListingCtrl"
         })
+        .state('edit-listing', { 
+            url : '/edit-listing/:id', 
+            templateUrl : Base_url+'view/edit-listing',
+            controller : "freeListingCtrl"
+        })
         .state('detailForm', { 
             url : '/detail-form', 
             templateUrl : Base_url+'view/detailForm',
@@ -393,7 +398,8 @@ app.controller('LogoutCtrl', function($state,storageService,$rootScope ) {
     $rootScope.profile_image = '';
     $state.go('Home');
 
-}); 
+});
+
 app.controller('ListingCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService,$rootScope,toastr) {
 
     angular.element("#loader-for-page").addClass("loading-spiner-show").removeClass("loading-spiner-hide");
@@ -512,7 +518,67 @@ app.controller('ListingCtrl', function($scope,$state,$http,$stateParams,$timeout
                 $state.go('singleItem',{'itemId':item.item_id});
             }
     }
-}); 
+});
+// app.controller('editListingCtrl', function($state,$scope,$http) {
+
+    
+//     $scope.getItemByID = function(){        
+//         $scope.itemShopDetailsByID = [];
+
+//         $http.post(Base_url+'Home/getItemByID',{ item_id:$state.params.id})
+//             .then(function(response){                
+//                 if(response.data.status) {  
+//                     console.log(response.data);
+
+//                     angular.element("#loader-for-page").addClass("loading-spiner-hide").removeClass("loading-spiner-show");
+//                     // toastr.success(response.data.message);
+//                     // $scope.itemDetailsByID = response.data.data.listing_items ;                    
+//                     // $scope.itemShopDetailsByIDObj = angular.copy(response.data.data.shop_timming);                    
+//                     // $scope.itemReviewsVO = angular.copy(response.data.data.reviews);                                        
+//                     // if($scope.itemDetailsByID.rating_avg){
+//                     //     $scope.starAvg = parseFloat($scope.itemDetailsByID.rating_avg);
+//                     // }                    
+
+//                     // if($scope.itemDetailsByID.rating){
+//                     //     $scope.rate = $scope.itemDetailsByID.rating ;
+//                     // }else{
+//                     //     $scope.rate = 0 ;
+//                     // }
+
+//                     // angular.forEach($scope.itemShopDetailsByIDObj, function (value) {                               
+//                     //     if(value.days=='monday'){
+//                     //         value.id=1;
+//                     //     }else if(value.days=='tuesday'){
+//                     //         value.id=2;
+//                     //     }else if(value.days=='wednesday'){
+//                     //         value.id=3;
+//                     //     }else if(value.days=='thursday'){
+//                     //         value.id=4;
+//                     //     }else if(value.days=='friday'){
+//                     //         value.id=5;
+//                     //     }else if(value.days=='saturday'){
+//                     //         value.id=6;
+//                     //     }else if(value.days=='sunday'){
+//                     //         value.id=7;
+//                     //     }
+                        
+//                     //     $scope.itemShopDetailsByID.push({'id':value.id, 'day':value.days.charAt(0).toUpperCase()+ value.days.slice(1),'start_from':value.start_from,'start_to':value.start_to,'isChecked':value.is_closed});
+//                     // });
+//                     // var dayss = new Date();
+//                     // var dayNumber = dayss.getDay();
+//                     // $scope.todayDay = dayNumber;
+
+//                     // var today = new Date();
+//                     // var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+//                     // // var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+//                     // $scope.currenrtTime = today.getHours() + ":" + today.getMinutes();
+//                 }
+//         });
+//     }
+//     $scope.getItemByID();
+
+
+// });  
 app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService,$rootScope,toastr) {
 
     angular.element("#loader-for-page").addClass("loading-spiner-show").removeClass("loading-spiner-hide");
@@ -941,7 +1007,7 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
 
     $scope.isLoadingActive = false;
     $scope.submitBasicDetails = function(){
-            $scope.isLoadingActive = true;            
+            $scope.isLoadingActive = true;                        
             var serialize = $scope.listingObject;
                 serialize['step'] = 'business' ;
                 serialize['city'] = storageService.get('selected_city');
@@ -962,6 +1028,10 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
     }
     $scope.submitLocationInfo = function(){
             $scope.isLoadingActive = true;            
+            console.log($scope.ListItemByID);
+            if($scope.ListItemByID){
+                $scope.listingObject = $scope.ListItemByID;
+            }
             var serialize = $scope.listingObject;
             serialize['step'] = 'location';
 
@@ -1084,6 +1154,77 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
             });
 
     }
+
+    ////////////////////////// EDIT LISTINGS
+    $scope.isBusinessDetailsEdit = false;
+    $scope.isContactDetailsEdit = false;
+    $scope.isKeywordDetailsEdit = false;
+
+
+    $scope.getItemByID = function(){        
+        $scope.ListItemByID = [];
+        $scope.listOfPayments = [];
+
+        $http.post(Base_url+'Home/getEditItemByID',{ item_id:$state.params.id})
+            .then(function(response){                
+                if(response.data.status) {                      
+                    $scope.ListItemByID = response.data.data.listings ;
+                    $scope.listOfPayments = response.data.data.payment_mode ;
+                    
+                    angular.forEach($scope.paymentMode, function (value, key) {                               
+                        if (($scope.listOfPayments.filter(function (item) {
+                            return value.value == item.payment_mode 
+                        })).length > 0) {  
+                            value.isChecked =true;
+                        }
+                    });
+                    
+                    angular.element("#loader-for-page").addClass("loading-spiner-hide").removeClass("loading-spiner-show");
+                    // toastr.success(response.data.message);
+                    // $scope.itemDetailsByID = response.data.data.listing_items ;                    
+                    // $scope.itemShopDetailsByIDObj = angular.copy(response.data.data.shop_timming);                    
+                    // $scope.itemReviewsVO = angular.copy(response.data.data.reviews);                                        
+                    // if($scope.itemDetailsByID.rating_avg){
+                    //     $scope.starAvg = parseFloat($scope.itemDetailsByID.rating_avg);
+                    // }                    
+
+                    // if($scope.itemDetailsByID.rating){
+                    //     $scope.rate = $scope.itemDetailsByID.rating ;
+                    // }else{
+                    //     $scope.rate = 0 ;
+                    // }
+
+                    // angular.forEach($scope.itemShopDetailsByIDObj, function (value) {                               
+                    //     if(value.days=='monday'){
+                    //         value.id=1;
+                    //     }else if(value.days=='tuesday'){
+                    //         value.id=2;
+                    //     }else if(value.days=='wednesday'){
+                    //         value.id=3;
+                    //     }else if(value.days=='thursday'){
+                    //         value.id=4;
+                    //     }else if(value.days=='friday'){
+                    //         value.id=5;
+                    //     }else if(value.days=='saturday'){
+                    //         value.id=6;
+                    //     }else if(value.days=='sunday'){
+                    //         value.id=7;
+                    //     }
+                        
+                    //     $scope.itemShopDetailsByID.push({'id':value.id, 'day':value.days.charAt(0).toUpperCase()+ value.days.slice(1),'start_from':value.start_from,'start_to':value.start_to,'isChecked':value.is_closed});
+                    // });
+                    // var dayss = new Date();
+                    // var dayNumber = dayss.getDay();
+                    // $scope.todayDay = dayNumber;
+
+                    // var today = new Date();
+                    // var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                    // // var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                    // $scope.currenrtTime = today.getHours() + ":" + today.getMinutes();
+                }
+        });
+    }
+    $scope.getItemByID();
 
 
 });

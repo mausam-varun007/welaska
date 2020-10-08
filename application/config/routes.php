@@ -66,6 +66,7 @@ $route['Home/checkCompany'] = 'Home/checkCompany';
 $route['Home/submitReview'] = 'Home/submitReview';
 $route['Home/giveRating'] = 'Home/giveRating';
 $route['Home/productLike'] = 'Home/productLike';
+$route['Home/getEditItemByID'] = 'Home/getEditItemByID';
 
 
 

@@ -31,6 +31,11 @@ class Home extends MY_Controller {
       			  $this->load->view('frontend/listing');
               $this->load->view('frontend/layout/footer');
               break;              
+        case 'edit-listing':
+              $this->load->view('frontend/layout/innerHeader');  
+              $this->load->view('frontend/edit-listing');
+              $this->load->view('frontend/layout/footer');
+              break;              
         case 'singleItem':
               $this->load->view('frontend/layout/innerHeader');  
               $this->load->view('frontend/singleItem');
@@ -163,5 +168,9 @@ class Home extends MY_Controller {
       echo json_encode(array('status'=>0));
     }
   } 
+  public function getEditItemByID()
+  { 
+    echo $this->Home->getEditItemByID();    
+  }
   
 }

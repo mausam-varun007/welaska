@@ -5,7 +5,7 @@
 	}
 </style>
 <div class="row main-content-box" >	
-	<span class="inline-edit"><a ><img src="<?=base_url()?>assets/img/timesheet-ic-min.png"></a> Edit Listing</span>
+	<span class="inline-edit"><a ui-sref="edit-listing({id:itemDetailsByID.id})" ><img src="<?=base_url()?>assets/img/timesheet-ic-min.png"></a> Edit Listing</span>
 
 	<div class="row first-card">			
 		<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">				

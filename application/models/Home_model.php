@@ -500,6 +500,36 @@ class Home_model extends MY_model
 
 		}		
 	}
+	public function getEditItemByID()
+	{		
+		$id = $this->input->post('item_id');
+		if(empty($this->input->post('user_id'))){
+			$this->db->select("listing_items.*,category.id as category_id,category.category_name,
+                    		(SELECT 
+				              CONCAT('[',GROUP_CONCAT('{\"payment_mode\":\"', payment_mode,'\"}'),']')  
+				            FROM payment_modes
+				            WHERE
+				                item_id = ".$id."
+				        ) as matching_skills");
+		}
+		// (SELECT GROUP_CONCAT(payment_mode) FROM payment_modes
+  //                   		WHERE item_id = '.$id.') AS payment_mode,
+		// else{
+		// 	$this->db->select('listing_items.*,category.id as category_id,category.category_name,
+		// 				(SELECT GROUP_CONCAT(payment_mode) FROM payment_modes
+  		//                   		WHERE item_id = '.$id.') AS payment_mode, EXISTS( select * from item_likes join user on user.id= item_likes.user_id  where user.id = '.$this->input->post('user_id').') as likes_exist, (select count(id) from item_likes where item_likes.item_id = '.$this->input->post('item_id').') as likes_count , (select FORMAT(AVG(rating), 1) from rating where rating.item_id = '.$this->input->post('item_id').')  as rating_avg,(select rating from rating where rating.user_id = '.$this->input->post('user_id').')  as rating ');
+		// }
+		$this->db->from('listing_items');		
+		$this->db->join('category','category.id=listing_items.category_id');						
+		$this->db->where('listing_items.id',$id);
+		$query = $this->db->get();				
+
+		if ($query->num_rows() > 0) {
+			$data['listings'] = $query->row();
+			$data['payment_mode'] = json_decode($data['listings']->matching_skills);
+			return json_encode(array('status'=>1,'data'=>$data));
+		}	
+	}
 	
 
 }
