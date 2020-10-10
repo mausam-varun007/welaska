@@ -814,6 +814,8 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
     $scope.sunday_from      = $scope.workingHours[0];
     $scope.sunday_to        = $scope.workingHours[0];
 
+
+
     $scope.paymentMode = [{id:0,value:'Cash',isChecked:false},{id:1,value:'Master Card',isChecked:false},{id:2,value:'Visa Card',isChecked:false},{id:3,value:'Debit Cards',isChecked:false},{id:4,value:'Money Orders',isChecked:false},{id:5,value:'Cheques',isChecked:false},{id:6,value:'Credit Card',isChecked:false},{id:7,value:'American Express Card',isChecked:false},{id:8,value:'Paytm',isChecked:false},{id:9,value:'G Pay',isChecked:false},{id:10,value:'UPI',isChecked:false},{id:11,value:'BHIM',isChecked:false},{id:12,value:'Airtel Money',isChecked:false},{id:13,value:'PhonePe',isChecked:false},{id:14,value:'NEFT',isChecked:false},{id:15,value:'Amazon Pay',isChecked:false}];
 
     $scope.yearList = [{
@@ -877,15 +879,19 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
     }
     $scope.classmateData = '';
 
-    function citySelectedChange(item) {
-        console.log(item);
+    function citySelectedChange(item,ev) {
+        
         if(item){         
               storageService.set('selected_city',item.city);
               storageService.set('selected_state',item.state);
         }else{
                 storageService.set('selected_state');
                 $scope.listingObject.state = '';    
-        }        
+        }                
+        if($state.params.id && item.city){
+            $scope.listingObject.city = item.city;
+            $scope.listingObject.state = item.state;
+        }
     }    
     if(storageService.get('selected_state')){
             $scope.listingObject.state = storageService.get('selected_state');            
@@ -1025,20 +1031,27 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
                 $scope.isLoadingActive = false;
                     
             });
-    }
+    }    
     $scope.submitLocationInfo = function(){
             $scope.isLoadingActive = true;            
-            console.log($scope.ListItemByID);
-            if($scope.ListItemByID){
-                $scope.listingObject = $scope.ListItemByID;
-            }
+            // console.log($scope.ListItemByID);
+            // if($scope.ListItemByID){
+            //     console.log()
+            //     $scope.listingObject = $scope.ListItemByID;
+            // }
             var serialize = $scope.listingObject;
             serialize['step'] = 'location';
+            if($state.params.id){
+                serialize['item_id'] = $state.params.id;
+            }
 
             $http.post(Base_url+'Home/submitBasicDetails',serialize)
                 .then(function(response){
                 $scope.isLoadingActive = false;               
                 if(response.data.status){                    
+                    if($state.params.id){
+                        toastr.success('Successfully Updated');
+                    }
                     $scope.step = 'contact';
                 }else{                    
                     toastr.error(response.data.msg);
@@ -1050,10 +1063,17 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
             $scope.isLoadingActive = true;            
             var seriaLize = $scope.listingObject;
             seriaLize['step'] = 'contact' ;
+            if($state.params.id){
+                seriaLize['item_id'] = $state.params.id;
+            }
+            console.log($scope.listingObject);
             $http.post(Base_url+'Home/submitBasicDetails',seriaLize)
                 .then(function(response){   
                 $scope.isLoadingActive = false;            
                 if(response.data.status){                    
+                    if($state.params.id){
+                        toastr.success('Successfully Updated');
+                    }
                     $scope.step = 'others';
                 }else{                    
                     toastr.error(response.data.msg);
@@ -1065,38 +1085,43 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
             
             $scope.isLoadingActive = true;            
             $scope.shopTimingObj = [];
+
             if($scope.monday_from){
-                $scope.shopTimingObj.push({id:0,days:'monday',from:$scope.monday_from.display,to:$scope.monday_to.display,isClosed:$scope.monday_closed ? 1 : 0})
+                $scope.shopTimingObj.push({id:0,days:'monday',shop_id:$scope.monday_id,from_id:$scope.monday_from.id,from:$scope.monday_from.display,to_id:$scope.monday_to.id,to:$scope.monday_to.display,isClosed:$scope.monday_closed ? 1 : 0})
             }
             if($scope.tuesday_from){
-                $scope.shopTimingObj.push({id:1,days:'tuesday',from:$scope.tuesday_from.display,to:$scope.tuesday_to.display,isClosed:$scope.tuesday_closed ? 1 : 0})
+                $scope.shopTimingObj.push({id:1,days:'tuesday',shop_id:$scope.tuesday_id,from_id:$scope.tuesday_from.id,from:$scope.tuesday_from.display,to_id:$scope.tuesday_to.id,to:$scope.tuesday_to.display,isClosed:$scope.tuesday_closed ? 1 : 0})
             }
             if($scope.wednesday_from){
-                $scope.shopTimingObj.push({id:2,days:'wednesday',from:$scope.wednesday_from.display,to:$scope.wednesday_to.display,isClosed:$scope.wednesday_closed ? 1 : 0})
+                $scope.shopTimingObj.push({id:2,days:'wednesday',shop_id:$scope.wednesday_id,from_id:$scope.wednesday_from.id,from:$scope.wednesday_from.display,to_id:$scope.wednesday_to.id,to:$scope.wednesday_to.display,isClosed:$scope.wednesday_closed ? 1 : 0})
             }
             if($scope.thursday_from){
-                $scope.shopTimingObj.push({id:3,days:'thursday',from:$scope.thursday_from.display,to:$scope.thursday_to.display,isClosed:$scope.thursday_closed ? 1 : 0})
+                $scope.shopTimingObj.push({id:3,days:'thursday',shop_id:$scope.thursday_id,from_id:$scope.thursday_from.id,from:$scope.thursday_from.display,to_id:$scope.thursday_to.id,to:$scope.thursday_to.display,isClosed:$scope.thursday_closed ? 1 : 0})
             }
             if($scope.friday_from){
-                $scope.shopTimingObj.push({id:4,days:'friday',from:$scope.friday_from.display,to:$scope.friday_to.display,isClosed:$scope.friday_closed ? 1 : 0})
+                $scope.shopTimingObj.push({id:4,days:'friday',shop_id:$scope.friday_id,from_id:$scope.friday_from.id,from:$scope.friday_from.display,to_id:$scope.friday_to.id,to:$scope.friday_to.display,isClosed:$scope.friday_closed ? 1 : 0})
             }
             if($scope.saturday_from){
-                $scope.shopTimingObj.push({id:4,days:'saturday',from:$scope.saturday_from.display,to:$scope.saturday_to.display,isClosed:$scope.saturday_closed ? 1 : 0})
+                $scope.shopTimingObj.push({id:4,days:'saturday',shop_id:$scope.saturday_id,from_id:$scope.saturday_from.id,from:$scope.saturday_from.display,to_id:$scope.saturday_to.id,to:$scope.saturday_to.display,isClosed:$scope.saturday_closed ? 1 : 0})
             }
             if($scope.sunday_from){
-                $scope.shopTimingObj.push({id:4,days:'sunday',from:$scope.sunday_from.display,to:$scope.sunday_to.display,isClosed:$scope.sunday_closed ? 1 : 0})
+                $scope.shopTimingObj.push({id:4,days:'sunday',shop_id:$scope.sunday_id,from_id:$scope.sunday_from.id,from:$scope.sunday_from.display,to_id:$scope.sunday_to.id,to:$scope.sunday_to.display,isClosed:$scope.sunday_closed ? 1 : 0})
             }
             
-
             $http.post(Base_url+'Home/submitBasicDetails',{                    
                     shop_timing:$scope.shopTimingObj,
                     payment_mode:$scope.paymentMode,
                     is_display_hours:$scope.is_display_hours,
+                    item_id : $state.params.id ? $state.params.id : null ,
                     step:'others'
+
                 })
                 .then(function(response){   
                 $scope.isLoadingActive = false;            
                 if(response.data.status){                    
+                    if($state.params.id){
+                        toastr.success('Successfully Updated');
+                    }
                     $scope.step = 'keyword';                    
                 }else{                    
                     toastr.error(response.data.msg);
@@ -1110,12 +1135,18 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
             $http.post(Base_url+'Home/submitBasicDetails',{
                     keywords:$scope.keywordObject,                 
                     category_id:$scope.category_id,                 
+                    item_id : $state.params.id ? $state.params.id : null ,
                     step:'keywords'
                 })
                 .then(function(response){   
                 $scope.isLoadingActive = false;        
-
-                angular.element("#myModal").modal('show');            
+                if($state.params.id){
+                    toastr.success('Successfully Updated');
+                }
+                console.log($state.params.id);
+                if(!$state.params.id){
+                    angular.element("#myModal").modal('show');            
+                }
                 $scope.step = 'upload';                    
 
                 // if(response.data.status){                    
@@ -1155,6 +1186,11 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
 
     }
 
+    $scope.readonlyFunc = function(){
+        console.log('test');
+        toastr.error('Please click on edit button');
+    }
+
     ////////////////////////// EDIT LISTINGS
     $scope.isBusinessDetailsEdit = false;
     $scope.isContactDetailsEdit = false;
@@ -1162,14 +1198,79 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
 
 
     $scope.getItemByID = function(){        
-        $scope.ListItemByID = [];
+        $scope.listingObject = [];
         $scope.listOfPayments = [];
+        $scope.listOfHours = [];
 
         $http.post(Base_url+'Home/getEditItemByID',{ item_id:$state.params.id})
             .then(function(response){                
                 if(response.data.status) {                      
-                    $scope.ListItemByID = response.data.data.listings ;
+                    $scope.listingObject = response.data.data.listings ;
+                    $scope.listOfHours = response.data.data.shop_timming ;
                     $scope.listOfPayments = response.data.data.payment_mode ;
+                    $scope.listingObject.contact_person = response.data.data.listings.first_name;
+                    console.log($scope.listingObject.id);
+
+                    
+                    angular.forEach($scope.listOfHours, function (value, key) {                               
+
+                        console.log(value);
+                        if(value.days=='monday'){
+                            $scope.monday_from      = $scope.workingHours[value.from_id];
+                            $scope.monday_to        = $scope.workingHours[value.to_id];
+                            $scope.monday_closed    =  value.is_closed==1 ? true : false ;
+                            $scope.monday_id        =  value.shop_id;
+
+                        }else if(value.days=='tuesday'){
+                            $scope.tuesday_from     = $scope.workingHours[value.from_id];
+                            $scope.tuesday_to       = $scope.workingHours[value.to_id];
+                            $scope.tuesday_closed   =  value.is_closed==1 ? true : false ;
+                            $scope.tuesday_id       =  value.shop_id;
+
+                        }else if(value.days=='wednesday'){
+                            $scope.wednesday_from   = $scope.workingHours[value.from_id];
+                            $scope.wednesday_to     = $scope.workingHours[value.to_id];
+                            $scope.wednesday_closed = value.is_closed==1 ? true : false ;
+                            $scope.wednesday_id     =  value.shop_id;
+                            
+                        }else if(value.days=='thursday'){
+                            $scope.thursday_from    = $scope.workingHours[value.from_id];
+                            $scope.thursday_to      = $scope.workingHours[value.to_id];
+                            $scope.thursday_closed  = value.is_closed==1 ? true : false ;
+                            $scope.thursday_id      =  value.shop_id;
+                        }else if(value.days=='friday'){
+                            $scope.friday_from      = $scope.workingHours[value.from_id];
+                            $scope.friday_to        = $scope.workingHours[value.to_id];
+                            $scope.friday_closed    = value.is_closed==1 ? true : false ;
+                            $scope.friday_id        =  value.shop_id;
+
+                        }else if(value.days=='saturday'){
+                            $scope.saturday_from    = $scope.workingHours[value.from_id];
+                            $scope.saturday_to      = $scope.workingHours[value.to_id];
+                            $scope.saturday_closed  = value.is_closed==1 ? true : false ;
+                            $scope.saturday_id      =  value.shop_id;
+                        }else if(value.days=='sunday'){
+                            $scope.sunday_from      = $scope.workingHours[value.from_id];
+                            $scope.sunday_to        = $scope.workingHours[value.to_id];
+                            $scope.sunday_closed    = value.is_closed==1 ? true : false ;
+                            $scope.sunday_id        = value.shop_id;
+                        }
+
+                        // if (($scope.listOfPayments.filter(function (item) {
+                        //     return value.value == item.payment_mode 
+                        // })).length > 0) {  
+                        //     value.isChecked =true;
+                        // }
+                    });
+
+                    
+
+                    
+
+                    // 
+                    // 
+                    // 
+                    
                     
                     angular.forEach($scope.paymentMode, function (value, key) {                               
                         if (($scope.listOfPayments.filter(function (item) {
@@ -1224,7 +1325,9 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
                 }
         });
     }
-    $scope.getItemByID();
+    if($state.params.id){
+        $scope.getItemByID();
+    }
 
 
 });

@@ -244,7 +244,7 @@ class Home_model extends MY_model
 		}		
 	}
 	public function submitBasicDetails()
-	{		
+	{	
 		if($this->input->post()){
 			$msg = '';
 			$this->form_validation->set_rules('first_name', 'First Name', 'required');
@@ -282,6 +282,11 @@ class Home_model extends MY_model
 	public function submitLocationInfo()
 	{		
 		if($this->input->post()){
+			if(empty($this->input->post('item_id'))){
+				$id = $this->session->userdata('last_id');
+			}else{
+				$id = $this->input->post('item_id');
+			}
 			$msg = '';
 			$this->form_validation->set_rules('business_name', 'Business Name', 'required');
 			$this->form_validation->set_rules('pin_code', 'Pin Code', 'required');
@@ -289,22 +294,23 @@ class Home_model extends MY_model
 			$this->form_validation->set_rules('city', 'City', 'required');
 
 			if ($this->form_validation->run() == FALSE){				
-                $msg.= validation_errors();                
+                $msg.= validation_errors();                            
             }
             if (!empty($msg)) {
                 return json_encode(array('status'=>0,'msg'=>$msg));
             }else{ 
-				
+					
 					$userData = array(
 						'business_name'=>$this->input->post('business_name'),
 						'building'=>$this->input->post('building'),
 						'street_address'=>$this->input->post('street_address'),
 						'landmark'=>$this->input->post('landmark'),
+						'area'=>$this->input->post('area'),
 						'city'=>$this->input->post('city'),
 						'state'=>$this->input->post('state'),
 						'pin_code'=>$this->input->post('pin_code'),
-						 );
-					$Updated = $this->updateData('listing_items',$userData,array('id'=>$this->session->userdata('last_id')));
+						 );					
+					$Updated = $this->updateData('listing_items',$userData,array('id'=>$id));
 					if($Updated){
 						return json_encode(array('status'=>1));					
 					}else{
@@ -316,6 +322,11 @@ class Home_model extends MY_model
 	public function submitContact()
 	{		
 		if($this->input->post()){
+			if(empty($this->input->post('item_id'))){
+				$id = $this->session->userdata('last_id');
+			}else{
+				$id = $this->input->post('item_id');
+			}
 			$msg = '';
 			$this->form_validation->set_rules('contact_person', 'Contact Person', 'required');
 			$this->form_validation->set_rules('email', 'Email', 'required');			
@@ -341,7 +352,7 @@ class Home_model extends MY_model
 						'twitter'=>$this->input->post('twitter'),
 						'linkedin'=>$this->input->post('linkedin'),
 						'others'=>$this->input->post('others')						 );
-					$Updated = $this->updateData('listing_items',$userData,array('id'=>$this->session->userdata('last_id')));
+					$Updated = $this->updateData('listing_items',$userData,array('id'=>$id));
 					if($Updated){
 						return json_encode(array('status'=>1));					
 					}else{
@@ -353,30 +364,45 @@ class Home_model extends MY_model
 	public function submitOthers()
 	{		
 		if($this->input->post()){
-			
+				if(empty($this->input->post('item_id'))){
+					$id = $this->session->userdata('last_id');
+				}else{
+					$id = $this->input->post('item_id');
+				}
 								
 				foreach ($this->input->post('shop_timing') as $key => $value) {					
 					
-					$data = array('item_id'=>$this->session->userdata('last_id'),
+					$data = array('item_id'=>$id,
 								  'days'=>$value['days'],
 								  'start_from'=>$value['from'],
 								  'start_to'=>$value['to'],
+								  'from_id'=>$value['from_id'],
+								  'to_id'=>$value['to_id'],
 								  'is_closed'=>$value['isClosed']
-									 );											 		
+									 );	
+					if(empty($this->input->post('item_id'))){						
 						$lastId = $this->insertData('shop_timming',$data);
+					}else{	
+						$where = array('id'=>$value['shop_id'],'item_id'=>$id);					
+
+						$lastId = $this->updateData('shop_timming',$data,$where);
+					}	 										 		
 				}
 				foreach ($this->input->post('payment_mode') as $key => $value) {					
 					
-					$exist = $this->db->select('id')->from('payment_modes')->where('item_id',$this->session->userdata('last_id'))->get();		    
+					$this->deleteData('payment_modes',array('item_id',$id));
+
+					//$exist = $this->db->select('id')->from('payment_modes')->where('item_id',$id)->get();		    
 						if($value['isChecked']==1){
-							$data = array('item_id'=>$this->session->userdata('last_id'),
+							$data = array('item_id'=>$id,
 									  'payment_mode'=>$value['value'] );
-							$lastId = $this->insertData('payment_modes',$data);
+						$lastId = $this->insertData('payment_modes',$data);
+							
 						}
 
 				}
 				if($this->input->post('is_display_hours')){
-					$Updated = $this->updateData('listing_items',array('is_display_hours'=>$this->input->post('is_display_hours')),array('id'=>$this->session->userdata('last_id')));
+					$Updated = $this->updateData('listing_items',array('is_display_hours'=>$this->input->post('is_display_hours')),array('id'=>$id));
 				}
 
 				if($lastId){
@@ -390,8 +416,13 @@ class Home_model extends MY_model
 	{		
 		if($this->input->post()){				
 			$NewsString =implode(',',$this->input->post('keywords')); 
+				if(empty($this->input->post('item_id'))){
+					$id = $this->session->userdata('last_id');
+				}else{
+					$id = $this->input->post('item_id');
+				}
 
-				$Updated = $this->updateData('listing_items',array('keywords'=>$NewsString,'category_id'=>$this->input->post('category_id')),array('id'=>$this->session->userdata('last_id')));
+				$Updated = $this->updateData('listing_items',array('keywords'=>$NewsString,'category_id'=>$this->input->post('category_id')),array('id'=>$id));
 				if($Updated){
 					return json_encode(array('status'=>1));					
 				}else{
@@ -521,11 +552,18 @@ class Home_model extends MY_model
 		// }
 		$this->db->from('listing_items');		
 		$this->db->join('category','category.id=listing_items.category_id');						
+		$this->db->join('shop_timming','shop_timming.item_id=listing_items.id');						
 		$this->db->where('listing_items.id',$id);
 		$query = $this->db->get();				
 
+		$this->db->select('shop_timming.id as shop_id,shop_timming.days,shop_timming.start_from,shop_timming.start_to,shop_timming.from_id,shop_timming.to_id,shop_timming.is_closed');
+		$this->db->from('shop_timming');				
+		$this->db->where('shop_timming.item_id',$id);
+		$query1 = $this->db->get();								
+
 		if ($query->num_rows() > 0) {
 			$data['listings'] = $query->row();
+			$data['shop_timming'] = $query1->result();
 			$data['payment_mode'] = json_decode($data['listings']->matching_skills);
 			return json_encode(array('status'=>1,'data'=>$data));
 		}	

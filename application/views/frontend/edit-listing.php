@@ -26,24 +26,22 @@
     </div>      
     <div class="col-md-12 col-sm-12 col-xs-12">
       <div class="df-content main-content">
-        <!-- <div class="df-form-sec" id="1" ng-show="step=='location'"> -->
-        <div class="edit-sections">            
-          <span class="inline-edit  edit-lst"><a ng-click="isBusinessDetailsEdit=true" ><img src="<?=base_url()?>assets/img/edit-icon1.png"></a></span>
-        </div>
-        <div class="df-form-sec listing-edit-sec" id="1">
+        <!-- <div class="df-form-sec" id="1" ng-show="step=='location'"> -->        
+        <div class="df-form-sec listing-edit-sec" id="1" ng-init="hoverTrure=false">
+            <span class="inline-edit  first-edit-lst" ng-class="hoverTrure ? 'image-big' : '' " ng-mouseleave="hoverTrure=false" ng-mousemove="hoverTrure = true"><a ng-click="isBusinessDetailsEdit=true" ><img src="<?=base_url()?>assets/img/edit-icon1.png"></a></span>
             <h4 class="heading-title">Location Informating</h4>
             <div class="row">
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
-                  <label class="control-label">Business Name <span ng-show="!isBusinessDetailsEdit" class="level-edit">: {{ListItemByID.business_name}} </span></label>
-                  <input ng-show="isBusinessDetailsEdit" type="text" class="form-control custom-input" ng-model="ListItemByID.business_name">
+                  <label class="control-label">Business Name <span ng-show="!isBusinessDetailsEdit" class="level-edit">: {{listingObject.business_name}} </span></label>
+                  <input ng-show="isBusinessDetailsEdit" type="text" class="form-control custom-input" ng-model="listingObject.business_name">
                   <span  class="error-msg"></span>
                 </div>
               </div>
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
-                  <label class="control-label">Building <span ng-show="!isBusinessDetailsEdit" class="level-edit">: {{ListItemByID.building}} </span></label>
-                  <input ng-show="isBusinessDetailsEdit" type="text" class="form-control custom-input" ng-model="ListItemByID.building">
+                  <label class="control-label">Building <span ng-show="!isBusinessDetailsEdit" class="level-edit">: {{listingObject.building}} </span></label>
+                  <input ng-show="isBusinessDetailsEdit" type="text" class="form-control custom-input" ng-model="listingObject.building">
                   <span  class="error-msg" ></span>
                 </div>
               </div>
@@ -51,15 +49,15 @@
             <div class="row">
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
-                  <label class="control-label">Street <span ng-show="!isBusinessDetailsEdit" class="level-edit">: {{ListItemByID.street_address}} </span></label>
-                  <input ng-show="isBusinessDetailsEdit" type="text" class="form-control custom-input" ng-model="ListItemByID.street_address">
+                  <label class="control-label">Street <span ng-show="!isBusinessDetailsEdit" class="level-edit">: {{listingObject.street_address}} </span></label>
+                  <input ng-show="isBusinessDetailsEdit" type="text" class="form-control custom-input" ng-model="listingObject.street_address">
                   <span  class="error-msg"></span>
                 </div>
               </div>
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
-                  <label class="control-label">Landmark <span ng-show="!isBusinessDetailsEdit" class="level-edit">: {{ListItemByID.landmark}} </span></label>
-                  <input ng-show="isBusinessDetailsEdit" type="text" class="form-control custom-input" ng-model="ListItemByID.landmark">
+                  <label class="control-label">Landmark <span ng-show="!isBusinessDetailsEdit" class="level-edit">: {{listingObject.landmark}} </span></label>
+                  <input ng-show="isBusinessDetailsEdit" type="text" class="form-control custom-input" ng-model="listingObject.landmark">
                   <span  class="error-msg" ></span>
                 </div>
               </div>
@@ -67,29 +65,29 @@
             <div class="row">
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
-                  <label class="control-label">Area <span ng-show="!isBusinessDetailsEdit" class="level-edit">: {{ListItemByID.area}} </span></label>
-                  <input ng-show="isBusinessDetailsEdit" type="text" class="form-control custom-input" ng-model="ListItemByID.area">
+                  <label class="control-label">Area <span ng-show="!isBusinessDetailsEdit" class="level-edit">: {{listingObject.area}} </span></label>
+                  <input ng-show="isBusinessDetailsEdit" type="text" class="form-control custom-input" ng-model="listingObject.area">
                   <span  class="error-msg"></span>
                 </div>
               </div>
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group freelist-city">
-                  <label class="control-label">City <span ng-show="!isBusinessDetailsEdit" class="level-edit">: {{ListItemByID.city}} </span></label>
-                  <input ng-show="isBusinessDetailsEdit" type="text" ng-click="notEditable('City')" ng-model="ListItemByID.city" readonly="" class="form-control custom-input" ng-change="checkCategoryOrCompany()">
+                  <label class="control-label">City <span ng-show="!isBusinessDetailsEdit" class="level-edit">: {{listingObject.city}} </span></label>
+                  <!-- <input ng-show="isBusinessDetailsEdit" type="text" ng-click="notEditable('City')" ng-model="listingObject.city" readonly="" class="form-control custom-input" ng-change="checkCategoryOrCompany()"> -->
                   
                   <md-autocomplete 
-                    ng-mouseover="enableScrollOnAutoCompleteList($event)"
+                    ng-mouseover="enableScrollOnAutoCompleteList($event)"                    
                     ng-show="isBusinessDetailsEdit"
                     ng-click="enableScrollOnAutoCompleteList($event)"
                     ng-focus="isSearchFocus=true"
                     ng-blur="isSearchFocus=false"
                     md-dropdown-position="{{customPosition}}"                            
                     md-no-cache="noCache"
-                    ng-model="ListItemByID.city"
-                    md-selected-item="citySelectedItem"
+                    ng-model="listingObject.city"
+                    md-selected-item="listingObject.city"
                     md-search-text-change="innerHeaderTextChange(searchObj.citySearchText)"
                     md-search-text="searchObj.citySearchText"
-                    md-selected-item-change="citySelectedChange(item)"
+                    md-selected-item-change="citySelectedChange(item,$event)"
                     md-items="item in innerHeaderQuerySearch(searchObj.citySearchText)"
                     md-item-text="item.city"                          
                     md-clear-button="true" 
@@ -110,8 +108,8 @@
             <div class="row">
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
-                  <label class="control-label">Pin Code <span ng-show="!isBusinessDetailsEdit" class="level-edit">: {{ListItemByID.pin_code}} </span></label>
-                  <input ng-show="isBusinessDetailsEdit" type="text" class="form-control custom-input" ng-model="ListItemByID.pin_code" onkeypress="return (event.charCode == 8 || event.charCode == 0) ? false : (event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46 || event.charCode==46)" maxlength="6">
+                  <label class="control-label">Pin Code <span ng-show="!isBusinessDetailsEdit" class="level-edit">: {{listingObject.pin_code}} </span></label>
+                  <input ng-show="isBusinessDetailsEdit" type="text" class="form-control custom-input" ng-model="listingObject.pin_code" onkeypress="return (event.charCode == 8 || event.charCode == 0) ? false : (event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46 || event.charCode==46)" maxlength="6">
                   <!-- <select class="custom-select">
                     <option>Select Pincode</option>
                     <option>Select Pincode</option>
@@ -120,8 +118,8 @@
               </div>
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
-                  <label class="control-label">State <span ng-show="!isBusinessDetailsEdit" class="level-edit">: {{ListItemByID.state}} </span></label>
-                  <input ng-show="isBusinessDetailsEdit" type="text" ng-click="notEditable('State')"  class="form-control custom-input" ng-model="ListItemByID.state" readonly="">
+                  <label class="control-label">State <span ng-show="!isBusinessDetailsEdit" class="level-edit">: {{listingObject.state}} </span></label>
+                  <input ng-show="isBusinessDetailsEdit" type="text" ng-click="notEditable('State')"  class="form-control custom-input" ng-model="listingObject.state" readonly="">
                   <span  class="error-msg" ></span>
                 </div>
               </div>
@@ -131,23 +129,21 @@
               <!-- <a ng-click="step='contact'" class="pull-right">Next <i class="fa fa-arrow-right"></i></a> -->
             </div>
         </div>
-        <div class="df-form-sec listing-edit-sec" id="2" >
-            <div class="edit-sections">            
-              <span class="inline-edit  edit-lst2"><a ng-click="isContactDetailsEdit=true" ><img src="<?=base_url()?>assets/img/edit-icon1.png"></a></span>
-            </div>
+        <div class="df-form-sec listing-edit-sec" id="2" ng-init="hoverTrure1=false">            
+            <span class="inline-edit  first-edit-lst" ng-class="hoverTrure1 ? 'image-big' : '' " ng-mouseleave="hoverTrure1=false" ng-mousemove="hoverTrure1 = true"><a ng-click="isContactDetailsEdit=true" ><img src="<?=base_url()?>assets/img/edit-icon1.png"></a></span>
             <h4 class="heading-title">Contact Informating</h4>
             <div class="row">
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
-                  <label class="control-label">Contact Person <span ng-show="!isContactDetailsEdit" class="level-edit">: {{ListItemByID.contact_person}} </span></label>
-                  <input ng-show="isContactDetailsEdit" type="text" class="form-control custom-input" ng-model="ListItemByID.contact_person">
+                  <label class="control-label">Contact Person <span ng-show="!isContactDetailsEdit" class="level-edit">: {{listingObject.contact_person}} </span></label>
+                  <input ng-show="isContactDetailsEdit" type="text" class="form-control custom-input" ng-model="listingObject.contact_person">
                   <span  class="error-msg"></span>
                 </div>
               </div>
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
-                  <label class="control-label">Designation <span ng-show="!isContactDetailsEdit" class="level-edit">: {{ListItemByID.designation}} </span></label>
-                  <input ng-show="isContactDetailsEdit" type="text" class="form-control custom-input" ng-model="ListItemByID.designation">
+                  <label class="control-label">Designation <span ng-show="!isContactDetailsEdit" class="level-edit">: {{listingObject.designation}} </span></label>
+                  <input ng-show="isContactDetailsEdit" type="text" class="form-control custom-input" ng-model="listingObject.designation">
                   <span  class="error-msg" ></span>
                 </div>
               </div>
@@ -155,15 +151,15 @@
             <div class="row">
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
-                  <label class="control-label">Landline No. <span ng-show="!isContactDetailsEdit" class="level-edit">: {{ListItemByID.land_line}} </span></label>
-                  <input ng-show="isContactDetailsEdit" type="text" class="form-control custom-input" ng-model="ListItemByID.land_line">
+                  <label class="control-label">Landline No. <span ng-show="!isContactDetailsEdit" class="level-edit">: {{listingObject.land_line}} </span></label>
+                  <input ng-show="isContactDetailsEdit" type="text" class="form-control custom-input" ng-model="listingObject.land_line">
                   <span  class="error-msg"></span>
                 </div>
               </div>
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
-                  <label class="control-label">Mobile No. <span ng-show="!isContactDetailsEdit" class="level-edit">: {{ListItemByID.mobile}} </span></label>
-                  <input ng-show="isContactDetailsEdit" type="text" class="form-control custom-input" ng-model="ListItemByID.mobile" onkeypress="return (event.charCode == 8 || event.charCode == 0) ? false : (event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46 || event.charCode==46)" maxlength="10">
+                  <label class="control-label">Mobile No. <span ng-show="!isContactDetailsEdit" class="level-edit">: {{listingObject.mobile}} </span></label>
+                  <input ng-show="isContactDetailsEdit" type="text" class="form-control custom-input" ng-model="listingObject.mobile" onkeypress="return (event.charCode == 8 || event.charCode == 0) ? false : (event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46 || event.charCode==46)" maxlength="10">
                   <span  class="error-msg" ></span>
                 </div>
               </div>
@@ -171,15 +167,15 @@
             <div class="row">
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
-                  <label class="control-label">Fax No. <span ng-show="!isContactDetailsEdit" class="level-edit">: {{ListItemByID.fax}} </span></label>
-                  <input ng-show="isContactDetailsEdit" type="text" class="form-control custom-input" ng-model="ListItemByID.fax">
+                  <label class="control-label">Fax No. <span ng-show="!isContactDetailsEdit" class="level-edit">: {{listingObject.fax}} </span></label>
+                  <input ng-show="isContactDetailsEdit" type="text" class="form-control custom-input" ng-model="listingObject.fax">
                   <span  class="error-msg"></span>
                 </div>
               </div>
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
-                  <label class="control-label">Toll Free No. <span ng-show="!isContactDetailsEdit" class="level-edit">: {{ListItemByID.toll_free_number}} </span></label>
-                   <input ng-show="isContactDetailsEdit" type="text" class="form-control custom-input" ng-model="ListItemByID.toll_free_number">
+                  <label class="control-label">Toll Free No. <span ng-show="!isContactDetailsEdit" class="level-edit">: {{listingObject.toll_free_number}} </span></label>
+                   <input ng-show="isContactDetailsEdit" type="text" class="form-control custom-input" ng-model="listingObject.toll_free_number">
                   <span  class="error-msg" ></span>
                 </div>
               </div>
@@ -187,31 +183,15 @@
             <div class="row">
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
-                  <label class="control-label">Email Id <span ng-show="!isContactDetailsEdit" class="level-edit">: {{ListItemByID.email}} </span></label>
-                  <input ng-show="isContactDetailsEdit" type="email" class="form-control custom-input" ng-model="ListItemByID.email">
+                  <label class="control-label">Email Id <span ng-show="!isContactDetailsEdit" class="level-edit">: {{listingObject.email}} </span></label>
+                  <input ng-show="isContactDetailsEdit" type="email" class="form-control custom-input" ng-model="listingObject.email">
                   <span  class="error-msg" ></span>
                 </div>
               </div>
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
-                  <label class="control-label">Website <span ng-show="!isContactDetailsEdit" class="level-edit">: {{ListItemByID.website}}</span></label>
-                  <input ng-show="isContactDetailsEdit" type="text" class="form-control custom-input" ng-model="ListItemByID.website">
-                  <span  class="error-msg" ></span>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="form-group">
-                  <label class="control-label">Facebook <span ng-show="!isContactDetailsEdit" class="level-edit">: {{ListItemByID.facebook}}</span></label>
-                  <input ng-show="isContactDetailsEdit" type="text" class="form-control custom-input" ng-model="ListItemByID.facebook">
-                  <span  class="error-msg" ></span>
-                </div>
-              </div>
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="form-group">
-                  <label class="control-label">Twitter <span ng-show="!isContactDetailsEdit" class="level-edit">: {{ListItemByID.twitter}}</span></label>
-                  <input ng-show="isContactDetailsEdit" type="text" class="form-control custom-input" ng-model="ListItemByID.twitter">
+                  <label class="control-label">Website <span ng-show="!isContactDetailsEdit" class="level-edit">: {{listingObject.website}}</span></label>
+                  <input ng-show="isContactDetailsEdit" type="text" class="form-control custom-input" ng-model="listingObject.website">
                   <span  class="error-msg" ></span>
                 </div>
               </div>
@@ -219,15 +199,31 @@
             <div class="row">
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
-                  <label class="control-label">Instagram <span ng-show="!isContactDetailsEdit" class="level-edit">: {{ListItemByID.instagram}}</span></label>
-                  <input ng-show="isContactDetailsEdit" type="text" class="form-control custom-input" ng-model="ListItemByID.instagram">
+                  <label class="control-label">Facebook <span ng-show="!isContactDetailsEdit" class="level-edit">: {{listingObject.facebook}}</span></label>
+                  <input ng-show="isContactDetailsEdit" type="text" class="form-control custom-input" ng-model="listingObject.facebook">
                   <span  class="error-msg" ></span>
                 </div>
               </div>
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
-                  <label class="control-label">Linkedin <span ng-show="!isContactDetailsEdit" class="level-edit">: {{ListItemByID.linkedin}}</span></label>
-                  <input ng-show="isContactDetailsEdit" type="text" class="form-control custom-input" ng-model="ListItemByID.linkedin">
+                  <label class="control-label">Twitter <span ng-show="!isContactDetailsEdit" class="level-edit">: {{listingObject.twitter}}</span></label>
+                  <input ng-show="isContactDetailsEdit" type="text" class="form-control custom-input" ng-model="listingObject.twitter">
+                  <span  class="error-msg" ></span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                  <label class="control-label">Instagram <span ng-show="!isContactDetailsEdit" class="level-edit">: {{listingObject.instagram}}</span></label>
+                  <input ng-show="isContactDetailsEdit" type="text" class="form-control custom-input" ng-model="listingObject.instagram">
+                  <span  class="error-msg" ></span>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                  <label class="control-label">Linkedin <span ng-show="!isContactDetailsEdit" class="level-edit">: {{listingObject.linkedin}}</span></label>
+                  <input ng-show="isContactDetailsEdit" type="text" class="form-control custom-input" ng-model="listingObject.linkedin">
                   <span  class="error-msg" ></span>
                 </div>
               </div>
@@ -235,8 +231,8 @@
              <div class="row">
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
-                  <label class="control-label">Others <span ng-show="!isContactDetailsEdit" class="level-edit">: {{ListItemByID.others}}</span></label>
-                  <input ng-show="isContactDetailsEdit" type="text" class="form-control custom-input" ng-model="ListItemByID.others">
+                  <label class="control-label">Others <span ng-show="!isContactDetailsEdit" class="level-edit">: {{listingObject.others}}</span></label>
+                  <input ng-show="isContactDetailsEdit" type="text" class="form-control custom-input" ng-model="listingObject.others">
                   <span  class="error-msg" ></span>
                 </div>
               </div>
@@ -248,10 +244,8 @@
               <!-- <a ng-click="step='others'" class="pull-right" >Next <i class="fa fa-arrow-right"></i></a> -->
             </div>
         </div>
-        <div class="df-form-sec" id="3" >
-            <div class="edit-sections">            
-              <span class="inline-edit  edit-lst2"><a ng-click="isOthersDetailsEdit=true" ><img src="<?=base_url()?>assets/img/edit-icon1.png"></a></span>
-            </div>
+        <div class="df-form-sec" id="3" ng-init="hoverTrure2=false">
+            <span class="inline-edit  first-edit-lst" ng-class="hoverTrure2 ? 'image-big' : '' " ng-mouseleave="hoverTrure2=false" ng-mousemove="hoverTrure2 = true"><a ng-click="isOthersDetailsEdit=true" ><img src="<?=base_url()?>assets/img/edit-icon1.png"></a></span>            
             <h4 class="heading-title">Other Informating</h4>
             <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
@@ -266,66 +260,66 @@
             </div>
             <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="week">
+                <div class="week" ng-class="!isOthersDetailsEdit ? 'disable-click':''">
                   <p class="hours-select"><span>Monday :</span>                                        
-                      <select class="form-control custom-select-input" ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" name="monday_from" ng-model="monday_from" required="" ng-options="o as o.display for o in workingHours track by o.id">
+                      <select class="form-control custom-select-input" ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" name="monday_from" ng-model="monday_from" required="" ng-readonly="!isOthersDetailsEdit" ng-options="o as o.display for o in workingHours track by o.id">
                       </select>         
                     To                    
-                      <select class="form-control custom-select-input" ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" name="overall_experince" ng-model="monday_to" required="" ng-options="o as o.display for o in workingHours track by o.id">
+                      <select class="form-control custom-select-input" ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" name="overall_experince" ng-model="monday_to" ng-readonly="!isOthersDetailsEdit" required="" ng-options="o as o.display for o in workingHours track by o.id">
                       </select>                       
                       <input type="checkbox" ng-model="monday_closed" name="0" class="close-checkbox"> Closed
                   </p>
                   <p class="hours-select"><span>Tuesday :</span>
-                    <select class="form-control custom-select-input" ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" name="overall_experince" ng-model="tuesday_from" required="" ng-options="o as o.display for o in workingHours track by o.id">
+                    <select class="form-control custom-select-input" ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" name="overall_experince" ng-model="tuesday_from" ng-readonly="!isOthersDetailsEdit" required="" ng-options="o as o.display for o in workingHours track by o.id">
                           </select>                       
                     To
-                    <select class="form-control custom-select-input" ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" name="overall_experince" ng-model="tuesday_to" required="" ng-options="o as o.display for o in workingHours track by o.id">
+                    <select class="form-control custom-select-input" ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" name="overall_experince" ng-model="tuesday_to" required="" ng-readonly="!isOthersDetailsEdit" ng-options="o as o.display for o in workingHours track by o.id">
                     </select>                       
                     
                     <input type="checkbox" id="0" ng-model="tuesday_closed" name="0" class="close-checkbox"> Closed
                   </p>
                   <p class="hours-select"><span>Wednesday :</span>
-                    <select class="form-control custom-select-input" ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" name="overall_experince" ng-model="wednesday_from" required="" ng-options="o as o.display for o in workingHours track by o.id">
+                    <select class="form-control custom-select-input" ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" name="overall_experince" ng-model="wednesday_from" ng-readonly="!isOthersDetailsEdit" required="" ng-options="o as o.display for o in workingHours track by o.id">
                           </select>                       
                     To
-                    <select class="form-control custom-select-input" ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" name="overall_experince" ng-model="wednesday_to" required="" ng-options="o as o.display for o in workingHours track by o.id">
+                    <select class="form-control custom-select-input" ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" name="overall_experince" ng-model="wednesday_to" required="" ng-readonly="!isOthersDetailsEdit" ng-options="o as o.display for o in workingHours track by o.id">
                     </select>                       
                     <input type="checkbox" id="0" name="0" ng-model="wednesday_closed" class="close-checkbox"> Closed
                   </p>
                   <p class="hours-select"><span>Thursday :</span>
-                    <select class="form-control custom-select-input" ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" name="overall_experince" ng-model="thursday_from" required="" ng-options="o as o.display for o in workingHours track by o.id">
+                    <select class="form-control custom-select-input" ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" name="overall_experince" ng-model="thursday_from" ng-readonly="!isOthersDetailsEdit" required="" ng-options="o as o.display for o in workingHours track by o.id">
                           </select>                       
                     To
-                    <select class="form-control custom-select-input" ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" name="overall_experince" ng-model="thursday_to" required="" ng-options="o as o.display for o in workingHours track by o.id">
+                    <select class="form-control custom-select-input" ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" name="overall_experince" ng-model="thursday_to" ng-readonly="!isOthersDetailsEdit" required="" ng-options="o as o.display for o in workingHours track by o.id">
                     </select>                       
                     
                     <input type="checkbox" id="0" ng-model="thursday_closed" class="close-checkbox"> Closed
                   </p>
                   <p class="hours-select"><span>Friday :</span>
-                    <select class="form-control custom-select-input" ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" name="overall_experince" ng-model="friday_from" required="" ng-options="o as o.display for o in workingHours track by o.id">
+                    <select class="form-control custom-select-input" ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" name="overall_experince" ng-model="friday_from" ng-readonly="!isOthersDetailsEdit" required="" ng-options="o as o.display for o in workingHours track by o.id">
                           </select>                       
                     To
-                    <select class="form-control custom-select-input" ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" name="overall_experince" ng-model="friday_to" required="" ng-options="o as o.display for o in workingHours track by o.id">
+                    <select class="form-control custom-select-input" ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" name="overall_experince" ng-model="friday_to" ng-readonly="!isOthersDetailsEdit" required="" ng-options="o as o.display for o in workingHours track by o.id">
                     </select>                                           
                     <input type="checkbox" id="0" name="0" ng-model="friday_closed" class="close-checkbox"> Closed
                   </p>
                   <p class="hours-select">
                     <span>Saturday :</span>
-                    <select class="form-control custom-select-input" ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" name="overall_experince" ng-model="saturday_from" required="" ng-options="o as o.display for o in workingHours track by o.id">
+                    <select class="form-control custom-select-input" ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" name="overall_experince" ng-model="saturday_from" ng-readonly="!isOthersDetailsEdit" required="" ng-options="o as o.display for o in workingHours track by o.id">
                           </select>                       
                     To
-                    <select class="form-control custom-select-input" ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" name="overall_experince" ng-model="saturday_to" required="" ng-options="o as o.display for o in workingHours track by o.id">
+                    <select class="form-control custom-select-input" ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" name="overall_experince" ng-model="saturday_to" ng-readonly="!isOthersDetailsEdit" required="" ng-options="o as o.display for o in workingHours track by o.id">
                     </select>                       
                     
                     <input type="checkbox" id="0" ng-model="saturday_closed" class="close-checkbox"> Closed
                   </p>
                   <p class="hours-select"><span>Sunday :</span>
-                    <select class="form-control custom-select-input" ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" name="overall_experince" ng-model="sunday_from" required="" ng-options="o as o.display for o in workingHours track by o.id">
+                    <select class="form-control custom-select-input" ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" name="overall_experince" ng-model="sunday_from" ng-readonly="!isOthersDetailsEdit" required="" ng-options="o as o.display for o in workingHours track by o.id">
                           </select>                       
                     To
-                    <select class="form-control custom-select-input" ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" name="overall_experince" ng-model="sunday_to" required="" ng-options="o as o.display for o in workingHours track by o.id">
+                    <select class="form-control custom-select-input" ng-class="isOverallExperience ? 'border-error-red':'border-success-green'" name="overall_experince" ng-model="sunday_to" ng-readonly="!isOthersDetailsEdit" required="" ng-options="o as o.display for o in workingHours track by o.id">
                     </select>                                           
-                    <input type="checkbox" id="0" name="0" ng-model="sunday_closed" class="close-checkbox"> Closed
+                    <input type="checkbox" id="0" name="0" ng-model="sunday_closed" ng-value="sunday_closed" value="1" ng-checked="sunday_closed" checked="{{sunday_closed}}" class="close-checkbox"> Closed
                   </p>
                 </div>
               </div>
@@ -334,10 +328,10 @@
             <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <h5 class="hurs-oprtn">Payment Modes Accepted By You</h5>
-                <div class="payment_mode">
+                <div class="payment_mode" ng-class="!isOthersDetailsEdit ? 'disable-click':''" >
                   <ul>
                     <li ng-repeat="item in paymentMode">
-                      <md-checkbox md-no-ink aria-label="Full Time" ng-model="item.isChecked" class="md-primary color-primary availablility-plan-title" >{{item.value}}
+                      <md-checkbox md-no-ink aria-label="Full Time" ng-model="item.isChecked" class="md-primary color-primary availablility-plan-title" ng-click="!isOthersDetailsEdit ? readonlyFunc() : ''">{{item.value}}
                       </md-checkbox> 
                     </li>
                   </ul>
@@ -352,10 +346,9 @@
               <!-- <a ng-click="step='keyword'"  class="pull-right">Next <i class="fa fa-arrow-right"></i></a> -->
             </div>
         </div>
-        <div class="df-form-sec" id="4" >
-          <div class="edit-sections">            
-            <span class="inline-edit  edit-lst2"><a ng-click="isKeywordDetailsEdit=true" ><img src="<?=base_url()?>assets/img/edit-icon1.png"></a></span>
-          </div>
+        <div class="df-form-sec" id="4" ng-init="hoverTrure3=false">          
+          <span class="inline-edit  first-edit-lst" ng-class="hoverTrure3 ? 'image-big' : '' " ng-mouseleave="hoverTrure3=false" ng-mousemove="hoverTrure3 = true"><a ng-click="isKeywordDetailsEdit=true" ><img src="<?=base_url()?>assets/img/edit-icon1.png"></a></span>
+          
           <h4 class="heading-title">Keywords & Category</h4>
           <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -367,7 +360,7 @@
                   ng-focus="isSearchFocus=true"
                   ng-blur="isSearchFocus=false"
                   md-dropdown-position="{{customPosition}}"                            
-                  md-selected-item="selectedItem" 
+                  md-selected-item="listingObject.category_name" 
                   md-search-text-change="searchTextChange(searchText)" 
                   md-search-text="searchText" 
                   md-selected-item-change="categorySelectedChange(item)" 
@@ -406,6 +399,9 @@
             <button ng-show="isKeywordDetailsEdit" ng-click="submitKeywords()" class="btn sc-btn submit-button"><img src="<?php echo base_url() ?>assets/img/btn-loading.gif" class="load-img" ng-show="isLoadingActive"><span>{{(isLoadingActive) ?'':'Update'}}</span></button>
           </div>
         </div>        
+      </div>
+      <div class="fl-btn-sec">          
+        <button class="btn sc-btn submit-button" ui-sref="singleItem({itemId:listingObject.id})"><img src="<?php echo base_url() ?>assets/img/btn-loading.gif" class="load-img" ng-show="isLoadingActive"><span>{{(isLoadingActive) ?'':'Preview'}}</span></button>          
       </div>
     </div>
   </div>

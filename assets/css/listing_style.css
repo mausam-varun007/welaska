@@ -912,6 +912,35 @@ h4.heading-title {
      background-color: #f3f3f3; 
     padding: 10px;
 }
+.first-edit-lst img {
+    width: 20px;    
+}
+.first-edit-lst.image-big img {
+    width: 22px;   
+
+}
+
+span.first-edit-lst {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 50%;
+    margin-top: 6px;
+    margin-right: 10px;
+    box-shadow: -1px 1px 9px rgba(0, 0, 0, 0.2);        
+}
+span.first-edit-lst.image-big {
+    cursor: pointer;
+    background-color: #fff;
+    padding: 9px;
+    border-radius: 50%;
+    margin-top: 6px;
+    margin-right: 10px;
+    box-shadow: -1px 1px 9px rgba(0, 0, 0, 0.2);    
+}
+.disable-click {
+    pointer-events: none;
+}
+
 /*End Loader*/
 /*media query start*/
 @media screen and (max-width: 568px){
