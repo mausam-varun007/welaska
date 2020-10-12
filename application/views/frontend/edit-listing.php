@@ -359,6 +359,7 @@
                   ng-click="enableScrollOnAutoCompleteList($event)"
                   ng-focus="isSearchFocus=true"
                   ng-blur="isSearchFocus=false"
+                  ng-readonly="!isKeywordDetailsEdit"
                   md-dropdown-position="{{customPosition}}"                            
                   md-selected-item="listingObject.category_name" 
                   md-search-text-change="searchTextChange(searchText)" 

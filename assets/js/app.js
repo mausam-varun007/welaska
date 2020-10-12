@@ -655,8 +655,9 @@ app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$time
                         }else if(value.days=='sunday'){
                             value.id=7;
                         }
-                        
-                        $scope.itemShopDetailsByID.push({'id':value.id, 'day':value.days.charAt(0).toUpperCase()+ value.days.slice(1),'start_from':value.start_from,'start_to':value.start_to,'isChecked':value.is_closed});
+                        if($scope.itemShopDetailsByID.length < 8){
+                            $scope.itemShopDetailsByID.push({'id':value.id, 'day':value.days.charAt(0).toUpperCase()+ value.days.slice(1),'start_from':value.start_from,'start_to':value.start_to,'isChecked':value.is_closed});
+                        }
                     });
                     var dayss = new Date();
                     var dayNumber = dayss.getDay();
@@ -1216,42 +1217,42 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
 
                         console.log(value);
                         if(value.days=='monday'){
-                            $scope.monday_from      = $scope.workingHours[value.from_id];
-                            $scope.monday_to        = $scope.workingHours[value.to_id];
+                            $scope.monday_from      = $scope.workingHours[parseInt(value.from_id)+1];
+                            $scope.monday_to        = $scope.workingHours[parseInt(value.to_id)+1];
                             $scope.monday_closed    =  value.is_closed==1 ? true : false ;
                             $scope.monday_id        =  value.shop_id;
 
                         }else if(value.days=='tuesday'){
-                            $scope.tuesday_from     = $scope.workingHours[value.from_id];
-                            $scope.tuesday_to       = $scope.workingHours[value.to_id];
+                            $scope.tuesday_from     = $scope.workingHours[parseInt(value.from_id)+1];
+                            $scope.tuesday_to       = $scope.workingHours[parseInt(value.to_id)+1];
                             $scope.tuesday_closed   =  value.is_closed==1 ? true : false ;
                             $scope.tuesday_id       =  value.shop_id;
 
                         }else if(value.days=='wednesday'){
-                            $scope.wednesday_from   = $scope.workingHours[value.from_id];
-                            $scope.wednesday_to     = $scope.workingHours[value.to_id];
+                            $scope.wednesday_from   = $scope.workingHours[parseInt(value.from_id)+1];
+                            $scope.wednesday_to     = $scope.workingHours[parseInt(value.to_id)+1];
                             $scope.wednesday_closed = value.is_closed==1 ? true : false ;
                             $scope.wednesday_id     =  value.shop_id;
                             
                         }else if(value.days=='thursday'){
-                            $scope.thursday_from    = $scope.workingHours[value.from_id];
-                            $scope.thursday_to      = $scope.workingHours[value.to_id];
+                            $scope.thursday_from    = $scope.workingHours[parseInt(value.from_id)+1];
+                            $scope.thursday_to      = $scope.workingHours[parseInt(value.to_id)+1];
                             $scope.thursday_closed  = value.is_closed==1 ? true : false ;
                             $scope.thursday_id      =  value.shop_id;
                         }else if(value.days=='friday'){
-                            $scope.friday_from      = $scope.workingHours[value.from_id];
-                            $scope.friday_to        = $scope.workingHours[value.to_id];
+                            $scope.friday_from      = $scope.workingHours[parseInt(value.from_id)+1];
+                            $scope.friday_to        = $scope.workingHours[parseInt(value.to_id)+1];
                             $scope.friday_closed    = value.is_closed==1 ? true : false ;
                             $scope.friday_id        =  value.shop_id;
 
                         }else if(value.days=='saturday'){
-                            $scope.saturday_from    = $scope.workingHours[value.from_id];
-                            $scope.saturday_to      = $scope.workingHours[value.to_id];
+                            $scope.saturday_from    = $scope.workingHours[parseInt(value.from_id)+1];
+                            $scope.saturday_to      = $scope.workingHours[parseInt(value.to_id)+1];
                             $scope.saturday_closed  = value.is_closed==1 ? true : false ;
                             $scope.saturday_id      =  value.shop_id;
                         }else if(value.days=='sunday'){
-                            $scope.sunday_from      = $scope.workingHours[value.from_id];
-                            $scope.sunday_to        = $scope.workingHours[value.to_id];
+                            $scope.sunday_from      = $scope.workingHours[parseInt(value.from_id)+1];
+                            $scope.sunday_to        = $scope.workingHours[parseInt(value.to_id)+1];
                             $scope.sunday_closed    = value.is_closed==1 ? true : false ;
                             $scope.sunday_id        = value.shop_id;
                         }

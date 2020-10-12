@@ -940,7 +940,12 @@ span.first-edit-lst.image-big {
 .disable-click {
     pointer-events: none;
 }
-
+img.edit-listings-icon {
+    width: 25px;
+    display: block;
+    float: right;
+    margin: 3px 10px;
+}
 /*End Loader*/
 /*media query start*/
 @media screen and (max-width: 568px){

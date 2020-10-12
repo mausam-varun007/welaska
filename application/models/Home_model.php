@@ -363,7 +363,7 @@ class Home_model extends MY_model
 	}
 	public function submitOthers()
 	{		
-		if($this->input->post()){
+		if($this->input->post()){			
 				if(empty($this->input->post('item_id'))){
 					$id = $this->session->userdata('last_id');
 				}else{
