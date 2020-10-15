@@ -62,9 +62,9 @@ app.directive("imgUpload", function ($http, $compile,storageService,$stateParams
             '</div>' +
             '<div class="preview clearfix">' +
             '<div class="previewData clearfix" ng-repeat="data in previewData track by $index">' +
-            '<span ng-click="remove(data)" class="circle remove">' +
-            'X' +
-            '</span>' +
+            // '<span ng-click="remove(data)" class="circle remove">' +
+            // 'X' +
+            // '</span>' +
             '<img ng-src={{data.image_url}}></img>' +
             '<div class="previewControls">' +
             '</div>' +
