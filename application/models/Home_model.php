@@ -144,7 +144,7 @@ class Home_model extends MY_model
 	}
 	public function getItemByID()
 	{		
-		$id = $this->input->post('item_id');
+		$id = $this->input->post('item_id');		
 		if(empty($this->input->post('user_id'))){
 			$this->db->select('listing_items.*,category.id as category_id,category.category_name,
 						(SELECT GROUP_CONCAT(payment_mode) FROM payment_modes
@@ -182,7 +182,7 @@ class Home_model extends MY_model
 		$this->db->where('listing_images.item_id',$id);
 		$query3 = $this->db->get();								
 
-
+		
 		if ($query->num_rows() > 0) {
 			$data['listing_items'] 	= $query->row();
 			$data['shop_timming'] 	= $query1->result();
@@ -392,7 +392,7 @@ class Home_model extends MY_model
 								  'to_id'=>$value['to_id'],
 								  'is_closed'=>$value['isClosed']
 									 );	
-					if(empty($this->input->post('item_id'))){						
+					if(empty($this->input->post('item_id')) || empty($value['shop_id'])){						
 						$lastId = $this->insertData('shop_timming',$data);
 					}else{	
 						$where = array('id'=>$value['shop_id'],'item_id'=>$id);					
@@ -564,7 +564,7 @@ class Home_model extends MY_model
 		// }
 		$this->db->from('listing_items');		
 		$this->db->join('category','category.id=listing_items.category_id');						
-		$this->db->join('shop_timming','shop_timming.item_id=listing_items.id');						
+		$this->db->join('shop_timming','shop_timming.item_id=listing_items.id','left');						
 		$this->db->where('listing_items.id',$id);
 		$query = $this->db->get();				
 
