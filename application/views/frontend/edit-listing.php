@@ -129,6 +129,19 @@
               <!-- <a ng-click="step='contact'" class="pull-right">Next <i class="fa fa-arrow-right"></i></a> -->
             </div>
         </div>
+        <div class="df-form-sec listing-edit-sec" id="1" ng-init="hoverTrure=false">
+            <span class="inline-edit  first-edit-lst" ng-class="hoverTrure ? 'image-big' : '' " ng-mouseleave="hoverTrure=false" ng-mousemove="hoverTrure = true"><a ng-click="isBusinessDetailsEdit=true" ><img src="<?=base_url()?>assets/img/edit-icon1.png"></a></span>
+            <h4 class="heading-title">Upload or Delete Images</h4>
+            <div class="row">
+              <div class="iamge-section edit-list">         
+                  <div class="form-group edit-prf-error">                             
+                    <div class="drag-drop-image">
+                      <div img-upload ></div>
+                    </div> 
+                  </div>
+              </div>          
+            </div>
+        </div>
         <div class="df-form-sec listing-edit-sec" id="2" ng-init="hoverTrure1=false">            
             <span class="inline-edit  first-edit-lst" ng-class="hoverTrure1 ? 'image-big' : '' " ng-mouseleave="hoverTrure1=false" ng-mousemove="hoverTrure1 = true"><a ng-click="isContactDetailsEdit=true" ><img src="<?=base_url()?>assets/img/edit-icon1.png"></a></span>
             <h4 class="heading-title">Contact Informating</h4>

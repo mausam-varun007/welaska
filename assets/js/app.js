@@ -50,9 +50,18 @@ app.config(function (toastrConfig) {
             bodyOutputType: 'trustedHtml'
     });
 });
+app.directive('lightgallery', function () {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            if (scope.$last) {
+                element.parent().lightGallery();
+            }
+        }
+    };
+})
 
-
-app.directive("imgUpload", function ($http, $compile,storageService,$stateParams) {
+app.directive("imgUpload", function ($http, $compile,storageService,$stateParams,$state) {
     return {
         restrict: 'AE',
         template: '<input id="portfolio-image-upload" class="fileUpload" name="listing_img" type="file" multiple />' +
@@ -61,17 +70,17 @@ app.directive("imgUpload", function ($http, $compile,storageService,$stateParams
             '<p class="upload-msg">Drog Image here or click to upload</p>' +
             '</div>' +
             '<div class="preview clearfix">' +
-            '<div class="previewData clearfix" ng-repeat="data in previewData track by $index">' +
-            // '<span ng-click="remove(data)" class="circle remove">' +
-            // 'X' +
-            // '</span>' +
+            '<div class="previewData clearfix" ng-repeat="data in previewData track by $index" lightgallery   img-data-src="{{data.image_url}}">' +
+            '<span ng-click="remove(data)" class="circle remove">' +
+            'X' +
+            '</span>' +
             '<img ng-src={{data.image_url}}></img>' +
             '<div class="previewControls">' +
             '</div>' +
             '</div>' +
             '</div>',
         link: function ($scope, elem, attrs) {
-
+            $scope.addDummyImage  = Base_Url+'assets/img/upload-icon.png';
             $scope.previewData = [];
             $scope.previewDataArr = [];
             $scope.portfolioImgData = [];
@@ -112,7 +121,11 @@ app.directive("imgUpload", function ($http, $compile,storageService,$stateParams
                 
                 var serializeForm = new FormData();
                 serializeForm.append('file',file);               
-                serializeForm.append('item_id',$stateParams.itemId);               
+                if($stateParams.itemId){
+                    serializeForm.append('item_id',$stateParams.itemId);               
+                }else{                    
+                    serializeForm.append('item_id',$stateParams.id);               
+                }
                 $http.post(Base_url + 'Home/uploadImages', serializeForm, {
                       headers: {
                           'Content-Type': undefined
@@ -741,8 +754,7 @@ app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$time
     $scope.review = '';
     if($stateParams.itemId){
         storageService.set('item_id',$stateParams.itemId);
-    }
-    console.log($stateParams.itemId);
+    }    
     $scope.addDummyImage  = Base_Url+'assets/img/upload-icon.png'
 
 
@@ -1371,7 +1383,10 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
                     $scope.listOfHours = response.data.data.shop_timming ;
                     $scope.listOfPayments = response.data.data.payment_mode ;
                     $scope.listingObject.contact_person = response.data.data.listings.first_name;
-                    console.log($scope.listingObject.id);
+                    $scope.previewData = angular.copy(response.data.data.listing_images);                                        
+
+
+
 
                     
                     angular.forEach($scope.listOfHours, function (value, key) {                               

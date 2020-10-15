@@ -27,8 +27,7 @@
 		</div>			
 		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">				
 			<img ng-src="{{itemImagesVO[0].image_url}}" src="<?= base_url()."assets/img/dummy-image.png" ?> " class="card-image">
-			<div class="iamge-section"> 
-				
+			<div class="iamge-section single-list"> 				
 	            <div class="form-group edit-prf-error">             	              
 	              <div class="drag-drop-image">
 	                <div img-upload ></div>

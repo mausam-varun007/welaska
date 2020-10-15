@@ -573,9 +573,16 @@ class Home_model extends MY_model
 		$this->db->where('shop_timming.item_id',$id);
 		$query1 = $this->db->get();								
 
+		$this->db->select('listing_images.id,listing_images.image_url');
+		$this->db->from('listing_images');				
+		$this->db->join('listing_items','listing_items.id=listing_images.item_id');				
+		$this->db->where('listing_images.item_id',$id);
+		$query2 = $this->db->get();								
+
 		if ($query->num_rows() > 0) {
 			$data['listings'] = $query->row();
 			$data['shop_timming'] = $query1->result();
+			$data['listing_images'] = $query2->result();
 			$data['payment_mode'] = json_decode($data['listings']->matching_skills);
 			return json_encode(array('status'=>1,'data'=>$data));
 		}	

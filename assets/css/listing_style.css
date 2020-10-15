@@ -1013,6 +1013,18 @@ img.add-dummy-image {
 .col-lg-3.col-md-3.goto-icons {
     transform: translate(-30%, 0%);
 }
+.single-list span.circle.remove {
+    display: none;
+}
+.iamge-section.edit-list {
+    padding: 15px;
+}
+.edit-list .preview.clearfix {
+    margin-top: 20px;
+}
+.previewData img {
+    cursor: pointer;
+}
 /*End Loader*/
 /*media query start*/
 @media screen and (max-width: 568px){
