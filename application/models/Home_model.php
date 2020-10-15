@@ -173,10 +173,22 @@ class Home_model extends MY_model
 		$this->db->where('item_id',$id);
 		$query2 = $this->db->get();								
 
+
+		//////////////////////// ITEM IMAGE
+
+		$this->db->select('listing_images.id,listing_images.image_url');
+		$this->db->from('listing_images');				
+		$this->db->join('listing_items','listing_items.id=listing_images.item_id');				
+		$this->db->where('listing_images.item_id',$id);
+		$query3 = $this->db->get();								
+
+
 		if ($query->num_rows() > 0) {
-			$data['listing_items'] = $query->row();
-			$data['shop_timming'] = $query1->result();
-			$data['reviews'] = $query2->result();
+			$data['listing_items'] 	= $query->row();
+			$data['shop_timming'] 	= $query1->result();
+			$data['reviews'] 		= $query2->result();
+			$data['listing_images'] = $query3->result();
+
 			return json_encode(array('status'=>1,'data'=>$data));
 		}	
 	}
@@ -567,6 +579,68 @@ class Home_model extends MY_model
 			$data['payment_mode'] = json_decode($data['listings']->matching_skills);
 			return json_encode(array('status'=>1,'data'=>$data));
 		}	
+	}
+	public function uploadImages()
+	{
+		if (!empty($_FILES['file'])) {
+			
+			$_POST = $_REQUEST ;
+            if($_FILES['file']['size']/1024/1024 > 25){
+                echo json_encode(array('status'=>0,'msg'=>'File can not be more than 25mb'));
+            }else{                
+                $mkdir = 'assets/img/listing-images/';
+                $_FILES['file']['name'] = date("YmdHis").'_'. basename($_FILES['file']['name']);
+                $config['upload_path'] = $mkdir;
+                $config['overwrite'] = FALSE;
+                $config['allowed_types'] = 'gif|jpg|png|doc|docx|txt|pdf|xls|xlsx';
+
+                $this->load->library('upload', $config);
+                if (!$this->upload->do_upload('file')) {
+                    $error = array('error' => $this->upload->display_errors());
+                    echo json_encode(array('status'=>0,'message'=>$error['error']));
+                } else {
+                    $uploadedData = $this->upload->data();
+                    $ImageUrl = base_url().'assets/img/listing-images/'.$uploadedData['file_name'];
+                    
+                    $userData = array(
+										'item_id'=>$this->input->post('item_id'),						
+										'image_url'=>$ImageUrl,
+										'created_at'=>date('Y-m-d H:i:s'),
+									);
+		      					
+					$lastId = $this->insertData('listing_images',$userData);	
+					if($lastId){						
+                    	echo json_encode(array('status'=>1,'last_id'=>$lastId,'image_url'=>$ImageUrl));
+					}else{
+						echo json_encode(array('status'=>0));
+					}
+                    
+                }
+            }
+        }
+	}
+	public function deleteImages()
+	{
+		if (!empty($this->input->post('file'))) {            
+	            // foreach ($this->input->post('file') as $key => $value) {                
+	                if(file_exists('assets/img/listing-images/'.$this->input->post('file'))){
+	                $result = unlink('assets/img/listing-images/'.$this->input->post('file'));
+	                    if($result){
+	                        
+	                        $this->deleteData('listing_images',array('id'=>$this->input->post('id')));
+	                        
+	                        json_encode(array('status'=>1,'mssg'=>'Deleted'));
+	                    }else{
+	                        json_encode(array('status'=>0));
+	                    }
+	                }else{
+	                     json_encode(array('status'=>0));
+	                }
+	            //}
+
+	        }else{
+	                return json_encode(array('status'=>0));
+	        }
 	}
 	
 

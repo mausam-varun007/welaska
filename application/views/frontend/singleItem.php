@@ -5,8 +5,20 @@
 	}
 </style>
 <div class="row main-content-box" >	
-	<span class="inline-edit"><a ui-sref="edit-listing({id:itemDetailsByID.id})" ><img src="<?=base_url()?>assets/img/edit-icon1.png" class="edit-listings-icon"></a> Edit Listing</span>
-
+	<div class="row review-all-icons">		
+		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-4 goto-icons">
+			<span class="inline-edit"><a ng-click="gotoReview('reviewSection')"><img src="<?=base_url()?>assets/img/view_reviews.png" class="edit-listings-icon"></a>View Review</span>
+		</div>
+		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-4 goto-icons">
+			<span class="inline-edit"><a ng-click="gotoReview('ratingSection')" ><img src="<?=base_url()?>assets/img/achiev-star.png" class="edit-listings-icon"></a>Give Rating</span>
+		</div>
+		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-4 goto-icons" >
+			<span class="inline-edit"><a ng-click="gotoReview('ratingSection')" ><img src="<?=base_url()?>assets/img/review.png" class="edit-listings-icon"></a>Review Listing</span>		
+		</div>
+		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-4 goto-icons">		
+			<span class="inline-edit"><a ui-sref="edit-listing({id:itemDetailsByID.id})" ><img src="<?=base_url()?>assets/img/timesheet-ic-min.png" class="edit-listings-icon"></a> Edit Listing</span>
+		</div>
+	</div>
 	<div class="row first-card">			
 		<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">				
 			<p class="content-title">{{itemDetailsByID.business_name}}</p>				
@@ -14,7 +26,15 @@
 			<p class="content-contact"><i class="fa fa-phone" aria-hidden="true"></i> {{itemDetailsByID.mobile}}</p>								
 		</div>			
 		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">				
-			<img src="<?= base_url()."assets/img/dummy-image.png" ?> " class="card-image">
+			<img ng-src="{{itemImagesVO[0].image_url}}" src="<?= base_url()."assets/img/dummy-image.png" ?> " class="card-image">
+			<div class="iamge-section"> 
+				
+	            <div class="form-group edit-prf-error">             	              
+	              <div class="drag-drop-image">
+	                <div img-upload ></div>
+	              </div> 
+	            </div>
+	        </div> 	        
 		</div>		
 	</div>		
 	<div class="row second-card">			
@@ -40,7 +60,7 @@
 			
 		</div>
 	</div>		
-	<div class="row third-card">			
+	<div class="row third-card" id="ratingSection">			
 		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-2">
 			<a ng-show="itemDetailsByID.likes_exist > 0" class="single-content-whatsapp"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
 			<a ng-show="itemDetailsByID.likes_exist==0 || !itemDetailsByID.likes_exist" ng-click="likesItems(itemDetailsByID.id)" class="single-content-whatsapp"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></a>
@@ -48,6 +68,7 @@
 		</div>
 		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-8 text-center rating-section">
 			<rating ng-model="rate" max="max" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null" ng-click="giveRating(itemDetailsByID.id)"></rating>				
+			<p class="rating-here">Rate Here</p>
 		    <!-- <span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" ng-show="overStar && !isReadonly">{{percent}}%</span> -->
 		</div>
 		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-2 text-right">
@@ -74,7 +95,7 @@
 			</div>	
 		</div>
 	</div>	
-	<div class="row fifth-card" ng-init="showDefault=5">					
+	<div class="row fifth-card" ng-init="showDefault=5" id="reviewSection">					
 		<div class="row review-card" ng-repeat="item in itemReviewsVO" ng-show="$index < showDefault">
 			<div class="col-md-2 custom-col-2 col-xs-12">
 				<img ng-src="{{item.image}}" src="<?= base_url()."assets/img/dummy-image.png" ?> " class="review-image">

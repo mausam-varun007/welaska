@@ -946,6 +946,73 @@ img.edit-listings-icon {
     float: right;
     margin: 3px 10px;
 }
+p.rating-here {
+    margin-bottom: 0;
+    font-size: 12px;
+    font-weight: 600;
+}
+span.single-content-whatsapp {
+    font-size: 22px;
+}
+.drag-drop-image .dropzone {
+    position: relative;
+    height: 70px;
+    border: 1px dashed #b3b3b3;
+    border-radius: 3px;
+    background-color: #f1f1f1;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+.dropzone {
+    position: relative;
+    padding: 5px;
+    height: 200px;
+    border: 2px dashed #b3b3b3;
+    border-radius: 4px;
+    background-color: #f3f3f3;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.drag-drop-image .preview {
+    margin: 10px 0;
+    /* padding: 5px; */
+    float: left;
+}
+.drag-drop-image .clearfix {
+    overflow: unset;
+    display: inline-block;
+    margin-right: 15px;
+}
+.drag-drop-image {
+    text-align: center;
+}
+input.fileUpload {
+    display: none;
+}
+.previewData img {
+    width: 115px;
+    height: 100px;
+    margin-bottom: 16px;
+}
+span.circle.remove {
+    position: absolute;    
+    background-color: red;
+    padding: 3px 6px;
+    font-size: 10px;
+    color: #fff;
+    border-radius: 50%;
+    font-weight: 600;
+    margin-left: 110px;
+}
+img.add-dummy-image {
+    width: 35px;
+}
+.col-lg-3.col-md-3.goto-icons {
+    transform: translate(-30%, 0%);
+}
 /*End Loader*/
 /*media query start*/
 @media screen and (max-width: 568px){

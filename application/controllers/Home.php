@@ -172,5 +172,13 @@ class Home extends MY_Controller {
   { 
     echo $this->Home->getEditItemByID();    
   }
+  public function uploadImages()
+  { 
+    echo $this->Home->uploadImages();    
+  }
+  public function deleteImages()
+  { 
+    echo $this->Home->deleteImages();    
+  }
   
 }

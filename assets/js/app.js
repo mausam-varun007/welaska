@@ -52,6 +52,152 @@ app.config(function (toastrConfig) {
 });
 
 
+app.directive("imgUpload", function ($http, $compile,storageService,$stateParams) {
+    return {
+        restrict: 'AE',
+        template: '<input id="portfolio-image-upload" class="fileUpload" name="listing_img" type="file" multiple />' +
+            '<div class="dropzone">' +
+            '<img ng-src="{{addDummyImage}}" class="add-dummy-image">' +
+            '<p class="upload-msg">Drog Image here or click to upload</p>' +
+            '</div>' +
+            '<div class="preview clearfix">' +
+            '<div class="previewData clearfix" ng-repeat="data in previewData track by $index">' +
+            '<span ng-click="remove(data)" class="circle remove">' +
+            'X' +
+            '</span>' +
+            '<img ng-src={{data.image_url}}></img>' +
+            '<div class="previewControls">' +
+            '</div>' +
+            '</div>' +
+            '</div>',
+        link: function ($scope, elem, attrs) {
+
+            $scope.previewData = [];
+            $scope.previewDataArr = [];
+            $scope.portfolioImgData = [];
+
+            function previewFile(file) {
+                var formData = new FormData();
+                var reader = new FileReader();                    
+                var obj = formData.append('file', file);    
+
+              //  var obj = new FormData();
+                //if ($scope.myImage1 != undefined && ($scope.myImage1).length > 0) {
+                    // console.log(file);
+                    // obj.append('previewDataArr', file);
+                    // obj.append('file', file);
+                //}
+                // profileImageForm.append('Auth_Token',localStorage.getItem('Auth_Token'));
+                // profileImageForm.append('developer_id',$scope.developerBasicDetailVO.developer_id);
+                // profileImageForm.append('profile_image',$scope.myImage);
+                // profileImageForm.append('stages',$scope.developerBasicDetailVO.stages);
+              
+
+
+                reader.onload = function (data) {
+                    var src = data.target.result;
+                    var size = ((file.size / (1024 * 1024)) > 1) ? (file.size / (1024 * 1024)) + ' mB' : (file.size / 1024) + ' kB';
+                    $scope.$apply(function () {
+                        $scope.portfolioImgData.push(file);                        
+                        // $scope.previewData.push({
+                        //     'name': file.name,
+                        //     'size': size,
+                        //     'type': file.type,
+                        //     'src': src,                            
+                        //     'data': obj
+                        // });
+                    });
+                }
+                reader.readAsDataURL(file);
+                
+                var serializeForm = new FormData();
+                serializeForm.append('file',file);               
+                serializeForm.append('item_id',$stateParams.itemId);               
+                $http.post(Base_url + 'Home/uploadImages', serializeForm, {
+                      headers: {
+                          'Content-Type': undefined
+                      },
+                      transformRequest: angular.identity
+                }).then(function (response) {   
+                    console.log(response.data);
+                    $scope.uploadStatus = false;
+                    console.log($scope.previewData);
+                    $scope.previewData.push({
+                            'id': response.data.last_id,
+                            'image_url': response.data.image_url                            
+                        });
+                    // if(response.data.status){               
+                    //     // $scope.previewData.push({'ext':(file.name.split('.').pop()).toLowerCase(),'name':response.data.filedata.name,'size':response.data.filedata.size,'type':response.data.filedata.type, 'src':response.data.filedata.src,'attachment':response.data.attachment.attachment});
+                    //     $scope.previewDataArr.push({'attachment':response.data.attachment.attachment,'ext':(file.name.split('.').pop()).toLowerCase(),'name':response.data.filedata.name});
+                    //     $scope.uploadStatus = false;                                
+                    // }else{
+                    //     toastr.error(response.data.msg, 'Error');
+                    // }
+                });
+            }
+
+
+
+            function uploadFile(e, type) {
+                e.preventDefault();
+                var files = "";
+                if (type == "formControl") {
+                    files = e.target.files;
+                } else if (type === "drop") {
+                    files = e.originalEvent.dataTransfer.files;
+                }
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    if (file.type.indexOf("image") !== -1) {
+                        previewFile(file);
+                    } else {
+                        alert(file.name + " is not supported");
+                    }
+                }
+            }
+            elem.find('.fileUpload').bind('change', function (e) {
+                uploadFile(e, 'formControl');
+            });
+
+            elem.find('.dropzone').bind("click", function (e) {
+                $compile(elem.find('.fileUpload'))($scope).trigger('click');
+            });
+
+            elem.find('.dropzone').bind("dragover", function (e) {
+                e.preventDefault();
+            });
+
+            elem.find('.dropzone').bind("drop", function (e) {
+                uploadFile(e, 'drop');
+            });
+            $scope.upload = function (obj) {
+                $http({
+                    method: $scope.method,
+                    url: $scope.url,
+                    data: obj.data,
+                    headers: {
+                        'Content-Type': undefined
+                    },
+                    transformRequest: angular.identity
+                }).success(function (data) {
+
+                });
+            }
+
+            $scope.remove = function (data) {
+                var index = $scope.previewData.indexOf(data);
+                $scope.previewData.splice(index, 1);
+
+                $http.post(Base_url+'Home/deleteImages',{file:data.image_url.split(/[/]+/).pop(),id:data.id})
+                    .then(function(response){                 
+                      
+                });
+            }
+        }
+    }
+});
+
+
 
 //////////////////////////////////////////// Searching Directive
 
@@ -579,7 +725,7 @@ app.controller('ListingCtrl', function($scope,$state,$http,$stateParams,$timeout
 
 
 // });  
-app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService,$rootScope,toastr) {
+app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService,$rootScope,toastr,$anchorScroll) {
 
     angular.element("#loader-for-page").addClass("loading-spiner-show").removeClass("loading-spiner-hide");
     if(storageService.get('user_name')){
@@ -587,11 +733,19 @@ app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$time
         $rootScope.user_name = storageService.get('user_name') ;
     }    
     $rootScope.profile_image = Base_Url+'assets/img/welaska_dummy.png';
-    $scope.searchLocation = storageService.get('current_location') ;
+    $scope.searchLocation  = storageService.get('current_location') ;
     $scope.itemDetailsByID = [];    
-    $scope.itemReviewsVO = [];
+    $scope.itemReviewsVO   = [];
+    $scope.itemImagesVO    = [];
     $scope.todayDay = '';
     $scope.review = '';
+    if($stateParams.itemId){
+        storageService.set('item_id',$stateParams.itemId);
+    }
+    console.log($stateParams.itemId);
+    $scope.addDummyImage  = Base_Url+'assets/img/upload-icon.png'
+
+
 
     
 
@@ -629,6 +783,9 @@ app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$time
                     $scope.itemDetailsByID = response.data.data.listing_items ;                    
                     $scope.itemShopDetailsByIDObj = angular.copy(response.data.data.shop_timming);                    
                     $scope.itemReviewsVO = angular.copy(response.data.data.reviews);                                        
+                    $scope.itemImagesVO = angular.copy(response.data.data.listing_images);                                        
+                    $scope.previewData  = $scope.itemImagesVO;
+
                     if($scope.itemDetailsByID.rating_avg){
                         $scope.starAvg = parseFloat($scope.itemDetailsByID.rating_avg);
                     }                    
@@ -770,12 +927,16 @@ app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$time
                 $state.go('singleItem',{'itemId':item.item_id});
             }
     }
+    $scope.gotoReview = function(id){
+        console.log(id);
+        $anchorScroll(id);
+    }
 
 
         
 
 }); 
-app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService,toastr,homeService,$rootScope) {
+app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService,toastr,homeService,$rootScope,$anchorScroll) {
 
       
     $scope.listingObject    = {};
@@ -1328,7 +1489,7 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
     }
     if($state.params.id){
         $scope.getItemByID();
-    }
+    }   
 
 
 });
