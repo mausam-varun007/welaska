@@ -597,8 +597,13 @@ app.controller('ListingCtrl', function($scope,$state,$http,$stateParams,$timeout
                     $scope.isLoaderActive = false ;
                     // toastr.success(response.data.message);
                     angular.element("#loader-for-page").addClass("loading-spiner-hide").removeClass("loading-spiner-show");
-                    $scope.listingDataVO = response.data.selectedAllData ;
+                    $scope.listingDataVO = response.data.selectedAllData ;                    
                     $scope.allListCount = response.data.allCount;
+
+                    angular.forEach($scope.listingDataVO.shop_timing, function (value) {                               
+                        console.log(value);
+                        
+                    });
                  
                 }else{
                     angular.element("#loader-for-page").addClass("loading-spiner-hide").removeClass("loading-spiner-show");

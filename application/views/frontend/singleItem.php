@@ -6,17 +6,23 @@
 </style>
 <div class="row main-content-box" >	
 	<div class="row review-all-icons">		
-		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-4 goto-icons">
+		<div class="col-lg-2 col-md-2 col-sm-4 col-xs-4 goto-icons">
 			<span class="inline-edit"><a ng-click="gotoReview('reviewSection')"><img src="<?=base_url()?>assets/img/view_reviews.png" class="edit-listings-icon"></a>View Review</span>
 		</div>
-		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-4 goto-icons">
+		<div class="col-lg-2 col-md-2 col-sm-4 col-xs-4 goto-icons">
 			<span class="inline-edit"><a ng-click="gotoReview('ratingSection')" ><img src="<?=base_url()?>assets/img/achiev-star.png" class="edit-listings-icon"></a>Give Rating</span>
 		</div>
-		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-4 goto-icons" >
+		<div class="col-lg-2 col-md-2 col-sm-4 col-xs-4 goto-icons" >
 			<span class="inline-edit"><a ng-click="gotoReview('ratingSection')" ><img src="<?=base_url()?>assets/img/review.png" class="edit-listings-icon"></a>Review Listing</span>		
 		</div>
-		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-4 goto-icons">		
+		<div class="col-lg-2 col-md-2 col-sm-4 col-xs-4 goto-icons">		
 			<span class="inline-edit"><a ui-sref="edit-listing({id:itemDetailsByID.id})" ><img src="<?=base_url()?>assets/img/timesheet-ic-min.png" class="edit-listings-icon"></a> Edit Listing</span>
+		</div>
+		<div class="col-lg-2 col-md-2 col-sm-4 col-xs-4 goto-icons">		
+			<span class="inline-edit"><a ><img src="<?=base_url()?>assets/img/map.png" class="edit-listings-icon"></a> Map </span>
+		</div>
+		<div class="col-lg-2 col-md-2 col-sm-4 col-xs-4 goto-icons">		
+			<span class="inline-edit"><a ><img src="<?=base_url()?>assets/img/share_new.png" class="edit-listings-icon"></a> Share </span>
 		</div>
 	</div>
 	<div class="row first-card">			
@@ -26,14 +32,7 @@
 			<p class="content-contact"><i class="fa fa-phone" aria-hidden="true"></i> {{itemDetailsByID.mobile}}</p>								
 		</div>			
 		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">				
-			<img ng-src="{{itemImagesVO[0].image_url}}" src="<?= base_url()."assets/img/dummy-image.png" ?> " class="card-image">
-			<div class="iamge-section single-list"> 				
-	            <div class="form-group edit-prf-error">             	              
-	              <div class="drag-drop-image">
-	                <div img-upload ></div>
-	              </div> 
-	            </div>
-	        </div> 	        
+			<img ng-src="{{itemImagesVO[0].image_url}}" src="<?= base_url()."assets/img/dummy-image.png" ?> " class="card-image">			
 		</div>		
 	</div>		
 	<div class="row second-card">			
@@ -42,21 +41,29 @@
 				<span >{{itemDetailsByID.street_address}} {{itemDetailsByID.building}} {{itemDetailsByID.area}} {{itemDetailsByID.city}} {{itemDetailsByID.pin_code}}</span>		
 				</p>
 			<p class="content-world"><i class="fa fa-globe custom-icon" aria-hidden="true"></i> http://www.example.com</p>				
+			<div class="hours-section" ng-init="limitedDays=true">   
+				<p class="hours-operation">Hours of Operation 
+					<span class="show-more" ng-show="limitedDays" ng-click="limitedDays=false">(Show All)</span>
+					<span class="show-less" ng-show="!limitedDays" ng-click="limitedDays=true">(Show less...)</span>
+				</p>
+				<table class="shop-hourse">
+					<tr ng-repeat="item in itemShopDetailsByID" ng-show="todayDay==item.id || !limitedDays">
+						<td>{{limitedDays ? 'Today' : item.day}}</td>
+						<td><span ng-class="item.isChecked==1 ? 'shop-close':''">{{item.isChecked==0 ? item.start_from : 'Closed'}}</span></td>
+						<td ng-show="item.isChecked==0">{{item.start_to}}</td>
+						<td ng-show="limitedDays && item.isChecked==0"><span ng-class="item.start_from=='Open 24 Hrs' || (currenrtTime > item.start_from && currenrtTime < item.start_to ) ? 'shop-open':'shop-close' ">{{ item.start_from=='Open 24 Hrs' || (currenrtTime > item.start_from && currenrtTime < item.start_to ) ? 'Open Now':'Closed Now' }}</span></td>
+					</tr>
+				</table>
+			</div>
 		</div>
-		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" ng-init="limitedDays=true">
-			<p class="hours-operation">Hours of Operation 
-				<span class="show-more" ng-show="limitedDays" ng-click="limitedDays=false">(Show All)</span>
-				<span class="show-less" ng-show="!limitedDays" ng-click="limitedDays=true">(Show less...)</span>
-			</p>
-			<table class="shop-hourse">
-				<tr ng-repeat="item in itemShopDetailsByID" ng-show="todayDay==item.id || !limitedDays">
-					<td>{{limitedDays ? 'Today' : item.day}}</td>
-					<td><span ng-class="item.isChecked==1 ? 'shop-close':''">{{item.isChecked==0 ? item.start_from : 'Closed'}}</span></td>
-					<td ng-show="item.isChecked==0">{{item.start_to}}</td>
-					<td ng-show="limitedDays && item.isChecked==0"><span ng-class="item.start_from=='Open 24 Hrs' || (currenrtTime > item.start_from && currenrtTime < item.start_to ) ? 'shop-open':'shop-close' ">{{ item.start_from=='Open 24 Hrs' || (currenrtTime > item.start_from && currenrtTime < item.start_to ) ? 'Open Now':'Closed Now' }}</span></td>
-				</tr>
-			</table>
-			
+		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" >			
+			<div class="iamge-section single-list"> 				
+	            <div class="form-group edit-prf-error">             	              
+	              <div class="drag-drop-image">
+	                <div img-upload ></div>
+	              </div> 
+	            </div>
+	        </div> 	        			
 		</div>
 	</div>		
 	<div class="row third-card" id="ratingSection">			

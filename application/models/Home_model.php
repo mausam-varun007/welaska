@@ -102,10 +102,16 @@ class Home_model extends MY_model
 		if(!empty($this->input->post('category_id'))){
 
 			$id = $this->input->post('category_id');
-			$this->db->select('listing_items.*,category.id as category_id,category.category_name, count(rating.id) as total_ratings, SUM(rating.rating) as total_rating_sum , FORMAT(AVG(rating.rating), 1) as rating_average ');
+			$this->db->select("listing_items.*,category.id as category_id,category.category_name, count(rating.id) as total_ratings, SUM(rating.rating) as total_rating_sum , FORMAT(AVG(rating.rating), 1) as rating_average, 
+				(SELECT CONCAT('[',GROUP_CONCAT('{\"days\":\"',days,'\",\"start_from\":\"',start_from,'\",\"start_to\":\"',start_to,'\",\"is_closed\":\"',is_closed,'\"}'),']')  
+				            FROM shop_timming
+				            WHERE
+				                item_id = listing_items.id
+				        ) as shop_timing ");
 			$this->db->from('listing_items');		
 			$this->db->join('category','category.id=listing_items.category_id');
 			$this->db->join('rating','rating.item_id=listing_items.id','left');
+
 			if($this->input->post('location')!=null){
 				$this->db->where('listing_items.city',$this->input->post('location'));
 			}

@@ -6,10 +6,10 @@
 					<img src="https://www.system-concepts.com/wp-content/uploads/2019/06/mouse-blue-background-banner.jpg" class="card-image">
 				</a>
 			</div>
-			<div class="col-md-8 content-detrail-section">				
-				<p class="content-title" ><a ui-sref="singleItem({itemId:item.id})">{{item.business_name}} </a></p>				
-				<p class="content-contact"><i class="fa fa-phone" aria-hidden="true"></i>{{item.phone1}}</p> 
-
+			<div class="col-md-8 content-detrail-section">								
+				<p class="content-title" ><a ui-sref="singleItem({itemId:item.id})"> {{item.business_name}} </a></p>				
+				<p ng-if="item.mobile" class="content-contact"><i class="fa fa-phone" aria-hidden="true"></i> {{item.mobile}}{{item.phone1!='' ? ',' : ''}} {{item.phone1}} {{item.phone2!='' ? ',' : ''}} {{item.phone2}} {{item.phone3!='' ? ',' : ''}} {{item.phone3}}</p> 
+				
 				<p class="content-rating review-star"><span ng-show="item.rating_average > 0" class="rating-text">{{item.rating_average}} </span>&nbsp; 
 					<i class="fa fa-star" ng-class="item.rating_average > 0 ? 'active':'fa-star-o' " aria-hidden="true"></i>
 					<i class="fa fa-star" ng-class="item.rating_average > 1 ? (item.rating_average > 1 && item.rating_average < 2 ? 'fa-star-half-o':'active'):'fa-star-o' " aria-hidden="true"></i>
@@ -20,9 +20,9 @@
 				</p>
 
 				<p class="content-location"><span><i class="fa fa-map-marker" aria-hidden="true"></i></span> 
-				<span>{{item.street_address}}</span>		
+				<span>{{item.building}} {{item.area}} {{item.street_address}} {{item.landmark}} {{item.city}}</span>		
 				</p>
-				<p class="content-type"><i class="fa fa-chevron-right" aria-hidden="true"></i><span><a href="">	{{item.category_name}}</a>...more</span> </p>
+				<p class="content-type"><i class="fa fa-chevron-right" aria-hidden="true"></i><span><a href="">	{{item.category_name}}</a>...<a ui-sref="singleItem({itemId:item.id})"> more</a></span> </p>
 				<p class="content-price"><i class="fa fa-chevron-right" aria-hidden="true"></i> 
 				<span>Open Now </span>
 				</p>
