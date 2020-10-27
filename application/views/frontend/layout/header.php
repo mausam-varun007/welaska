@@ -31,7 +31,7 @@
 				<span class="menu-custom-drp dropdown-toggle" data-toggle="dropdown"><span>Hi {{user_name}} </span>  <img src="{{profile_image}}" class="profile-image"></span>
 				<ul class="dropdown-menu">
 			      <li><a href="#">My Account</a></li>
-			      <li><a href="#">My Profile</a></li>
+			      <li><a ui-sref="profile({id:user_id})">My Profile</a></li>
 			      <li class="divider"></li>
 			      <li><a ui-sref="Logout">Log Out</a></li>
 			    </ul>				

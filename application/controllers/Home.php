@@ -36,6 +36,11 @@ class Home extends MY_Controller {
               $this->load->view('frontend/edit-listing');
               $this->load->view('frontend/layout/footer');
               break;              
+        case 'profile':
+              $this->load->view('frontend/layout/innerHeader');  
+              $this->load->view('frontend/profile');
+              $this->load->view('frontend/layout/footer');
+              break;              
         case 'singleItem':
               $this->load->view('frontend/layout/innerHeader');  
               $this->load->view('frontend/singleItem');
@@ -129,6 +134,12 @@ class Home extends MY_Controller {
               case 'get_verification_code':                              
                   $result = $this->Home->getVerifcationCode();    
                    break;                                  
+              case 'personal':                              
+                  $result = $this->Home->submitPersonalDetails();    
+                   break;
+              case 'address':                              
+                  $result = $this->Home->submitAddressDetails();    
+                   break;
               }
             echo $result;
   }
@@ -179,6 +190,26 @@ class Home extends MY_Controller {
   public function deleteImages()
   { 
     echo $this->Home->deleteImages();    
+  }
+  public function uploadProfileImages()
+  { 
+    echo $this->Home->uploadProfileImages();    
+  }
+  public function getProfileDetails()
+  { 
+    echo $this->Home->getProfileDetails();    
+  }
+  public function removeAddress()
+  { 
+    echo $this->Home->removeAddress();    
+  }
+  public function uploadFiles()
+  { 
+    echo $this->Home->uploadFiles();    
+  }
+  public function deleteFiles()
+  { 
+    echo $this->Home->deleteFiles();    
   }
   
 }

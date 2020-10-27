@@ -651,9 +651,223 @@ class Home_model extends MY_model
 	                }
 	            //}
 
+        }else{
+                return json_encode(array('status'=>0));
+        }
+	}
+	public function uploadProfileImages()
+	{
+
+		if (!empty($_FILES['file'])) {
+			
+			$_POST = $_REQUEST ;
+            if($_FILES['file']['size']/1024/1024 > 25){
+                echo json_encode(array('status'=>0,'msg'=>'File can not be more than 25mb'));
+            }else{                
+                $mkdir = 'assets/img/profile-image/';
+                $_FILES['file']['name'] = date("YmdHis").'_'. basename($_FILES['file']['name']);
+                $config['upload_path'] = $mkdir;
+                $config['overwrite'] = FALSE;
+                $config['allowed_types'] = 'gif|jpg|png|doc|docx|txt|pdf|xls|xlsx';
+
+                $this->load->library('upload', $config);
+                if (!$this->upload->do_upload('file')) {
+                    $error = array('error' => $this->upload->display_errors());
+                    echo json_encode(array('status'=>0,'message'=>$error['error']));
+                } else {
+                    $uploadedData = $this->upload->data();
+                    $ImageUrl = base_url().'assets/img/profile-image/'.$uploadedData['file_name'];
+                    
+                    $userData = array(										
+										'image'=>$ImageUrl,
+										'created_at'=>date('Y-m-d H:i:s'),
+									);
+		      					
+					$lastId = $this->updateData('user',$userData,array('id'=>$this->input->post('user_id')));		      			
+					
+					if($lastId){						
+                    	echo json_encode(array('status'=>1,'last_id'=>$lastId,'image'=>$ImageUrl));
+					}else{
+						echo json_encode(array('status'=>0));
+					}
+                    
+                }
+            }
+        }
+	}
+
+	public function getProfileDetails()
+	{		
+		$id = $this->input->post('item_id');
+		// if(empty($this->input->post('user_id'))){
+		// }
+		$this->db->select("*");		
+		$this->db->from('user');		
+		// $this->db->join('address','address.user_id=user.id','left');									
+		$this->db->where('id',$id);
+		$query = $this->db->get();				
+
+		$this->db->select("*");		
+		$this->db->from('address');				
+		$this->db->where('user_id',$id);
+		$query1 = $this->db->get();				
+
+		$this->db->select("*");		
+		$this->db->from('documents');				
+		$this->db->where('user_id',$id);
+		$query2 = $this->db->get();				
+
+		if ($query->num_rows() > 0) {
+			$data['profile'] = $query->row();
+			$data['address'] = $query1->result();
+			$data['documents'] = $query2->result();
+			
+			return json_encode(array('status'=>1,'data'=>$data));
+		}	
+	}
+	public function submitPersonalDetails()
+	{	
+		if($this->input->post()){
+			$msg = '';
+			$this->form_validation->set_rules('first_name', 'First Name', 'required');
+			$this->form_validation->set_rules('last_name', 'Last Name', 'required');			
+			$this->form_validation->set_rules('mobile', 'Mobile', 'required');
+
+			if ($this->form_validation->run() == FALSE){
+                $msg.= validation_errors();                
+            }
+            if (!empty($msg)) {
+                return json_encode(array('status'=>0,'msg'=>$msg));
+            }else{ 
+			
+					$userData = array(
+						// 'user_type'=>'client',
+						'first_name'=>$this->input->post('first_name'),
+						'last_name'=>$this->input->post('last_name'),						
+						'email'=>$this->input->post('email') );					
+					$Updated = $this->updateData('user',$userData,array('id'=>$this->input->post('user_id')));
+					if($Updated){						
+						return json_encode(array('status'=>1));					
+					}else{
+						return json_encode(array('status'=>0));					
+					}
+			}
+		}		
+	}
+	public function submitAddressDetails()
+	{	
+		if($this->input->post()){
+			$msg = '';
+			$this->form_validation->set_rules('address_name', 'Address', 'required');
+			$this->form_validation->set_rules('contact_number', 'Contact Number', 'required');			
+			$this->form_validation->set_rules('address_email', 'Email', 'required');
+			$this->form_validation->set_rules('address_pin_code', 'Pin Code', 'required');
+
+			if ($this->form_validation->run() == FALSE){
+                $msg.= validation_errors();                
+            }
+            if (!empty($msg)) {
+                return json_encode(array('status'=>0,'msg'=>$msg));
+            }else{ 
+			
+					$userData = array(
+						'user_id'=>$this->input->post('user_id'),
+						'address_name'=>$this->input->post('address_name'),
+						'contact_number'=>$this->input->post('contact_number'),						
+						'address_email'=>$this->input->post('address_email'),
+						'address'=>$this->input->post('address'),
+						'address_pin_code'=>$this->input->post('address_pin_code'),
+						'address_city'=>$this->input->post('address_city')
+						 );					
+					$lastId = $this->insertData('address',$userData);
+					if($lastId){						
+						return json_encode(array('status'=>1));					
+					}else{
+						return json_encode(array('status'=>0));					
+					}
+			}
+		}		
+	}
+	public function removeAddress()
+	{
+		if (!empty($this->input->post('id'))) {            
+	                        
+                $delete = $this->deleteData('address',array('id'=>$this->input->post('id')));
+                if($delete){
+                  return  json_encode(array('status'=>1,'msg'=>'Successfully Deleted'));
+                }else{
+                   return json_encode(array('status'=>0));
+                }
+
 	        }else{
-	                return json_encode(array('status'=>0));
+	                return json_encode(array('status'=>0,'msg'=>'Error'));
 	        }
+	}
+	public function uploadFiles()
+	{
+
+		if (!empty($_FILES['file'])) {
+			
+			$_POST = $_REQUEST ;
+            if($_FILES['file']['size']/1024/1024 > 25){
+                echo json_encode(array('status'=>0,'msg'=>'File can not be more than 25mb'));
+            }else{                
+                $mkdir = 'assets/img/document/';
+                $_FILES['file']['name'] = date("YmdHis").'_'. basename($_FILES['file']['name']);
+                $config['upload_path'] = $mkdir;
+                $config['overwrite'] = FALSE;
+                $config['allowed_types'] = 'gif|jpg|png|doc|docx|txt|pdf|xls|xlsx';
+
+                $this->load->library('upload', $config);
+                if (!$this->upload->do_upload('file')) {
+                    $error = array('error' => $this->upload->display_errors());
+                    echo json_encode(array('status'=>0,'message'=>$error['error']));
+                } else {
+                    $uploadedData = $this->upload->data();
+                    $fileName = $uploadedData['file_name'];
+                    $ImageUrl = base_url().'assets/img/document/'.$uploadedData['file_name'];
+                    
+                    $userData = array(	
+                    					'user_id'=>$this->input->post('user_id'),						
+										'url'=>$ImageUrl,
+										'created_at'=>date('Y-m-d H:i:s'),
+									);
+		      					
+					$lastId = $this->insertData('documents',$userData);		      			
+					
+					if($lastId){						
+                    	echo json_encode(array('status'=>1,'last_id'=>$lastId,'url'=>$ImageUrl,'name'=>$fileName));
+					}else{
+						echo json_encode(array('status'=>0));
+					}
+                    
+                }
+            }
+        }
+	}
+	public function deleteFiles()
+	{
+		if (!empty($this->input->post('id'))) {            
+	            // foreach ($this->input->post('file') as $key => $value) {                
+	                if(file_exists('assets/img/document/'.$this->input->post('file'))){
+						echo $this->input->post('id');
+	                $result = unlink('assets/img/document/'.$this->input->post('file'));
+	                    if($result){
+	                        
+	                        $this->deleteData('documents',array('id'=>$this->input->post('id')));
+	                        
+	                        json_encode(array('status'=>1,'mssg'=>'Deleted'));
+	                    }else{
+	                        json_encode(array('status'=>0));
+	                    }
+	                }else{
+	                     json_encode(array('status'=>0));
+	                }
+	            //}
+
+        }else{
+                return json_encode(array('status'=>0));
+        }
 	}
 	
 

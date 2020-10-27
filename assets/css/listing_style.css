@@ -1029,6 +1029,127 @@ img.add-dummy-image {
 .hours-section {
     margin-top: 20px;
 }
+.address-btn {
+    padding: 15px;
+    display: block;
+    text-align: center;
+}
+img.profile-inages {
+    width: 120px;
+    border: 1px solid #e0d9d9;
+    padding: 5px;
+}
+img.profile-add-images {
+    position: absolute;
+    left: 107px;
+    top: -4px;
+}
+input#prfileImage {
+    display: none;
+}
+.address {
+    border: 1px solid #e8e8e8;
+    padding: 10px;
+}
+.fl-btn-sec.adrs-btn {
+    margin: 10px;
+}
+img.profile-edit-images {
+    width: 16px;
+    position: absolute;
+    left: 120px;
+}
+.address-showing {
+    border: 1px solid #dad7d7;
+    padding: 12px;
+    margin-bottom: 15px;
+    transition: 0.4s ease-in-out;
+}
+.address-showing:hover {
+    box-shadow: -1px 1px 9px rgba(0, 0, 0, 0.2);
+    transition: 0.4s ease-in-out;
+}
+span.inline-edit.tras-add {
+    width: 20px;
+    position: absolute;
+    right: 45px;
+    margin-top: -8px;
+    z-index: 99;
+}
+.df-list.profile-list ul li {
+    border-left: 3px solid #ddd;
+}
+.df-list ul li:hover, .df-list ul li:focus, .df-list ul li:active {
+    border: 1px solid #ddd;
+    border-left: 3px solid red;
+}
+.df-list ul li:focus {
+    border: 1px solid #ddd;
+    border-left: 3px solid red;
+}
+.df-list ul li:active {
+    border: 1px solid #ddd;
+    border-left: 3px solid red;
+}
+.info-gray i.fa.fa-dot-circle-o {
+    color: #e0e0e0;
+}
+.info-gray i.fa.fa-check-square-o {
+    color: #21c321;
+}
+.profile-list a {
+    color: #616766; 
+}
+i.fa.fa-file-pdf-o {
+    color: #ea2020;
+}
+.df-list.profile-list ul li.complete {
+    border-left: 3px solid #1cda1c;
+}
+.df-list.profile-list ul li:focus {
+    outline: none;
+}
+.added-files span {    
+    margin-top: 10px;
+}
+i.fa.fa-file-o {
+    font-size: 20px;
+    color: #4d4f98;
+}
+.capsule a.remove-icon {
+    color: red;
+    padding: 5px;
+}
+.skill-tag span.capsule {
+    padding: 7px 10px;
+    border: 1px solid gray;
+    margin-top: 13px;
+    display: inline-block; 
+    border-radius: 40px;
+}
+.added-files span.cap {
+    display: flex;
+}
+p.cmplt-sec {
+    font-size: 20px;
+    display: block;
+    text-align: center;
+    font-weight: 600;
+    background-color: #e8eaea;
+    padding: 10px;
+}
+.df-form-sec.all-stps {
+    padding: 10px;
+}
+.all-stps label.control-label {
+    font-size: 14px;
+    font-weight: 600;
+}
+.all-stps span.sut-txt {
+    font-size: 14px;
+    font-weight: 500;
+    color: #444;
+}
 /*End Loader*/
 /*media query start*/
 @media screen and (max-width: 568px){

@@ -67,7 +67,10 @@ $route['Home/submitReview'] = 'Home/submitReview';
 $route['Home/giveRating'] = 'Home/giveRating';
 $route['Home/productLike'] = 'Home/productLike';
 $route['Home/getEditItemByID'] = 'Home/getEditItemByID';
-$route['Home/deleteImages'] = 'Home/deleteImages';
+$route['Home/getProfileDetails'] = 'Home/getProfileDetails';
+$route['Home/removeAddress'] = 'Home/removeAddress';
+$route['Home/deleteFiles'] = 'Home/deleteFiles';
+
 
 
 

@@ -60,6 +60,99 @@ app.directive('lightgallery', function () {
         }
     };
 })
+ app.directive("ngFileSelect", function(fileReader, $timeout,$stateParams,$http) {
+    return {
+      scope: {
+        ngModel: '='
+      },
+      link: function($scope, el) {
+        function getFile(file) {
+          fileReader.readAsDataUrl(file, $scope)
+            .then(function(result) {
+              $timeout(function() {
+                $scope.ngModel = result;
+              });
+            });
+        }
+
+        el.bind("change", function(e) {
+          var file = (e.srcElement || e.target).files[0];
+          getFile(file);
+          console.log(file);
+
+            var serializeForm = new FormData();
+
+            serializeForm.append('file',file);               
+            serializeForm.append('user_id',$stateParams.id);               
+            
+            $http.post(Base_url + 'Home/uploadProfileImages', serializeForm, {
+                  headers: {
+                      'Content-Type': undefined
+                  },
+                  transformRequest: angular.identity
+            }).then(function (response) {   
+                console.log(response.data);
+                console.log($scope.previewData);
+                $scope.uploadStatus = false;
+                // $scope.previewData.push({
+                //         'id': response.data.last_id,
+                //         'image_url': response.data.image_url                            
+                //     });
+                
+            });
+
+
+        });
+      }
+    };
+  });
+ app.factory("fileReader", function($q, $log) {
+  var onLoad = function(reader, deferred, scope) {
+    return function() {
+      scope.$apply(function() {
+        deferred.resolve(reader.result);
+      });
+    };
+  };
+
+  var onError = function(reader, deferred, scope) {
+    return function() {
+      scope.$apply(function() {
+        deferred.reject(reader.result);
+      });
+    };
+  };
+
+  var onProgress = function(reader, scope) {
+    return function(event) {
+      scope.$broadcast("fileProgress", {
+        total: event.total,
+        loaded: event.loaded
+      });
+    };
+  };
+
+  var getReader = function(deferred, scope) {
+    var reader = new FileReader();
+    reader.onload = onLoad(reader, deferred, scope);
+    reader.onerror = onError(reader, deferred, scope);
+    reader.onprogress = onProgress(reader, scope);
+    return reader;
+  };
+
+  var readAsDataURL = function(file, scope) {
+    var deferred = $q.defer();
+
+    var reader = getReader(deferred, scope);
+    reader.readAsDataURL(file);
+
+    return deferred.promise;
+  };
+
+  return {
+    readAsDataUrl: readAsDataURL
+  };
+});
 
 app.directive("imgUpload", function ($http, $compile,storageService,$stateParams,$state) {
     return {
@@ -131,14 +224,15 @@ app.directive("imgUpload", function ($http, $compile,storageService,$stateParams
                           'Content-Type': undefined
                       },
                       transformRequest: angular.identity
-                }).then(function (response) {   
-                    console.log(response.data);
-                    $scope.uploadStatus = false;
-                    console.log($scope.previewData);
+                }).then(function (response) {                       
+                    $scope.uploadStatus = false;                                        
                     $scope.previewData.push({
                             'id': response.data.last_id,
                             'image_url': response.data.image_url                            
                         });
+                    if($scope.previewData.length > 0){
+                        $scope.isDocuemntsCompleted = true ;
+                    }
                     // if(response.data.status){               
                     //     // $scope.previewData.push({'ext':(file.name.split('.').pop()).toLowerCase(),'name':response.data.filedata.name,'size':response.data.filedata.size,'type':response.data.filedata.type, 'src':response.data.filedata.src,'attachment':response.data.attachment.attachment});
                     //     $scope.previewDataArr.push({'attachment':response.data.attachment.attachment,'ext':(file.name.split('.').pop()).toLowerCase(),'name':response.data.filedata.name});
@@ -202,6 +296,185 @@ app.directive("imgUpload", function ($http, $compile,storageService,$stateParams
                 $scope.previewData.splice(index, 1);
 
                 $http.post(Base_url+'Home/deleteImages',{file:data.image_url.split(/[/]+/).pop(),id:data.id})
+                    .then(function(response){                 
+                        if($scope.previewData.length == 0){
+                            $scope.isDocuemntsCompleted = false ;
+                        }
+                      
+                });
+            }
+        }
+    }
+});
+app.directive("fileUpload", function ($http, $compile,storageService,$stateParams,$state) {
+    return {
+        restrict: 'AE',
+        // template: '<input id="portfolio-image-upload" class="fileUpload" name="listing_img" type="file" multiple />' +
+        //     '<div class="dropzone">' +
+        //     '<img ng-src="{{addDummyImage}}" class="add-dummy-image">' +
+        //     '<p class="upload-msg">Drog Image here or click to upload</p>' +
+        //     '</div>' +
+        //     '<div class="preview clearfix">' +
+        //     '<div class="previewData clearfix" ng-repeat="data in previewData track by $index" lightgallery   img-data-src="{{data.image_url}}">' +
+        //     '<span ng-click="remove(data)" class="circle remove">' +
+        //     'X' +
+        //     '</span>' +
+        //     '<img ng-src={{data.image_url}}></img>' +
+        //     '<div class="previewControls">' +
+        //     '</div>' +
+        //     '</div>' +
+        //     '</div>',
+        link: function ($scope, elem, attrs) {
+            $scope.addDummyImage  = Base_Url+'assets/img/upload-icon.png';
+            $scope.previewData = [];
+            $scope.previewDataArr = [];
+            $scope.portfolioImgData = [];
+
+            function previewFile(file) {
+                var formData = new FormData();
+                var reader = new FileReader();                    
+                var obj = formData.append('file', file);    
+
+              //  var obj = new FormData();
+                //if ($scope.myImage1 != undefined && ($scope.myImage1).length > 0) {
+                    // console.log(file);
+                    // obj.append('previewDataArr', file);
+                    // obj.append('file', file);
+                //}
+                // profileImageForm.append('Auth_Token',localStorage.getItem('Auth_Token'));
+                // profileImageForm.append('developer_id',$scope.developerBasicDetailVO.developer_id);
+                // profileImageForm.append('profile_image',$scope.myImage);
+                // profileImageForm.append('stages',$scope.developerBasicDetailVO.stages);
+              
+
+
+                reader.onload = function (data) {
+                    var src = data.target.result;
+                    var size = ((file.size / (1024 * 1024)) > 1) ? (file.size / (1024 * 1024)) + ' mB' : (file.size / 1024) + ' kB';
+                    $scope.$apply(function () {
+                        //$scope.portfolioImgData.push(file);                        
+                        // $scope.previewData.push({
+                        //     'name': file.name,
+                        //     'size': size,
+                        //     'type': file.type,
+                        //     'src': src,                            
+                        //     'data': obj
+                        // });
+                    });
+                }
+                reader.readAsDataURL(file);
+                
+                var serializeForm = new FormData();
+                serializeForm.append('file',file);               
+                serializeForm.append('user_id',$stateParams.id);               
+                // console.log()
+                // if($stateParams.itemId){
+                //     serializeForm.append('user_id',$stateParams.itemId);               
+                // }else{                    
+                // }
+                $http.post(Base_url + 'Home/uploadFiles', serializeForm, {
+                      headers: {
+                          'Content-Type': undefined
+                      },
+                      transformRequest: angular.identity
+                }).then(function (response) {   
+                    console.log(response.data);
+                    $scope.uploadStatus = false;
+                    console.log($scope.previewData);
+                    $scope.previewData.push({
+                            'id': response.data.last_id,
+                            'url': response.data.url,                            
+                            'name': response.data.name                            
+                        });
+                    console.log($scope.previewData);
+                    // if(response.data.status){               
+                    //     // $scope.previewData.push({'ext':(file.name.split('.').pop()).toLowerCase(),'name':response.data.filedata.name,'size':response.data.filedata.size,'type':response.data.filedata.type, 'src':response.data.filedata.src,'attachment':response.data.attachment.attachment});
+                    //     $scope.previewDataArr.push({'attachment':response.data.attachment.attachment,'ext':(file.name.split('.').pop()).toLowerCase(),'name':response.data.filedata.name});
+                    //     $scope.uploadStatus = false;                                
+                    // }else{
+                    //     toastr.error(response.data.msg, 'Error');
+                    // }
+                });
+            }
+
+            function uploadFile(e,type){
+                    e.preventDefault();     
+                    var files = "";
+                    if(type == "formControl"){
+                        files = e.target.files;
+                    } else if(type === "drop"){
+                        files = e.originalEvent.dataTransfer.files;
+                    }     
+                    for(var i=0;i<files.length;i++){
+                        var file = files[i];
+                        if((file.type.indexOf("image") !== -1) || (file.type.indexOf("application/pdf") !== -1) || (file.type.indexOf("text/plain") !== -1) ) {
+                            previewFile(file);                
+                        } else {
+                            var ext = file.name.split('.').pop();
+                            if(ext == "docx" || ext == "doc") {
+                                previewFile(file);
+                            } else if(ext == "xls" || ext == "xlsx") {
+                                previewFile(file);
+                            }  else {
+                                alert(file.name + " is not supported");
+                            }
+                        }
+                    }
+            } 
+            elem.find('.fileUpload').bind('change',function(e){
+                uploadFile(e,'formControl');
+            });
+
+            // function uploadFile(e, type) {
+            //     e.preventDefault();
+            //     var files = "";
+            //     if (type == "formControl") {
+            //         files = e.target.files;
+            //     } else if (type === "drop") {
+            //         files = e.originalEvent.dataTransfer.files;
+            //     }
+            //     for (var i = 0; i < files.length; i++) {
+            //         var file = files[i];
+            //         if (file.type.indexOf("image") !== -1) {
+            //             previewFile(file);
+            //         } else {
+            //             alert(file.name + " is not supported");
+            //         }
+            //     }
+            // }
+            // elem.find('.fileUpload').bind('change', function (e) {
+            //     uploadFile(e, 'formControl');
+            // });
+
+            elem.find('.dropzone').bind("click", function (e) {
+                $compile(elem.find('.fileUpload'))($scope).trigger('click');
+            });
+
+            elem.find('.dropzone').bind("dragover", function (e) {
+                e.preventDefault();
+            });
+
+            elem.find('.dropzone').bind("drop", function (e) {
+                uploadFile(e, 'drop');
+            });
+            $scope.upload = function (obj) {
+                $http({
+                    method: $scope.method,
+                    url: $scope.url,
+                    data: obj.data,
+                    headers: {
+                        'Content-Type': undefined
+                    },
+                    transformRequest: angular.identity
+                }).success(function (data) {
+
+                });
+            }
+
+            $scope.remove = function (data) {
+                var index = $scope.previewData.indexOf(data);
+                $scope.previewData.splice(index, 1);
+                $http.post(Base_url+'Home/deleteFiles',{file:data.name,id:data.id})
                     .then(function(response){                 
                       
                 });
@@ -279,6 +552,7 @@ app.directive('loginSignup',function ($http, $window, $timeout,$http,storageServ
                                     storageService.set('user_id', response.data.result.user_id);
                                     $rootScope.mobile = response.data.result.mobile ;
                                     $rootScope.user_name = response.data.result.user_name;
+                                    $rootScope.user_id = response.data.result.user_id;
                                     $rootScope.profile_image = Base_Url+'assets/img/welaska_dummy.png';                    
                                 }else if(response.data.status==2){                                    
                                     $rootScope.isVerificationActives = true;
@@ -336,6 +610,11 @@ app.config(function($stateProvider, $locationProvider,
             url : '/edit-listing/:id', 
             templateUrl : Base_url+'view/edit-listing',
             controller : "freeListingCtrl"
+        })
+        .state('profile', { 
+            url : '/profile/:id', 
+            templateUrl : Base_url+'view/profile',
+            controller : "profileCtrl"
         })
         .state('detailForm', { 
             url : '/detail-form', 
@@ -1510,6 +1789,162 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
     if($state.params.id){
         $scope.getItemByID();
     }   
+
+
+});
+app.controller('profileCtrl', function($scope,$http,storageService,$state,toastr,$rootScope) {
+
+    angular.element("#loader-for-page").addClass("loading-spiner-hide").removeClass("loading-spiner-show");
+    if(storageService.get('user_name')){
+        $rootScope.mobile = storageService.get('mobile') ;
+        $rootScope.user_name = storageService.get('user_name') ;
+    }
+    $rootScope.profile_image = Base_Url+'assets/img/welaska_dummy.png';
+    $scope.step = 'personal';     
+    $scope.profileImageSrc  = Base_Url+'assets/img/welaska_dummy.png';
+
+    $scope.imageCall = function(){
+        angular.element('#prfileImage').trigger('click');            
+    }
+
+    $scope.citySelectedChange = citySelectedChange;
+    function loadAllCityList(data) {
+        var classMateAllStates = data;
+        $scope.generateArray = [];
+        angular.forEach(classMateAllStates, function (value, key) {                               
+            if(value.city_name){                    
+                $scope.generateArray.push({                        
+                    'id': value.id.toLowerCase(),
+                    'city':value.city_name,
+                    'state':value.city_state,
+                });                    
+            }
+        });
+        return $scope.generateArray;
+    }     
+    $scope.innerHeaderQuerySearch = function (keyword) {            
+        return $http
+        .post(Base_url+'Home/getCityList',{keyword:keyword})
+            .then(function(response){                                    
+                $scope.classmateStats = loadAllCityList(response.data.data);                                       
+                return $scope.classmateStats;
+        });
+    };
+
+    function createFilterForClassmate(query) {
+        var lowercaseQuery = query.toLowerCase();
+        return function filterFn(state) {                
+            return (state.name.indexOf(lowercaseQuery) === 0 );
+        };
+
+    }
+
+    function innerHeaderTextChange(text) {
+        $log.info('Text changed to ' + text);            
+    }
+    $scope.classmateData = '';
+
+    function citySelectedChange(item) {
+        console.log(item);        
+        if(item){                       
+            $scope.listingObject.address_city = item.city;
+        }
+    } 
+
+
+    $scope.imageSrc = "";
+    
+    $scope.$on("fileProgress", function(e, progress) {
+      $scope.progress = progress.loaded / progress.total;
+    });
+    $scope.isPersonalDetailsCompleted = false ;
+    $scope.isAddressCompleted = false;
+    $scope.getProfileDetails = function(){        
+        $scope.listingObject = [];
+        $scope.listingObjectAdd = [];        
+        $scope.listingObjectDocument = [];
+        $scope.previewData = [];
+        
+        $http.post(Base_url+'Home/getProfileDetails',{ item_id:$state.params.id})
+            .then(function(response){                
+                if(response.data.status) {                      
+                    $scope.listingObject = response.data.data.profile ;
+                    $scope.listingObjectAdd = response.data.data.address;
+                    $scope.listingObjectDocument = response.data.data.documents;
+                    //$scope.previewData = response.data.data.documents;
+                    angular.forEach($scope.listingObjectDocument, function (value, key) {                                                       
+                        $scope.previewData.push({                        
+                            'name': value.url.split(/[/]+/).pop(),
+                            'id':value.id,
+                            'url':value.url                                                        
+                        });                    
+                        
+                    });                    
+                    //$scope.listingObject = response.data.data.profile ;
+                    $scope.imageSrc = $scope.listingObject.image
+                    if($scope.listingObject.first_name!='' && $scope.listingObject.last_name!='' && $scope.listingObject.mobile!='' && $scope.listingObject.image!=''){
+                        $scope.isPersonalDetailsCompleted = true ;
+                    }
+                    if($scope.listingObjectAdd.length > 0){
+                        $scope.isAddressCompleted = true;
+                    }
+                    if($scope.listingObjectDocument.length > 0){
+                        $scope.isDocuemntsCompleted = true;
+                    }
+                    if($scope.isPersonalDetailsCompleted && $scope.isAddressCompleted && $scope.isDocuemntsCompleted){
+                        $scope.isAllCompleted = true;   
+                    }
+ 
+                    
+                    angular.element("#loader-for-page").addClass("loading-spiner-hide").removeClass("loading-spiner-show");
+                  
+                }
+        });
+    }
+    $scope.getProfileDetails();
+
+    $scope.submitPersonalDetails = function(step){
+            $scope.isLoadingActive = true;                             
+            
+            var serialize = $scope.listingObject;
+            serialize['step'] = step;            
+            serialize['user_id'] = $state.params.id ;
+            
+
+            $http.post(Base_url+'Home/submitBasicDetails',serialize)
+                .then(function(response){
+                $scope.isLoadingActive = false;               
+                if(response.data.status){                    
+                    if($state.params.id){
+                        toastr.success('Successfully Updated');
+                        $scope.getProfileDetails();
+                    }
+                    if(step=='personal'){
+                        $scope.step = 'address';
+                    }else if(step=='address'){
+                        $scope.isAddressNew = false;
+                        $scope.step = 'documents';
+                    }else if(step=='documents'){
+                        $scope.step = 'all';
+                    }
+                }else{                    
+                    toastr.error(response.data.msg);
+                }                                 
+                    
+            });
+    }
+    $scope.removeAddress = function(id){
+        console.log(id);
+
+        $http.post(Base_url+'Home/removeAddress',{id:id})
+            .then(function(response){
+                $scope.getProfileDetails();
+                toastr.success(response.data.msg);
+                $scope.getProfileDetails();
+        });
+
+    }
+    
 
 
 });
