@@ -694,7 +694,8 @@ app.controller('HomeCtrl', function($scope,homeService,$state,$log,$http,toastr,
 
     if(storageService.get('user_name')){
         $rootScope.mobile = storageService.get('mobile') ;
-        $rootScope.user_name = storageService.get('user_name') ;
+        $rootScope.user_name = storageService.get('user_name') ;        
+        $rootScope.user_id = storageService.get('user_id');
     }    
     $rootScope.profile_image = Base_Url+'assets/img/welaska_dummy.png';   
 
@@ -850,6 +851,7 @@ app.controller('ListingCtrl', function($scope,$state,$http,$stateParams,$timeout
     if(storageService.get('user_name')){
         $rootScope.mobile = storageService.get('mobile') ;
         $rootScope.user_name = storageService.get('user_name') ;
+        $rootScope.user_id = storageService.get('user_id');
     }    
     $rootScope.profile_image = Base_Url+'assets/img/welaska_dummy.png';
     $scope.listingObj = {};    
@@ -1033,6 +1035,7 @@ app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$time
     if(storageService.get('user_name')){
         $rootScope.mobile = storageService.get('mobile') ;
         $rootScope.user_name = storageService.get('user_name') ;
+        $rootScope.user_id = storageService.get('user_id');
     }    
     $rootScope.profile_image = Base_Url+'assets/img/welaska_dummy.png';
     $scope.searchLocation  = storageService.get('current_location') ;
@@ -1247,6 +1250,7 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
     if(storageService.get('user_name')){
         $rootScope.mobile = storageService.get('mobile') ;
         $rootScope.user_name = storageService.get('user_name') ;
+        $rootScope.user_id = storageService.get('user_id');
     } 
     $timeout(function () {                    
         angular.element("#loader-for-page").addClass("loading-spiner-hide").removeClass("loading-spiner-show");
@@ -1803,6 +1807,7 @@ app.controller('profileCtrl', function($scope,$http,storageService,$state,toastr
     if(storageService.get('user_name')){
         $rootScope.mobile = storageService.get('mobile') ;
         $rootScope.user_name = storageService.get('user_name') ;
+        $rootScope.user_id = storageService.get('user_id');
     }
     $rootScope.profile_image = Base_Url+'assets/img/welaska_dummy.png';
     $scope.step = 'personal';     
