@@ -290,7 +290,7 @@
             <div class="fl-btn-sec">
               <!-- <a ng-click="step='contact'" class="pull-left"><i class="fa fa-arrow-left"></i> Previous</a> -->
               <!-- <button class="btn se-btn">Save & Exit</button> -->
-              <button class="btn sc-btn submit-button" ng-click="step='all'"><img src="<?php echo base_url() ?>assets/img/btn-loading.gif" class="load-img" ng-show="isLoadingActive"><span>{{(isLoadingActive) ?'':'Next'}}</span></button>
+              <button class="btn sc-btn submit-button" ng-click="step='all'; getProfileDetails()"><img src="<?php echo base_url() ?>assets/img/btn-loading.gif" class="load-img" ng-show="isLoadingActive"><span>{{(isLoadingActive) ?'':'Next'}}</span></button>
               <a ng-click="step='all'" class="pull-right">Next <i class="fa fa-arrow-right"></i></a>
             </div>
         </div>

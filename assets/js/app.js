@@ -1932,6 +1932,7 @@ app.controller('profileCtrl', function($scope,$http,storageService,$state,toastr
                 .then(function(response){
                 $scope.isLoadingActive = false;               
                 if(response.data.status){                    
+                    console.log($state.params.id);
                     if($state.params.id){
                         toastr.success('Successfully Updated');
                         $scope.getProfileDetails();
@@ -1943,6 +1944,7 @@ app.controller('profileCtrl', function($scope,$http,storageService,$state,toastr
                         $scope.step = 'documents';
                     }else if(step=='documents'){
                         $scope.step = 'all';
+
                     }
                 }else{                    
                     toastr.error(response.data.msg);
