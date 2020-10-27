@@ -662,6 +662,7 @@ md-autocomplete.custom-md-autocomplete.custom-input {
 }
 img.profile-image {
     width: 35px;
+    height: 35px;
     border-radius: 50%;
 }
 .profile-image-section {

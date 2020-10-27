@@ -10,7 +10,7 @@
           <li ng-click="step='address'" ng-class="step=='address' ? 'complete' : '' "><a><span class="info-gray"> <i class="fa" ng-class="isAddressCompleted ? 'fa-check-square-o' : 'fa-dot-circle-o' " aria-hidden="true"></i></span> Addresses</a></li>
           <!-- <li ng-click="step='contact'" ng-class="step=='contact' ? 'active' : '' "><a>Credit / Debit Cards</a></li> -->
           <li ng-click="step='documents'" ng-class="step=='documents' ? 'complete' : '' "><a><span class="info-gray"> <i class="fa fa-dot-circle-o" ng-class="isDocuemntsCompleted ? 'fa-check-square-o' : 'fa-dot-circle-o' " aria-hidden="true"></i></span> Documents</a></li>
-          <li ng-click="step='all'" ng-class="step=='all' ? 'complete' : '' "><a><span class="info-gray"> <i class="fa" ng-class="isAllCompleted ? 'fa-check-square-o' : 'fa-dot-circle-o' " aria-hidden="true"></i></span> Completed</a></li>
+          <li ng-click="listingObjectAdd.length > 0 || previewData.length > 0 || listingObject.first_name ? (step='all') : '' " ng-class="step=='all' ? 'complete' : '' "><a><span class="info-gray"> <i class="fa" ng-class="isAllCompleted ? 'fa-check-square-o' : 'fa-dot-circle-o' " aria-hidden="true"></i></span> Completed</a></li>
         </ul>
         <select class="df-select show-xs">
           <option>Location Informating</option>
@@ -295,73 +295,78 @@
             </div>
         </div>
         <div class="df-form-sec all-stps" id="4" ng-show="step=='all'">
-          <div class="row">
-            <p class="cmplt-sec">Personal Details </p>
+          <div ng-show="listingObject.first_name">            
+            <div class="row">
+              <p class="cmplt-sec">Personal Details </p>
+            </div>
+            <div class="row">
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                  <label class="control-label">First Name : <span class="sut-txt">{{listingObject.first_name}} </span> </label>                
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                  <label class="control-label">Last Name : <span class="sut-txt">{{listingObject.last_name}} </span> </label>                
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                  <label class="control-label">Email : <span class="sut-txt">{{listingObject.email}} </span> </label>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                  <label class="control-label">Mobile : <span class="sut-txt">{{listingObject.mobile}} </span> </label>                
+                </div>
+              </div>
+            </div>          
           </div>
-          <div class="row">
-            <div class="col-md-6 col-sm-6 col-xs-12">
-              <div class="form-group">
-                <label class="control-label">First Name : <span class="sut-txt">{{listingObject.first_name}} </span> </label>                
-              </div>
+          <div ng-show="listingObjectAdd.length > 0">            
+            <div class="row">
+              <p class="cmplt-sec">Address </p>
             </div>
-            <div class="col-md-6 col-sm-6 col-xs-12">
-              <div class="form-group">
-                <label class="control-label">Last Name : <span class="sut-txt">{{listingObject.last_name}} </span> </label>                
-              </div>
+            <div ng-repeat="item in listingObjectAdd">              
+                <div class="row">
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                      <label class="control-label">Name <span class="sut-txt">: {{item.address_name}} </span></label>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                      <label class="control-label">Contact Number <span class="sut-txt">: {{item.contact_number}} </span></label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                      <label class="control-label">Email <span class="sut-txt">: {{item.address_email}} </span></label>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                      <label class="control-label">Address<span class="sut-txt">: {{item.address}} </span></label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                      <label class="control-label">Pin Code <span class="sut-txt">: {{item.address_pin_code}} </span></label>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                      <label class="control-label">City<span class="sut-txt">: {{item.address_city}} </span></label>
+                    </div>
+                  </div>
+                </div>              
             </div>
-            <div class="col-md-6 col-sm-6 col-xs-12">
-              <div class="form-group">
-                <label class="control-label">Email : <span class="sut-txt">{{listingObject.email}} </span> </label>
-              </div>
-            </div>
-            <div class="col-md-6 col-sm-6 col-xs-12">
-              <div class="form-group">
-                <label class="control-label">Mobile : <span class="sut-txt">{{listingObject.mobile}} </span> </label>                
-              </div>
-            </div>
-          </div>          
-          <div class="row">
-            <p class="cmplt-sec">Address </p>
           </div>
-          <div ng-repeat="item in listingObjectAdd">              
-              <div class="row">
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                  <div class="form-group">
-                    <label class="control-label">Name <span class="sut-txt">: {{item.address_name}} </span></label>
-                  </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                  <div class="form-group">
-                    <label class="control-label">Contact Number <span class="sut-txt">: {{item.contact_number}} </span></label>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                  <div class="form-group">
-                    <label class="control-label">Email <span class="sut-txt">: {{item.address_email}} </span></label>
-                  </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                  <div class="form-group">
-                    <label class="control-label">Address<span class="sut-txt">: {{item.address}} </span></label>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                  <div class="form-group">
-                    <label class="control-label">Pin Code <span class="sut-txt">: {{item.address_pin_code}} </span></label>
-                  </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                  <div class="form-group">
-                    <label class="control-label">City<span class="sut-txt">: {{item.address_city}} </span></label>
-                  </div>
-                </div>
-              </div>              
-          </div>
-          <div class="row">
+
+          <div class="row" ng-show="previewData.length > 0">
             <p class="cmplt-sec">Documents </p>
 
             <div class="added-files">

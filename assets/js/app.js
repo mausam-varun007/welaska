@@ -60,7 +60,7 @@ app.directive('lightgallery', function () {
         }
     };
 })
- app.directive("ngFileSelect", function(fileReader, $timeout,$stateParams,$http) {
+ app.directive("ngFileSelect", function(fileReader, $timeout,$stateParams,$http,$rootScope) {
     return {
       scope: {
         ngModel: '='
@@ -91,8 +91,12 @@ app.directive('lightgallery', function () {
                   },
                   transformRequest: angular.identity
             }).then(function (response) {   
-                console.log(response.data);
+                console.log(response.data.image);
                 console.log($scope.previewData);
+                console.log($scope.step);
+                if(response.data.image){
+                    $rootScope.profile_image  = response.data.image;
+                }
                 $scope.uploadStatus = false;
                 // $scope.previewData.push({
                 //         'id': response.data.last_id,
@@ -226,6 +230,7 @@ app.directive("imgUpload", function ($http, $compile,storageService,$stateParams
                       transformRequest: angular.identity
                 }).then(function (response) {                       
                     $scope.uploadStatus = false;                                        
+                    
                     $scope.previewData.push({
                             'id': response.data.last_id,
                             'image_url': response.data.image_url                            
@@ -1792,7 +1797,7 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
 
 
 });
-app.controller('profileCtrl', function($scope,$http,storageService,$state,toastr,$rootScope) {
+app.controller('profileCtrl', function($scope,$http,storageService,$state,toastr,$rootScope,$timeout) {
 
     angular.element("#loader-for-page").addClass("loading-spiner-hide").removeClass("loading-spiner-show");
     if(storageService.get('user_name')){
@@ -1869,9 +1874,11 @@ app.controller('profileCtrl', function($scope,$http,storageService,$state,toastr
             .then(function(response){                
                 if(response.data.status) {                      
                     $scope.listingObject = response.data.data.profile ;
+                    console.log($scope.listingObject.image);
                     $scope.listingObjectAdd = response.data.data.address;
                     $scope.listingObjectDocument = response.data.data.documents;
                     //$scope.previewData = response.data.data.documents;
+                    
                     angular.forEach($scope.listingObjectDocument, function (value, key) {                                                       
                         $scope.previewData.push({                        
                             'name': value.url.split(/[/]+/).pop(),
@@ -1882,6 +1889,11 @@ app.controller('profileCtrl', function($scope,$http,storageService,$state,toastr
                     });                    
                     //$scope.listingObject = response.data.data.profile ;
                     $scope.imageSrc = $scope.listingObject.image
+                    if($scope.listingObject.image){
+                        $timeout(function() {                            
+                            $rootScope.profile_image  = $scope.listingObject.image;
+                        },100);
+                    }
                     if($scope.listingObject.first_name!='' && $scope.listingObject.last_name!='' && $scope.listingObject.mobile!='' && $scope.listingObject.image!=''){
                         $scope.isPersonalDetailsCompleted = true ;
                     }
