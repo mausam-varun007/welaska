@@ -10,7 +10,7 @@
           <li ng-click="step='address'" ng-class="step=='address' ? 'complete' : '' "><a><span class="info-gray"> <i class="fa" ng-class="isAddressCompleted ? 'fa-check-square-o' : 'fa-dot-circle-o' " aria-hidden="true"></i></span> Addresses</a></li>
           <!-- <li ng-click="step='contact'" ng-class="step=='contact' ? 'active' : '' "><a>Credit / Debit Cards</a></li> -->
           <li ng-click="step='documents'" ng-class="step=='documents' ? 'complete' : '' "><a><span class="info-gray"> <i class="fa fa-dot-circle-o" ng-class="isDocuemntsCompleted ? 'fa-check-square-o' : 'fa-dot-circle-o' " aria-hidden="true"></i></span> Documents</a></li>
-          <li ng-click="listingObjectAdd.length > 0 || previewData.length > 0 || listingObject.first_name ? (step='all') : '' " ng-class="step=='all' ? 'complete' : '' "><a><span class="info-gray"> <i class="fa" ng-class="isAllCompleted ? 'fa-check-square-o' : 'fa-dot-circle-o' " aria-hidden="true"></i></span> Completed</a></li>
+          <li ng-click="listingObjectAdd.length > 0 || previewData.length > 0 || listingObject.first_name ? (step='all') : '' " ng-class="step=='all' ? 'complete' : 'disable' "><a><span class="info-gray"> <i class="fa" ng-class="isAllCompleted ? 'fa-check-square-o' : 'fa-dot-circle-o' " aria-hidden="true"></i></span> Completed</a></li>
         </ul>
         <select class="df-select show-xs">
           <option>Location Informating</option>
@@ -29,8 +29,10 @@
             <div class="row">
               <div class="col-md-3 col-sm-3 col-xs-12">
                 <input id="prfileImage" type="file" ng-file-select="onFileSelect($files)" ng-model="imageSrc">
-                <a ng-show="imageSrc==''" ng-click="imageCall()"><img class="profile-add-images" src="<?=base_url()?>assets/img/add-new.png" /></a>           
-                <a ng-show="imageSrc!=''" ng-click="imageCall()"><img class="profile-edit-images" src="<?=base_url()?>assets/img/edit-icon1.png" /></a>           
+                <span class="edit-prof">                  
+                  <a ng-show="imageSrc==''" ng-click="imageCall()"><img class="profile-add-images" src="<?=base_url()?>assets/img/add-new.png" /></a>           
+                  <a ng-show="imageSrc!=''" ng-click="imageCall()"><img class="profile-edit-images" src="<?=base_url()?>assets/img/edit-icon1.png" /></a>           
+                </span>
 
                 <img class="profile-inages" ng-src="{{imageSrc!='' ? imageSrc : profileImageSrc }}" />
               </div>
@@ -52,14 +54,15 @@
                 <div class="col-md-6 col-sm-6 col-xs-12">
                   <div class="form-group">
                     <label class="control-label">Email</label>
-                    <input type="text" class="form-control custom-input" ng-model="listingObject.email">
+                    <input type="email" class="form-control custom-input" ng-model="listingObject.email" required="">
                     <span  class="error-msg"></span>
                   </div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-12">
                   <div class="form-group">
                     <label class="control-label">Mobile</label>
-                    <input type="text" readonly="" class="form-control custom-input" ng-model="listingObject.mobile">
+                    <input type="text" readonly="" class="form-control custom-input mobile-update" ng-model="listingObject.mobile">
+                    <a class="update-mbl" data-toggle="modal" data-target="#mobileUpdateModal">Update</a>
                     <span  class="error-msg" ></span>
                   </div>
                 </div>
@@ -135,14 +138,14 @@
                 <div class="col-md-4 col-sm-4 col-xs-12">
                   <div class="form-group">
                     <label class="control-label">Address</label>
-                    <input type="text" class="form-control custom-input" ng-model="listingObject.address">
+                    <textarea class="form-control custom-input" ng-model="listingObject.address" name="w3review" rows="4" cols="50"></textarea>
                     <span  class="error-msg"></span>
                   </div>
                 </div>
                 <div class="col-md-4 col-sm-4 col-xs-12">
                   <div class="form-group">
                     <label class="control-label">Pincode</label>
-                    <input type="text" class="form-control custom-input" ng-model="listingObject.address_pin_code">
+                    <input type="text" class="form-control custom-input" maxlength="6" onkeypress="return (event.charCode == 8 || event.charCode == 0) ? false : (event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46 || event.charCode==46)" ng-model="listingObject.address_pin_code">
                     <span  class="error-msg" ></span>
                   </div>
                 </div>
@@ -423,3 +426,33 @@
     </div>
   </div>
   
+  <div class="modal fade" id="mobileUpdateModal" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>        
+        <h4 class="modal-title">Welaska</h4>
+      </div>
+      <div class="modal-body">          
+        <div class="mobile-section" ng-show="!isVerificationActives">                     
+          <div class="form-group">          
+            <input type="text" onkeypress="return (event.charCode == 8 || event.charCode == 0) ? false : (event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46 || event.charCode==46)" class="form-control custom-input" id="mobile" placeholder="Mobile Number" ng-model="listingObj.update_mobile" ng-change="checkMobileExist()" name="update_mobile">
+          </div>
+        </div>        
+        <div class="verification-section" ng-show="isVerificationActives">          
+          <p>Please enter your mobile verification code</p>
+            <div class="form-group">          
+            <input type="number" class="form-control custom-input" onKeyPress="if(this.value.length==6) return false;" id="verification_code" placeholder="Verification Code" ng-model="listingObj.verification_code" name="verification_code">
+          </div>          
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div>
+          <button class="btn btn-default otp-button" ng-click="updateMobile()">{{!isVerificationActives ? 'Send OTP' : 'Verify'}}</button>
+        </div>        
+      </div>
+    </div>
+    
+  </div>
+</div>

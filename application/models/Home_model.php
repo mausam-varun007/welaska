@@ -869,6 +869,62 @@ class Home_model extends MY_model
                 return json_encode(array('status'=>0));
         }
 	}
-	
+	public function updateMobile()
+    {
 
+        if(!empty($this->input->post('update_mobile'))){                            
+
+                if(empty($this->input->post('verification_code')) && !empty($this->input->post('update_mobile'))){                    
+                    $otp  = rand(100000, 999999);
+                    $this->session->set_userdata('temp_verification_code',999999);                    
+                    //$this->session->set_userdata('temp_verification_code',$otp);                     
+                    return json_encode(array('status'=>2,'message'=>'Verification code sent to your mobile number','stage'=>1));                    
+                    
+                    // $body = "<p>Your mobile number verification OTP  : </p>".$otp;
+                    // $isSend =  $this->EmailModel->sendSMS($this->input->post('mobile'), $body);        
+                    // if($isSend){                                                                       
+                    //     echo  json_encode(array('status'=>1,'message'=>'Verification code sent to your mobile number','stage'=>1));                    
+                    //     return;
+                    // }else{
+                    //     echo  json_encode(array('status'=>0,'message'=>'could not send','stage'=>0));
+                    //     return;
+                    // }
+
+                }else if(!empty($this->input->post('verification_code'))){
+
+                    if($this->input->post('verification_code')==$this->session->userdata('temp_verification_code')){                        
+                        $data = array('mobile'=>$this->input->post('update_mobile'));   
+                        
+                        $updated = $this->updateData('user',$data,array('id'=>$this->input->post('user_id')));                                                
+                        if($updated){
+                            return json_encode(array('status'=>1,'message'=>'updated','stage'=>4));
+                            ;
+                        }
+                    }else{
+                        return  json_encode(array('status'=>0,'message'=>'Incorrect OTP Code','stage'=>3));
+
+                    }
+                }
+
+        
+       }
+    } 
+	public function checkMobileExist()
+    {
+        if(!empty($this->input->post('mobile'))){
+
+        	$this->db->select('mobile');
+        	$this->db->from('user');
+        	$this->db->where_not_in('id',$this->input->post('user_id'));        	
+			$query = $this->db->get();				
+			
+
+			if ($query->num_rows() > 0) {
+				return json_encode(array('status'=>1,'message'=>'Exist'));
+			}else{
+				return json_encode(array('status'=>0,'message'=>'Not exist'));
+			}
+            
+    	} 
+	}
 }

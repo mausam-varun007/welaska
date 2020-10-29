@@ -211,5 +211,13 @@ class Home extends MY_Controller {
   { 
     echo $this->Home->deleteFiles();    
   }
+  public function updateMobile()
+  { 
+    echo $this->Home->updateMobile();    
+  }
+  public function checkMobileExist()
+  { 
+    echo $this->Home->checkMobileExist();    
+  }  
   
 }

@@ -1151,6 +1151,41 @@ p.cmplt-sec {
     font-weight: 500;
     color: #444;
 }
+.disable a {
+    color: #bdbab6;
+}
+.disable a:hover {
+    color: #bdbab6;
+}
+.df-list ul li.disable:hover{
+    border: 1px solid #bdbab6;
+    border-left: 3px solid #bdbab6;    
+    color:#bdbab6;
+}
+.df-list ul li.disable:hover a {
+    color: #bdbab6;
+}
+.df-list ul li.disable a:hover{
+    color:#bdbab6;
+}
+ .df-list ul li.disable:focus, .df-list ul li.disable:active {
+
+ }
+input.form-control.custom-input.mobile-update {
+    margin-bottom: 5px;
+}
+a.update-mbl {
+    font-size: 12px;
+    text-align: right;
+    display: block;
+    color: #008cba;
+    font-weight: 600;
+    text-decoration: none;
+}
+#mobileUpdateModal .modal-dialog {
+    width: 350px;
+}
+
 /*End Loader*/
 /*media query start*/
 @media screen and (max-width: 568px){

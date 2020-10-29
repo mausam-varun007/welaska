@@ -1812,6 +1812,7 @@ app.controller('profileCtrl', function($scope,$http,storageService,$state,toastr
     $rootScope.profile_image = Base_Url+'assets/img/welaska_dummy.png';
     $scope.step = 'personal';     
     $scope.profileImageSrc  = Base_Url+'assets/img/welaska_dummy.png';
+    $scope.isVerificationActives = false ;
 
     $scope.imageCall = function(){
         angular.element('#prfileImage').trigger('click');            
@@ -1962,6 +1963,40 @@ app.controller('profileCtrl', function($scope,$http,storageService,$state,toastr
                 $scope.getProfileDetails();
         });
 
+    }
+    $scope.checkMobileExist =  function(){
+        $http.post(Base_url+'Home/checkMobileExist',{mobile:$scope.listingObj.update_mobile,user_id:$state.params.id})
+                .then(function(response){  
+                console.log(response.data);
+                });
+
+    }
+    $scope.updateMobile =function(){        
+        if(!$scope.isVerificationActives){
+            $scope.listingObj.verification_code = null ;
+        }
+        
+        $http.post(Base_url+'Home/updateMobile',{update_mobile:$scope.listingObj.update_mobile,verification_code:$scope.listingObj.verification_code,user_id:$state.params.id})
+                .then(function(response){                                     
+                    console.log(response.data);
+                if(response.data.status==1){
+                    angular.element("#mobileUpdateModal").modal('hide');
+                    toastr.success(response.data.message);
+                    $scope.listingObj.mobile = $scope.listingObj.mobile ;                    
+                    $scope.listingObj = {};
+                    $scope.isVerificationActives = false;                    
+                    // storageService.set('user_name', response.data.result.user_name);
+                    // storageService.set('mobile', response.data.result.mobile);
+                    // storageService.set('user_id', response.data.result.user_id);
+                    // $scope.mobile = response.data.result.mobile ;
+                    // $scope.user_name = response.data.result.user_name;
+                    // $scope.user_id = response.data.result.user_id;
+                    // $scope.profile_image = Base_Url+'assets/img/welaska_dummy.png';                    
+                }else if(response.data.status==2){                                    
+                    $scope.isVerificationActives = true;
+                }         
+                
+        });
     }
     
 

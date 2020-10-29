@@ -70,6 +70,10 @@ $route['Home/getEditItemByID'] = 'Home/getEditItemByID';
 $route['Home/getProfileDetails'] = 'Home/getProfileDetails';
 $route['Home/removeAddress'] = 'Home/removeAddress';
 $route['Home/deleteFiles'] = 'Home/deleteFiles';
+$route['Home/updateMobile'] = 'Home/updateMobile';
+$route['Home/checkMobileExist'] = 'Home/checkMobileExist';
+
+
 
 
 
