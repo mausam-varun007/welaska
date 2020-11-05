@@ -196,7 +196,8 @@
           <h4 class="modal-title">Location</h4>
         </div>
         <div class="modal-body">
-        	<div ng-app="GoogleMaps" ng-controller="GoogleMaps">
+        	<!-- ng-app="GoogleMaps" ng-controller="GoogleMaps" -->
+        	<div>
 			    <div class="example playground">			        
 			        <google-maps id="playground"
 	                     data-markers="{{markers}}"
