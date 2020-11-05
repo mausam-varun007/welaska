@@ -45,7 +45,9 @@
 	              input-aria-describedby="autocompleteDetailedDescription" md-dropdown-position="auto">
 	              <mat-option >
 	               <!--  <img style="vertical-align:middle;" aria-hidden data-ng-src="{{(item.image) ? item.image : '<?= base_url() ?>assets/img/defualt-logo.png'}}" height="20" /> -->               
-	                <a ng-click="reditectToPage(item)"><span class="search-all-list" md-highlight-text="searchObj.innerHeaderSearchText" md-highlight-flags="^i" class="capitalize">{{item.name}}</span></a>                
+	                <!-- <a ng-click="reditectToPage(item)"><span class="search-all-list" md-highlight-text="searchObj.innerHeaderSearchText" md-highlight-flags="^i" class="capitalize">{{item.name}}</span></a>           -->      
+
+	                <a ng-click="reditectToPage(item)" class="category-items"><span class="search-all-list" md-highlight-text="searchObj.innerHeaderSearchText" md-highlight-flags="^i" class="capitalize">{{item.name}} </span></a><span ng-show="item.type=='category_type'" class="category-sign">[+]</span>                
 	               <!-- <a href="" ng-if="item.type='item_type'">               	
 	                <span class="category-item" md-highlight-text="searchObj.innerHeaderSearchText" md-highlight-flags="^i" class="capitalize">{{item.name}}</span>                
 	               </a> -->
@@ -72,7 +74,7 @@
 			<div class="profile-image-section dropdown" ng-show="user_name">
 				<span class="menu-custom-drp dropdown-toggle" data-toggle="dropdown"><span>Hi {{user_name}} </span>  <img src="{{profile_image}}" class="profile-image"></span>
 				<ul class="dropdown-menu">
-			      <li><a href="#">My Account</a></li>
+			      <!-- <li><a href="#">My Account</a></li> -->
 			      <li><a ui-sref="profile({id:user_id})">My Profile</a></li>
 			      <li class="divider"></li>
 			      <li><a ui-sref="Logout">Log Out</a></li>

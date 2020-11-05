@@ -1013,7 +1013,8 @@ img.add-dummy-image {
     width: 35px;
 }
 .col-lg-2.col-md-2.goto-icons {
-    transform: translate(-30%, 0%);
+    transform: translate(0%, 0%);
+    text-align: center;
 }
 .single-list span.circle.remove {
     display: none;
@@ -1181,11 +1182,187 @@ a.update-mbl {
     color: #008cba;
     font-weight: 600;
     text-decoration: none;
+    display: block;
 }
 #mobileUpdateModal .modal-dialog {
     width: 350px;
 }
+input.form-control.custom-input.eml-fld {
+    margin-bottom: 5px;
+}
+a.update-eml {
+    font-size: 12px;
+    color: #008cba;
+    font-weight: 600;
+    text-decoration: none;
+    display: block;
+}
+#emailUpdateModal .modal-dialog {
+    width: 400px;
+}
+input.form-control.custom-input.mbl-updt {
+    margin-bottom: 0px;
+}
+ul.dropdown-menu.social-share {
+    background-color: #fff;
+    list-style: none;
+    position: absolute;
+    width: auto;    
+    left: 85px;
+    top: 15px;   
+    line-height: 2.2;
+    letter-spacing: 15.2px;
+    padding: 9px;
+    box-shadow: -1px 1px 9px rgba(0, 0, 0, 0.2);
+}
+span.menu-custom-drp.dropdown-toggle.social-shr {
+    display: grid;
+    font-size: 12px;
+    cursor: pointer;
+}
+.social-shr img {
+    height: 30px;
+    width: 30px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 29%;
+}
+span.social-text {
+    letter-spacing: 1px;
+}
 
+element.style {
+}
+.social-share.dropdown-menu>li>a {
+    display: block;
+    padding: 2px 5px;
+}
+i.fa.fa-facebook {
+    color: #3f5c9a;
+}
+i.fa.fa-twitter {
+    color: #1da1f2;
+}
+i.fa.fa-whatsapp {
+    color: #05cd51;
+}
+i.fa.fa-linkedin {
+    color: #0077b5;
+}
+/*Google Map*/
+
+/*@import url('https://fonts.googleapis.com/css?family=Mina:400,700');
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: cornflowerblue;
+}
+
+body {
+  font-family: 'Mina', sans-serif;
+  margin: 0;
+  line-height: auto;
+}
+
+h1, h2, h3,
+h4, h5, h6, p {
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+code, pre {
+  background-color: #ededed;
+  border-radius: 3px;
+}
+
+code {
+  padding: 3px;
+}
+
+pre {
+  padding: 10px;
+}
+
+label {
+  display: block;
+}
+
+label small {
+  font-size: 11px;
+  font-weight: normal;
+}
+
+button {
+  background-color: cornflowerblue;
+  padding: 10px;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+}
+
+button:hover {
+  background-color: #4985ed;
+}
+
+button:focus {
+  outline: none;
+}
+
+button:active {
+  box-shadow: inset 0 0 5px #565656;
+}
+
+.input-box {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.input-box:focus {
+  border-color: cornflowerblue;
+  outline: none;
+}
+
+[ng-app] {
+  padding: 40px;
+}
+
+[ng-app]::before,
+[ng-app]::after,
+.demos::before,
+.demos::after,
+.example::before, 
+.example::after,
+.row::before,
+.row::after {
+  display: table;
+  content: " ";
+  clear: both;
+}
+
+.example {
+  max-width: 700px;
+  margin: 0 auto 30px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #ededed;
+} 
+
+.playground button {
+  float: right;
+}
+
+google-maps {
+  display: block;
+  min-height: 250px;
+  margin-bottom: 25px;
+}*/
+/*Emp map*/
 /*End Loader*/
 /*media query start*/
 @media screen and (max-width: 568px){

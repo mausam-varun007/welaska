@@ -1,4 +1,4 @@
-var app = angular.module('App', ['ngAnimate','ngSanitize','ui.bootstrap','ui.router','ngMaterial', 'ngMessages','toastr']); 
+var app = angular.module('App', ['ngAnimate','ngSanitize','ui.bootstrap','ui.router','ngMaterial', 'ngMessages','toastr','socialShare']); 
 
 app.service('homeService', function ($http,$q,$rootScope) {
     var getCategoryList    = undefined;
@@ -1029,7 +1029,7 @@ app.controller('ListingCtrl', function($scope,$state,$http,$stateParams,$timeout
 
 
 // });  
-app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService,$rootScope,toastr,$anchorScroll) {
+app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService,$rootScope,toastr,$anchorScroll,$window) {
 
     angular.element("#loader-for-page").addClass("loading-spiner-show").removeClass("loading-spiner-hide");
     if(storageService.get('user_name')){
@@ -1235,12 +1235,38 @@ app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$time
         console.log(id);
         $anchorScroll(id);
     }
+    $scope.testObj = [];
+    $scope.testObj.push({a:'my value'});
+    $scope.jobShare = {
+                        facebook: {
+                                provider: 'facebook',
+                                url: $window.location.href
+                        },
+                        twitter: {
+                                provider: 'twitter',
+                                url: $window.location.href,
+                                hashtags: $scope.testObj.map(function (item) {
+                                        return item.a;
+                                        }).join(','),
+                                text:'test'
+                        },
+                        linkedin: {
+                                provider: 'linkedin',
+                                url: $window.location.href,
+                                title: 'title',
+                                summary: 'summary'
+                        },
+                        clipboard: {
+                                provider: 'clipboard',
+                                url: $window.location.href
+                        }
+                }
 
 
         
 
 }); 
-app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService,toastr,homeService,$rootScope,$anchorScroll) {
+app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService,toastr,homeService,$rootScope,$anchorScroll,$window) {
 
       
     $scope.listingObject    = {};
@@ -1797,7 +1823,8 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
     }
     if($state.params.id){
         $scope.getItemByID();
-    }   
+    }  
+     
 
 
 });
@@ -1967,7 +1994,25 @@ app.controller('profileCtrl', function($scope,$http,storageService,$state,toastr
     $scope.checkMobileExist =  function(){
         $http.post(Base_url+'Home/checkMobileExist',{mobile:$scope.listingObj.update_mobile,user_id:$state.params.id})
                 .then(function(response){  
-                console.log(response.data);
+                    if(response.data.status){
+                        $scope.isMobileExist = true ;
+                    }else{
+                        $scope.isMobileExist = false ;
+                    }
+                });
+
+    }
+    $scope.isEmailExist = false ;
+    $scope.checkEmailExist =  function(email){
+        
+        console.log($scope.listingObject.update_email);
+        $http.post(Base_url+'Home/checkEmailExist',{email:email,user_id:$state.params.id})
+                .then(function(response){  
+                    if(response.data.status){
+                        $scope.isEmailExist = true ;
+                    }else{
+                        $scope.isEmailExist = false ;
+                    }                
                 });
 
     }
@@ -1982,7 +2027,7 @@ app.controller('profileCtrl', function($scope,$http,storageService,$state,toastr
                 if(response.data.status==1){
                     angular.element("#mobileUpdateModal").modal('hide');
                     toastr.success(response.data.message);
-                    $scope.listingObj.mobile = $scope.listingObj.mobile ;                    
+                    $scope.listingObject.mobile = $scope.listingObj.update_mobile ;                    
                     $scope.listingObj = {};
                     $scope.isVerificationActives = false;                    
                     // storageService.set('user_name', response.data.result.user_name);
@@ -1992,6 +2037,26 @@ app.controller('profileCtrl', function($scope,$http,storageService,$state,toastr
                     // $scope.user_name = response.data.result.user_name;
                     // $scope.user_id = response.data.result.user_id;
                     // $scope.profile_image = Base_Url+'assets/img/welaska_dummy.png';                    
+                }else if(response.data.status==2){                                    
+                    $scope.isVerificationActives = true;
+                }         
+                
+        });
+    }
+    $scope.updateEmail =function(){        
+        if(!$scope.isVerificationActives){
+            $scope.listingObj.verification_code = null ;
+        }
+        
+        $http.post(Base_url+'Home/updateEmail',{update_email:$scope.listingObj.update_email,verification_code:$scope.listingObj.verification_code,user_id:$state.params.id})
+                .then(function(response){                                     
+                    console.log(response.data);
+                if(response.data.status==1){
+                    angular.element("#emailUpdateModal").modal('hide');
+                    toastr.success(response.data.message);
+                    $scope.listingObject.email = $scope.listingObj.update_email ;                    
+                    $scope.listingObj = {};
+                    $scope.isVerificationActives = false;                                     
                 }else if(response.data.status==2){                                    
                     $scope.isVerificationActives = true;
                 }         

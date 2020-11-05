@@ -215,9 +215,17 @@ class Home extends MY_Controller {
   { 
     echo $this->Home->updateMobile();    
   }
+  public function updateEmail()
+  { 
+    echo $this->Home->updateEmail();    
+  }
   public function checkMobileExist()
   { 
     echo $this->Home->checkMobileExist();    
+  }
+  public function checkEmailExist()
+  { 
+    echo $this->Home->checkEmailExist();    
   }  
   
 }

@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-toastr/1.7.0/angular-toastr.css">
   <link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/css/lightGallery.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>  
 
   <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/customeStyle.css'); ?>">
   <style type="text/css">
@@ -89,7 +89,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.22/angular-ui-router.min.js"></script>
     <script src="<?=base_url()?>assets/js/lightGallery.js"></script>
     <script data-require="ui-bootstrap@*" data-semver="0.13.0" src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.0.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url('assets/js/social-sharing.directive.js');?>" ></script> 
+    <script type="text/javascript" src="<?php echo base_url('assets/js/google-map.directive.js');?>" ></script> 
+    
   <script src="<?php echo base_url('assets/js/app.js');?>"></script>
+
 </head>
 <body ng-app="App">
   <div class="container">

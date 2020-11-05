@@ -54,8 +54,9 @@
                 <div class="col-md-6 col-sm-6 col-xs-12">
                   <div class="form-group">
                     <label class="control-label">Email</label>
-                    <input type="email" class="form-control custom-input" ng-model="listingObject.email" required="">
-                    <span  class="error-msg"></span>
+                    <input type="email" class="form-control custom-input eml-fld" ng-model="listingObject.email" required="" ng-change="checkEmailExist(listingObject.email)">
+                    <span ng-show="isEmailExist" class="error-msg">Email already exist</span>
+                    <a class="update-eml" data-toggle="modal" data-target="#emailUpdateModal">Update</a>
                   </div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-12">
@@ -67,7 +68,7 @@
                   </div>
                 </div>
                 <div class="fl-btn-sec adrs-btn">
-                  <button ng-click="submitPersonalDetails('personal')" class="btn submit-button"> <img src="<?php echo base_url() ?>assets/img/btn-loading.gif" class="load-img" ng-show="isLoadingActive"><span>{{(isLoadingActive) ?'':'Submit'}}</span></button>
+                  <button ng-disabled="isEmailExist" ng-click="submitPersonalDetails('personal')" class="btn submit-button"> <img src="<?php echo base_url() ?>assets/img/btn-loading.gif" class="load-img" ng-show="isLoadingActive"><span>{{(isLoadingActive) ?'':'Submit'}}</span></button>
                   <a ng-click="step='address'"  class="pull-right">Next <i class="fa fa-arrow-right"></i></a>
                 </div>
               </div>              
@@ -427,32 +428,64 @@
   </div>
   
   <div class="modal fade" id="mobileUpdateModal" role="dialog">
-  <div class="modal-dialog">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>        
-        <h4 class="modal-title">Welaska</h4>
-      </div>
-      <div class="modal-body">          
-        <div class="mobile-section" ng-show="!isVerificationActives">                     
-          <div class="form-group">          
-            <input type="text" onkeypress="return (event.charCode == 8 || event.charCode == 0) ? false : (event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46 || event.charCode==46)" class="form-control custom-input" id="mobile" placeholder="Mobile Number" ng-model="listingObj.update_mobile" ng-change="checkMobileExist()" name="update_mobile">
-          </div>
-        </div>        
-        <div class="verification-section" ng-show="isVerificationActives">          
-          <p>Please enter your mobile verification code</p>
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>        
+          <h4 class="modal-title">Welaska</h4>
+        </div>
+        <div class="modal-body">          
+          <div class="mobile-section" ng-show="!isVerificationActives">                     
             <div class="form-group">          
-            <input type="number" class="form-control custom-input" onKeyPress="if(this.value.length==6) return false;" id="verification_code" placeholder="Verification Code" ng-model="listingObj.verification_code" name="verification_code">
-          </div>          
+              <input type="text" onkeypress="return (event.charCode == 8 || event.charCode == 0) ? false : (event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46 || event.charCode==46)" class="form-control custom-input mbl-updt" id="mobile" placeholder="Mobile Number" ng-model="listingObj.update_mobile" ng-change="checkMobileExist()" name="update_mobile">
+              <span ng-show="isMobileExist" class="error-msg">Mobile number already exist</span>
+            </div>
+          </div>        
+          <div class="verification-section" ng-show="isVerificationActives">          
+            <p>Please enter your mobile verification code</p>
+              <div class="form-group">          
+              <input type="number" class="form-control custom-input" onKeyPress="if(this.value.length==6) return false;" id="verification_code" placeholder="Verification Code" ng-model="listingObj.verification_code" name="verification_code">
+            </div>          
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div>
+            <button ng-disabled="isMobileExist" class="btn btn-default otp-button" ng-click="updateMobile()">{{!isVerificationActives ? 'Send OTP' : 'Verify'}}</button>
+          </div>        
         </div>
       </div>
-      <div class="modal-footer">
-        <div>
-          <button class="btn btn-default otp-button" ng-click="updateMobile()">{{!isVerificationActives ? 'Send OTP' : 'Verify'}}</button>
-        </div>        
-      </div>
+      
     </div>
-    
   </div>
-</div>
+  <div class="modal fade" id="emailUpdateModal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>        
+          <h4 class="modal-title">Welaska</h4>
+        </div>
+        <div class="modal-body">          
+          <div class="mobile-section" ng-show="!isVerificationActives">                     
+            <div class="form-group">          
+              <input type="text" class="form-control custom-input mbl-updt" placeholder="Email" ng-model="listingObj.update_email" ng-change="checkEmailExist(listingObj.update_email)" name="update_email">
+              <span ng-show="isEmailExist" class="error-msg">Email already exist</span>
+            </div>
+          </div>        
+          <div class="verification-section" ng-show="isVerificationActives">          
+            <p>Please enter your mobile verification code</p>
+              <div class="form-group">          
+              <input type="number" class="form-control custom-input" onKeyPress="if(this.value.length==6) return false;" id="verification_code" placeholder="Verification Code" ng-model="listingObj.verification_code" name="verification_code">
+            </div>          
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div>
+            <button ng-disabled="isEmailExist" class="btn btn-default otp-button" ng-click="updateEmail()">{{!isVerificationActives ? 'Send OTP' : 'Verify'}}</button>
+          </div>        
+        </div>
+      </div>
+      
+    </div>
+  </div>

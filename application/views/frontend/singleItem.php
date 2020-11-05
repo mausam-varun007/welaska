@@ -19,10 +19,31 @@
 			<span class="inline-edit"><a ui-sref="edit-listing({id:itemDetailsByID.id})" ><img src="<?=base_url()?>assets/img/timesheet-ic-min.png" class="edit-listings-icon"></a> Edit Listing</span>
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-4 col-xs-4 goto-icons">		
-			<span class="inline-edit"><a ><img src="<?=base_url()?>assets/img/map.png" class="edit-listings-icon"></a> Map </span>
+			<span class="inline-edit"><a data-toggle="modal" data-target="#myModal"><img src="<?=base_url()?>assets/img/map.png" class="edit-listings-icon"></a> Map </span>
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-4 col-xs-4 goto-icons">		
-			<span class="inline-edit"><a ><img src="<?=base_url()?>assets/img/share_new.png" class="edit-listings-icon"></a> Share </span>
+			<!-- <span class="inline-edit"><a ><img src="<?=base_url()?>assets/img/share_new.png" class="edit-listings-icon"></a> Share </span> -->
+			
+			<div class="dropdown" >
+				<span class="menu-custom-drp dropdown-toggle social-shr" data-toggle="dropdown"><img src="<?=base_url()?>assets/img/share_new.png" class="profile-image">Share</span>
+				<ul class="dropdown-menu social-share">			      
+			      <li><a social-share data-conf="jobShare.facebook" href="javascript:void(0)" class="share-icon sh-fb-icon" data-toggle="tooltip" title="Share on Facebook">
+			            <i class="fa fa-facebook"></i><span class="social-text">Facebook</span> 
+			          </a></li>
+			      <li><a social-share data-conf="jobShare.twitter" href="javascript:void(0)" class="share-icon sh-tw-icon" data-toggle="tooltip" title="Share on Twitter">
+		            <i class="fa fa-twitter"></i><span class="social-text">Twitter</span> 
+		          </a></li>
+			      <li><a social-share="" data-provider="whatsapp" data-url="{{ jobShare.url }}" class="share-icon sh-wp-icon" data-toggle="tooltip" title="Share on Whatsapp">
+		            <i class="fa fa-whatsapp"></i><span class="social-text">Whats App</span> 
+		          </a></li>
+		          <li><a social-share data-conf="jobShare.linkedin" href="javascript:void(0)" class="share-icon sh-ld-icon" data-toggle="tooltip" title="Share on Linkedin">
+		            <i class="fa fa-linkedin"></i><span class="social-text">Linkedin</span> 
+		          </a></li>
+		          <li><a social-share data-conf="jobShare.clipboard" href="javascript:void(0)" class="share-icon sh-fb-icon" data-toggle="tooltip" title="Copy Link">
+		            <i class="fa fa-clone"></i><span class="social-text">Copy Link</span> 
+		          </a></li>
+			    </ul>				
+			</div>
 		</div>
 	</div>
 	<div class="row first-card">			
@@ -163,4 +184,33 @@
 			<a href="{{itemDetailsByID.linkedin}}"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
 		</div>
 	</div>			
+</div>
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Location</h4>
+        </div>
+        <div class="modal-body">
+        	<div ng-app="GoogleMaps" ng-controller="GoogleMaps">
+			    <div class="example playground">			        
+			        <google-maps id="playground"
+	                     data-markers="{{markers}}"
+	                     data-center="{{center}}"
+	                     data-zoom="{{zoom}}"
+	                     data-focus-on="{{focusOn}}">
+			        </google-maps>        
+			</div>        
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
 </div>

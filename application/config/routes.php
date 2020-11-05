@@ -71,7 +71,10 @@ $route['Home/getProfileDetails'] = 'Home/getProfileDetails';
 $route['Home/removeAddress'] = 'Home/removeAddress';
 $route['Home/deleteFiles'] = 'Home/deleteFiles';
 $route['Home/updateMobile'] = 'Home/updateMobile';
+$route['Home/updateEmail'] = 'Home/updateEmail';
 $route['Home/checkMobileExist'] = 'Home/checkMobileExist';
+$route['Home/checkEmailExist'] = 'Home/checkEmailExist';
+
 
 
 
