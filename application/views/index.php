@@ -90,9 +90,11 @@
     <script src="<?=base_url()?>assets/js/lightGallery.js"></script>
     <script data-require="ui-bootstrap@*" data-semver="0.13.0" src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.0.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url('assets/js/social-sharing.directive.js');?>" ></script> 
-    <script type="text/javascript" src="<?php echo base_url('assets/js/google-map.directive.js');?>" ></script> 
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAd1xMYT1bt99qtFWQEzXiRBvORDWHgPtk&libraries=places" ></script> 
     
-  <script src="<?php echo base_url('assets/js/app.js');?>"></script>
+    <script src="<?php echo base_url('assets/js/app.js');?>"></script>
+    <!-- <script type="text/javascript" src="<?php echo base_url('assets/js/google-map.directive.js');?>" ></script> -->
+    
 
 </head>
 <body ng-app="App">

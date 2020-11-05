@@ -3,6 +3,17 @@
 	  height: 150px;
 	  overflow-y:scroll
 	}
+	h3 img {
+    max-height: 50px;
+    display:none; 
+}
+#map { 
+    height: 400px;
+    margin: 20px 0;
+    border-radius: 5px;
+    border: 1px solid silver;
+}
+
 </style>
 <div class="row main-content-box" >	
 	<div class="row review-all-icons">		
@@ -205,8 +216,12 @@
 	                     data-zoom="{{zoom}}"
 	                     data-focus-on="{{focusOn}}">
 			        </google-maps>        
-			</div>        
-        </div>
+				</div>        
+        	</div>
+        	<div class="container google-map-custom" data-ng-app="App" data-ng-controller="freeListingCtrl">
+			  <div id="map"></div>
+			</div>
+
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
@@ -215,3 +230,4 @@
     </div>
   </div>
 </div>
+

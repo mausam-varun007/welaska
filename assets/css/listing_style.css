@@ -1250,6 +1250,9 @@ i.fa.fa-whatsapp {
 i.fa.fa-linkedin {
     color: #0077b5;
 }
+.container.google-map-custom {
+    width: auto;
+}
 /*Google Map*/
 
 /*@import url('https://fonts.googleapis.com/css?family=Mina:400,700');
