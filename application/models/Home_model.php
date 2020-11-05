@@ -161,7 +161,7 @@ class Home_model extends MY_model
                     		WHERE item_id = '.$id.') AS payment_mode, EXISTS( select * from item_likes join user on user.id= item_likes.user_id  where user.id = '.$this->input->post('user_id').') as likes_exist, (select count(id) from item_likes where item_likes.item_id = '.$this->input->post('item_id').') as likes_count , (select FORMAT(AVG(rating), 1) from rating where rating.item_id = '.$this->input->post('item_id').')  as rating_avg,(select rating from rating where rating.user_id = '.$this->input->post('user_id').')  as rating ');
 		}
 		$this->db->from('listing_items');		
-		$this->db->join('category','category.id=listing_items.category_id');				
+		$this->db->join('category','category.id=listing_items.category_id','left');				
 		$this->db->join('rating','rating.item_id=listing_items.id','left');				
 		$this->db->join('user','user.id=rating.user_id','left');				
 		$this->db->where('listing_items.id',$id);
