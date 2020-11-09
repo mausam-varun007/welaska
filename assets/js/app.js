@@ -24,9 +24,9 @@ app.service('homeService', function ($http,$q,$rootScope) {
     }
 });
 app.service('Map', function($q) {
-    this.init = function() {
+    this.init = function(lat,long) {
         var options = {
-            center: new google.maps.LatLng(22.719568, 75.857727),
+            center: new google.maps.LatLng(lat, long),
             zoom: 13,
             disableDefaultUI: true    
         }
@@ -1064,7 +1064,7 @@ app.controller('ListingCtrl', function($scope,$state,$http,$stateParams,$timeout
 
 
 // });  
-app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService,$rootScope,toastr,$anchorScroll,$window) {
+app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$timeout,$q,$log,storageService,$rootScope,toastr,$anchorScroll,$window,Map) {
 
     angular.element("#loader-for-page").addClass("loading-spiner-show").removeClass("loading-spiner-hide");
     if(storageService.get('user_name')){
@@ -1297,6 +1297,10 @@ app.controller('SingleItemCtrl', function($scope,$state,$http,$stateParams,$time
                         }
                 }
 
+                $scope.openMap = function(lat,long){                                        
+                    Map.init(lat,long);    
+                }
+
 
         
 
@@ -1408,6 +1412,7 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
     $scope.classmateData = '';
 
     function citySelectedChange(item,ev) {
+        
         
         if(item){         
               storageService.set('selected_city',item.city);
@@ -1884,7 +1889,7 @@ app.controller('freeListingCtrl', function($scope,$state,$http,$stateParams,$tim
         alert($scope.place.name + ' : ' + $scope.place.lat + ', ' + $scope.place.lng);    
     }
     
-    Map.init();
+    //Map.init();
 
      
 

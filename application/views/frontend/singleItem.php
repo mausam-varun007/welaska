@@ -30,7 +30,7 @@
 			<span class="inline-edit"><a ui-sref="edit-listing({id:itemDetailsByID.id})" ><img src="<?=base_url()?>assets/img/timesheet-ic-min.png" class="edit-listings-icon"></a> Edit Listing</span>
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-4 col-xs-4 goto-icons">		
-			<span class="inline-edit"><a data-toggle="modal" data-target="#myModal"><img src="<?=base_url()?>assets/img/map.png" class="edit-listings-icon"></a> Map </span>
+			<span class="inline-edit"><a ng-click="openMap(itemDetailsByID.latitude,itemDetailsByID.longitude)" data-toggle="modal" data-target="#myModal"><img src="<?=base_url()?>assets/img/map.png" class="edit-listings-icon"></a> Map </span>
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-4 col-xs-4 goto-icons">		
 			<!-- <span class="inline-edit"><a ><img src="<?=base_url()?>assets/img/share_new.png" class="edit-listings-icon"></a> Share </span> -->
@@ -222,9 +222,9 @@
 			  <div id="map"></div>
 			</div>
 
-        <div class="modal-footer">
+        <!-- <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
+        </div> -->
       </div>
       
     </div>
