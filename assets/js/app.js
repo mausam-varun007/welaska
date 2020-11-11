@@ -2145,10 +2145,15 @@ app.controller('testCtrl', function($scope,$http,storageService,$state,toastr,$r
     angular.element("#loader-for-page").addClass("loading-spiner-hide").removeClass("loading-spiner-show");
     $scope.dataObject = [];
     $scope.test = function(){        
+        $scope.counts = 0 ;
         $http.post(Base_url+'Home/getTestDetails')
                 .then(function(response){                
                      $scope.dataObject = response.data.data;
-                    
+                    angular.forEach($scope.dataObject, function (value) {                               
+                        if(value.is_read==0){                    
+                            $scope.counts += parseInt(1);
+                        }
+                    });
         });
     }
     $scope.test();

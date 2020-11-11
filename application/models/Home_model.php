@@ -1015,7 +1015,7 @@ class Home_model extends MY_model
 
     	$this->db->select('*');
     	$this->db->from('test_table');
-    	$this->db->where('is_read',0);        	        	
+    	//$this->db->where('is_read',0);        	        	
 		$query = $this->db->get();							
 		if ($query->num_rows() > 0) {
 			return  json_encode(array('status'=>1,'message'=>'Exist','data'=>$query->result()));			}else{

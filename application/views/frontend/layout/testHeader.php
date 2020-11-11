@@ -140,6 +140,13 @@ p.all-notification {
     cursor: pointer;
     color: #1690a0;
 }
+i.fa.fa-circle.custon-circle {
+    font-size: 8px;
+    position: absolute;
+    top: 15px;
+    color: #338ecf;
+    left: 5px;
+}
 </style>
 </head>
 <body>
@@ -163,15 +170,16 @@ p.all-notification {
       <p class="title-name">Notification</p>      
       <div class="row cutom-rw"> 
         <div class="col-md-6"> 
-          <p class="unread">{{dataObject.length > 0 ? dataObject.length : 'No'}} Unread </p>
+          <p class="unread">{{counts > 0 ? counts : 'No'}} Unread </p>
         </div>
         <div class="col-md-6"> 
           <button type="button" class="btn btn-default allready" ng-click="notifyReaded('','all')">Mark all as read</button>  
         </div>        
       </div>
       <a ng-click="notifyReaded(item.id,'single')">
-        <div class="row cutom-rw2" ng-repeat="item in dataObject"> 
+        <div class="row cutom-rw2" ng-repeat="item in dataObject" ng-if="item.is_read==0"> 
           <div class="col-md-2"> 
+            <i ng-show="item.is_read==0" class="fa fa-circle custon-circle" aria-hidden="true"></i>
             <img src="https://picsum.photos/536/354" class="image-icon" alt="Girl in a jacket">
           </div>
           <div class="col-md-10"> 
@@ -181,34 +189,16 @@ p.all-notification {
           </div>        
         </div>
       </a>
-      <p class="today-seperator">Today</p>
-      <div class="row cutom-rw3"> 
+      <p class="today-seperator">Older Notification</p>
+      <div class="row cutom-rw3" ng-repeat="item in dataObject" ng-if="item.is_read==1"> 
         <div class="col-md-2"> 
           <img src="https://picsum.photos/536/354" class="image-icon" alt="Girl in a jacket">
         </div>
         <div class="col-md-10"> 
-          <p class="first-line">this is you email</p>
-          <p class="help-text">test@gmail.com</p>          
+          <p class="first-line">{{item.description}}</p>
+          <p class="help-text">{{item.email}}</p>          
         </div>        
-      </div>
-      <div class="row cutom-rw3"> 
-        <div class="col-md-2"> 
-          <img src="https://picsum.photos/536/354" class="image-icon" alt="Girl in a jacket">
-        </div>
-        <div class="col-md-10"> 
-          <p class="first-line">this is you email</p>
-          <p class="help-text">test@gmail.com</p>          
-        </div>        
-      </div>
-      <div class="row cutom-rw3"> 
-        <div class="col-md-2"> 
-          <img src="https://picsum.photos/536/354" class="image-icon" alt="Girl in a jacket">
-        </div>
-        <div class="col-md-10"> 
-          <p class="first-line">this is you email</p>
-          <p class="help-text">test@gmail.com</p>          
-        </div>        
-      </div>
+      </div>      
       <p class="all-notification">Show all notification</p>
     </div>  
 </div>
