@@ -74,6 +74,8 @@ $route['Home/updateMobile'] = 'Home/updateMobile';
 $route['Home/updateEmail'] = 'Home/updateEmail';
 $route['Home/checkMobileExist'] = 'Home/checkMobileExist';
 $route['Home/checkEmailExist'] = 'Home/checkEmailExist';
+$route['Home/getTestDetails'] = 'Home/getTestDetails';
+$route['Home/updateNotification'] = 'Home/updateNotification';
 
 
 

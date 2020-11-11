@@ -41,6 +41,10 @@ class Home extends MY_Controller {
               $this->load->view('frontend/profile');
               $this->load->view('frontend/layout/footer');
               break;              
+        case 'test':
+              $this->load->view('frontend/layout/testHeader');  
+              $this->load->view('frontend/test');              
+              break;              
         case 'singleItem':
               $this->load->view('frontend/layout/innerHeader');  
               $this->load->view('frontend/singleItem');
@@ -227,5 +231,14 @@ class Home extends MY_Controller {
   { 
     echo $this->Home->checkEmailExist();    
   }  
+  public function getTestDetails()
+  { 
+    echo $this->Home->getTestDetails();    
+  }
+  public function updateNotification()
+  { 
+    echo $this->Home->updateNotification();    
+  }
+  
   
 }

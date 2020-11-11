@@ -656,6 +656,11 @@ app.config(function($stateProvider, $locationProvider,
             templateUrl : Base_url+'view/profile',
             controller : "profileCtrl"
         })
+        .state('test', { 
+            url : '/test', 
+            templateUrl : Base_url+'view/test',
+            controller : "testCtrl"
+        })
         .state('detailForm', { 
             url : '/detail-form', 
             templateUrl : Base_url+'view/detailForm',
@@ -2135,3 +2140,26 @@ app.controller('profileCtrl', function($scope,$http,storageService,$state,toastr
 
 });
 app.controller('SignupCtrl', function() {});
+app.controller('testCtrl', function($scope,$http,storageService,$state,toastr,$rootScope,$timeout) {
+
+    angular.element("#loader-for-page").addClass("loading-spiner-hide").removeClass("loading-spiner-show");
+    $scope.dataObject = [];
+    $scope.test = function(){        
+        $http.post(Base_url+'Home/getTestDetails')
+                .then(function(response){                
+                     $scope.dataObject = response.data.data;
+                    
+        });
+    }
+    $scope.test();
+    $scope.notifyReaded = function(id,type){
+        var notifyId = id ? id : null;
+        $http.post(Base_url+'Home/updateNotification',{notification_id:notifyId,type:type})
+                .then(function(response){                                     
+                  $scope.test();  
+        });
+
+    }
+    
+
+});

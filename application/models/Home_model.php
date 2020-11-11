@@ -1010,4 +1010,32 @@ class Home_model extends MY_model
             
     	} 
 	}
+	public function getTestDetails()
+    {       
+
+    	$this->db->select('*');
+    	$this->db->from('test_table');
+    	$this->db->where('is_read',0);        	        	
+		$query = $this->db->get();							
+		if ($query->num_rows() > 0) {
+			return  json_encode(array('status'=>1,'message'=>'Exist','data'=>$query->result()));			}else{
+			return json_encode(array('status'=>0,'message'=>'Not exist'));
+		}
+            
+    	 
+	}
+	public function updateNotification()
+    {       
+    	if($this->input->post('type')=='single'){
+        	$updated = $this->updateData('test_table',array('is_read'=>1),array('id'=>$this->input->post('notification_id')));                                                
+    	}else{
+    		$updated = $this->updateData('test_table',array('is_read'=>1),array('is_read'=>0));                                  
+    	}
+        if($updated){
+            return json_encode(array('status'=>1,'message'=>'updated','stage'=>4));
+            ;
+        }
+            
+    	 
+	}
 }
